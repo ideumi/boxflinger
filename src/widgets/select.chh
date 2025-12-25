@@ -1,0 +1,71 @@
+#!/usr/bin/chippy
+#
+# boxflinger - select.chh
+#
+
+#@ <BFSelect(x, y, width, height, items, defaultIndex)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Scrollable list selection widget with visual highlighting at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items''
+#@ array contains strings to display and ''defaultIndex'' sets initially
+#@ selected item. Returns index of selected item when Enter is pressed, or
+#@ ''err'' if ESC is pressed. Selected item shown with inverted colors.
+#@ List automatically scrolls to keep selection visible. Items are
+#@ clipped/padded to fit width.
+
+func BFSelect(x, y, width, height, items, defaultIndex)
+{
+	var selected = defaultIndex;
+	var offset = 1;
+	var running = true;
+	var result = err;
+
+	if len(items) == 0 { return err; }
+
+	if selected < 1 { selected = 1; }
+
+	if selected > len(items) { selected = len(items); }
+
+	HideCursor();
+
+	while running
+	{
+		if selected < offset { offset = selected; }
+
+		if selected >= offset + height { offset = selected - height + 1; }
+
+		BFDrawList(x, y, width, height, items, selected, offset);
+
+		var key = getch();
+
+		if key == BFKEYENTER
+		{
+			result = selected;
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
+				selected = selected - 1;
+			}
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
+				selected = selected + 1;
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}

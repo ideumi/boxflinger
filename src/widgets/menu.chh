@@ -1,0 +1,81 @@
+#!/usr/bin/chippy
+#
+# boxflinger - menu.chh
+#
+
+#@ <BFMenu(x, y, items, defaultIndex)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Simple vertical menu with visual highlighting at position ''x'' and ''y''.
+#@ The ''items'' array contains strings for menu items and ''defaultIndex''
+#@ sets initially selected item. Returns index of selected item when Enter
+#@ is pressed, or ''err'' if ESC is pressed. Selected item shown with
+#@ inverted colors. Items displayed with padding: "  Item  ". No scrolling
+#@ support, all items are visible.
+
+func BFMenu(x, y, items, defaultIndex)
+{
+	var selected = defaultIndex;
+	var running = true;
+	var result = err;
+
+	if len(items) == 0 { return err; }
+
+	if selected < 1 { selected = 1; }
+
+	if selected > len(items) { selected = len(items); }
+
+	HideCursor();
+
+	while running
+	{
+		for i = 1 to len(items)
+		{
+			var item = items[i];
+
+			if i == selected
+			{
+				SetAttribute(COLORBLACK);
+				SetAttribute(COLORBGWHITE);
+			}
+
+			BFDrawText(x, y + i - 1, "  " + item + "  ");
+
+			if i == selected
+			{
+				SetAttribute(COLORRESET);
+			}
+		}
+
+		var key = getch();
+
+		if key == BFKEYENTER
+		{
+			result = selected;
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
+				selected = selected - 1;
+			}
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
+				selected = selected + 1;
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}

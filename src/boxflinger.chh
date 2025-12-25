@@ -1,0 +1,27 @@
+#!/usr/bin/chippy
+#
+# boxflinger
+#
+
+load("libtermios.chh");
+load("libhandles.chh");
+load("libprint.chh");
+
+# ---
+
+load("core/constants.chh");
+load("core/keys.chh");
+
+load("primitives/drawing.chh");
+load("primitives/text.chh");
+load("primitives/layout.chh");
+
+load("widgets/textinput.chh");
+load("widgets/numberinput.chh");
+load("widgets/textbox.chh");
+load("widgets/select.chh");
+load("widgets/menu.chh");
+load("widgets/radiogroup.chh");
+load("widgets/checkboxlist.chh");
+load("widgets/confirm.chh");
+load("widgets/slider.chh");

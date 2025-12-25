@@ -1,0 +1,49 @@
+#!/usr/bin/chippy
+#
+# Combine configuration file
+#
+
+load("src/core/constants.chh");
+
+# Metadata
+
+var Project = "boxflinger";
+var Version = BFVERSION;
+var Licence = "LICENCE.txt";
+var Output = "out/libboxflinger.chh";
+
+# Entry point
+
+var Source = "src/boxflinger.chh";
+
+# Search paths for dependencies
+
+var Paths = [];
+Paths = Paths + ["src"];
+Paths = Paths + ["src/core"];
+Paths = Paths + ["src/primitives"];
+Paths = Paths + ["src/widgets"];
+
+# Add user-local library path if HOME is available
+
+var homePath = getenv("HOME");
+
+if homePath != err
+{
+    Paths = Paths + [homePath + "/.local/share/chiplang/lib"];
+}
+
+Paths = Paths + ["/usr/lib/chiplang"];
+
+# Dependencies combine shouldn't bundle and just keep as loads
+
+var External = [];
+External = External + ["libtermios.chh"];
+External = External + ["libhandles.chh"];
+External = External + ["libprint.chh"];
+
+# Options
+
+var StripComments = false;
+var StripWhitespace = false;
+var AddShebang = true;

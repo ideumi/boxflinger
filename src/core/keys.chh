@@ -1,0 +1,94 @@
+#!/usr/bin/chippy
+#
+# boxflinger - keys.chh
+#
+
+#@ <BFKEYBACKSPACE>
+#@ (2025-09-28)
+#@ Backspace key
+
+var BFKEYBACKSPACE = b[127];
+
+#@ <BFKEYENTER>
+#@ (2025-09-28)
+#@ Enter/Return key
+
+var BFKEYENTER = b[13];
+
+#@ <BFKEYESC>
+#@ (2025-09-28)
+#@ Escape key
+
+var BFKEYESC = b[27];
+
+#@ <BFKEYTAB>
+#@ (2025-09-28)
+#@ Tab key
+
+var BFKEYTAB = b[9];
+
+#@ <BFKEYUP>
+#@ (2025-09-28)
+#@ Up arrow key
+
+var BFKEYUP = b[27, 91, 65];
+
+#@ <BFKEYDOWN>
+#@ (2025-09-28)
+#@ Down arrow key
+
+var BFKEYDOWN = b[27, 91, 66];
+
+#@ <BFKEYRIGHT>
+#@ (2025-09-28)
+#@ Right arrow key
+
+var BFKEYRIGHT = b[27, 91, 67];
+
+#@ <BFKEYLEFT>
+#@ (2025-09-28)
+#@ Left arrow key
+
+var BFKEYLEFT = b[27, 91, 68];
+
+#@ <BFKEYHOME>
+#@ (2025-09-28)
+#@ Home key
+
+var BFKEYHOME = b[27, 91, 72];
+
+#@ <BFKEYEND>
+#@ (2025-09-28)
+#@ End key
+
+var BFKEYEND = b[27, 91, 70];
+
+#@ <BFKEYDELETE>
+#@ (2025-09-28)
+#@ Delete key
+
+var BFKEYDELETE = b[27, 91, 51, 126];
+
+#@ <BFKEYPAGEUP>
+#@ (2025-09-28)
+#@ Page Up key
+
+var BFKEYPAGEUP = b[27, 91, 53, 126];
+
+#@ <BFKEYPAGEDOWN>
+#@ (2025-09-28)
+#@ Page Down key
+
+var BFKEYPAGEDOWN = b[27, 91, 54, 126];
+
+#@ <BFKEYCTRLHOME>
+#@ (2025-09-28)
+#@ Ctrl+Home key combination
+
+var BFKEYCTRLHOME = b[27, 91, 49, 59, 53, 72];
+
+#@ <BFKEYCTRLEND>
+#@ (2025-09-28)
+#@ Ctrl+End key combination
+
+var BFKEYCTRLEND = b[27, 91, 49, 59, 53, 70];

@@ -1,0 +1,73 @@
+#!/usr/bin/chippy
+#
+# boxflinger - radiogroup.chh
+#
+
+#@ <BFRadioGroup(x, y, items, defaultIndex)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Radio button group for single selection from multiple options at position
+#@ ''x'' and ''y''. The ''items'' array contains strings for each radio
+#@ button option and ''defaultIndex'' sets initially selected item. Returns
+#@ index of selected item when Enter is pressed, or ''err'' if ESC is
+#@ pressed. Displays as "( ) Option" for unselected and "(•) Option" for
+#@ selected. Items stacked vertically at consecutive y positions.
+
+func BFRadioGroup(x, y, items, defaultIndex)
+{
+	var selected = defaultIndex;
+	var running = true;
+	var result = err;
+
+	if len(items) == 0 { return err; }
+
+	if selected < 1 { selected = 1; }
+
+	if selected > len(items) { selected = len(items); }
+
+	HideCursor();
+
+	while running
+	{
+		for i = 1 to len(items)
+		{
+			var item = items[i];
+			var radio = "( )";
+
+			if i == selected { radio = "(•)"; }
+
+			BFDrawText(x, y + i - 1, radio + " " + item);
+		}
+
+		var key = getch();
+
+		if key == BFKEYENTER
+		{
+			result = selected;
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
+				selected = selected - 1;
+			}
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
+				selected = selected + 1;
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}

@@ -1,0 +1,131 @@
+#!/usr/bin/chippy
+#
+# boxflinger - textinput.chh
+#
+
+#@ <BFTextInput(x, y, width, prompt, defaultValue)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Single-line text input field with full cursor navigation and editing
+#@ at position ''x'' and ''y'' with maximum visible ''width''. The ''prompt''
+#@ is displayed before input field and ''defaultValue'' sets initial text.
+#@ Returns entered text when Enter is pressed, or ''err'' if ESC is pressed
+#@ or width less than 1. Supports Left/Right arrows, Home/End, Backspace,
+#@ Delete, and all printable characters.
+
+func BFTextInput(x, y, width, prompt, defaultValue)
+{
+	if width < 1 { return err; }
+
+	var text = str(defaultValue);
+	var cursorPos = len(text);
+
+	var running = true;
+	var result = err;
+
+	HideCursor();
+
+	while running
+	{
+		BFClearRegion(x, y, width + lenv(prompt) + 2, 1);
+		BFDrawText(x, y, prompt);
+
+		var inputX = x + lenv(prompt);
+		var displayText = text;
+		var scrollOffset = 0;
+
+		if len(text) > width
+		{
+			if cursorPos >= width
+			{
+				scrollOffset = cursorPos - width + 1;
+			}
+
+			displayText = substr(text, scrollOffset + 1, width);
+		}
+
+		BFDrawText(inputX, y, displayText);
+
+		var displayCursor = cursorPos - scrollOffset;
+
+		CursorToXY(inputX + displayCursor, y);
+		ShowCursor();
+
+		var key = getch();
+
+		HideCursor();
+
+		if key == BFKEYENTER
+		{
+			result = text;
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif key == BFKEYBACKSPACE
+		{
+			if cursorPos > 0
+			{
+				var before = substr(text, 1, cursorPos - 1);
+				var after = substr(text, cursorPos + 1, len(text) - cursorPos);
+
+				text = before + after;
+				cursorPos = cursorPos - 1;
+			}
+		}
+		elseif key == BFKEYLEFT
+		{
+			if cursorPos > 0
+			{
+				cursorPos = cursorPos - 1;
+			}
+		}
+		elseif key == BFKEYRIGHT
+		{
+			if cursorPos < len(text)
+			{
+				cursorPos = cursorPos + 1;
+			}
+		}
+		elseif key == BFKEYHOME
+		{
+			cursorPos = 0;
+		}
+		elseif key == BFKEYEND
+		{
+			cursorPos = len(text);
+		}
+		elseif key == BFKEYDELETE
+		{
+			if cursorPos < len(text)
+			{
+				var before = substr(text, 1, cursorPos);
+				var after = substr(text, cursorPos + 2, len(text) - cursorPos - 1);
+
+				text = before + after;
+			}
+		}
+		elseif key == BFKEYTAB { }
+		elseif key == BFKEYUP { }
+		elseif key == BFKEYDOWN { }
+		elseif type(key) == "bytes" and len(key) >= 1
+		{
+			var char = unpack(key);
+
+			if len(char) > 0
+			{
+				var before = substr(text, 1, cursorPos);
+				var after = substr(text, cursorPos + 1, len(text) - cursorPos);
+
+				text = before + char + after;
+				cursorPos = cursorPos + 1;
+			}
+		}
+	}
+
+	ShowCursor();
+	return result;
+}

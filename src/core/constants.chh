@@ -1,0 +1,88 @@
+#!/usr/bin/chippy
+#
+# boxflinger - constants.chh
+#
+
+#@ <BFVERSION>
+#@ (2025-11-18)
+#@ Library version
+
+var BFVERSION = "1.0.0";
+
+#@ <BFALIGNLEFT>
+#@ (2025-09-28)
+#@ Left text alignment
+
+var BFALIGNLEFT = 0;
+
+#@ <BFALIGNCENTER>
+#@ (2025-09-28)
+#@ Center text alignment
+
+var BFALIGNCENTER = 1;
+
+#@ <BFALIGNRIGHT>
+#@ (2025-09-28)
+#@ Right text alignment
+
+var BFALIGNRIGHT = 2;
+
+# ---
+
+#@ <BFPACKEDSPACE>
+#@ (2025-09-28)
+#@ Space character
+
+var BFPACKEDSPACE = pack(" ");
+
+#@ <BFPACKEDBLOCK>
+#@ (2025-09-28)
+#@ Full block character
+
+var BFPACKEDBLOCK = pack("█");
+
+#@ <BFPACKEDDOT>
+#@ (2025-09-28)
+#@ Bullet point character
+
+var BFPACKEDDOT = pack("●");
+
+# ---
+
+#@ <BFBOXSINGLE>
+#@ (2025-09-28)
+#@ Single-line box border style
+
+var BFBOXSINGLE = 1;
+
+var BFPACKEDSINGLETL = pack("┌");
+var BFPACKEDSINGLETR = pack("┐");
+var BFPACKEDSINGLEBL = pack("└");
+var BFPACKEDSINGLEBR = pack("┘");
+var BFPACKEDSINGLEH = pack("─");
+var BFPACKEDSINGLEV = pack("│");
+
+#@ <BFBOXDOUBLE>
+#@ (2025-09-28)
+#@ Double-line box border style
+
+var BFBOXDOUBLE = 2;
+
+var BFPACKEDDOUBLETL = pack("╔");
+var BFPACKEDDOUBLETR = pack("╗");
+var BFPACKEDDOUBLEBL = pack("╚");
+var BFPACKEDDOUBLEBR = pack("╝");
+var BFPACKEDDOUBLEH = pack("═");
+var BFPACKEDDOUBLEV = pack("║");
+
+#@ <BFBOXROUNDED>
+#@ (2025-09-28)
+#@ Rounded corner box border style
+
+var BFBOXROUNDED = 3;
+
+var BFPACKEDROUNDEDTL = pack("╭");
+var BFPACKEDROUNDEDTR = pack("╮");
+var BFPACKEDROUNDEDBL = pack("╰");
+var BFPACKEDROUNDEDBR = pack("╯");
+

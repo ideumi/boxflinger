@@ -1,0 +1,142 @@
+#!/usr/bin/chippy
+#
+# boxflinger - checkboxlist.chh
+#
+
+#@ <BFCheckboxList(x, y, width, height, items, checkedItems)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Multiple selection list with toggleable checkboxes and scrolling at
+#@ position ''x'' and ''y'' with dimensions ''width'' and ''height''.
+#@ The ''items'' array contains strings for checkbox options and
+#@ ''checkedItems'' array contains initially checked indices. Returns
+#@ list of checked item indices when Enter is pressed, or ''err'' if
+#@ ESC is pressed. Checked items display as "[✓] Item", unchecked as
+#@ "[ ] Item". Current item shown with inverted colors. List
+#@ automatically scrolls to keep selection visible. Can check/uncheck
+#@ any number of items.
+
+func BFCheckboxList(x, y, width, height, items, checkedItems)
+{
+	var selected = 1;
+	var offset = 1;
+	var checked = [];
+
+	for i = 1 to len(items)
+	{
+		var isChecked = false;
+
+		for j = 1 to len(checkedItems)
+		{
+			if i == checkedItems[j]
+			{
+				isChecked = true;
+			}
+		}
+
+		checked = append(checked, isChecked);
+	}
+
+	var running = true;
+	var result = err;
+
+	HideCursor();
+
+	while running
+	{
+		if selected < offset
+		{
+			offset = selected;
+		}
+
+		if selected >= offset + height
+		{
+			offset = selected - height + 1;
+		}
+
+		for row = 1 to height
+		{
+			var itemIndex = offset + row - 1;
+
+			if itemIndex > len(items)
+			{
+				BFClearRegion(x, y + row - 1, width, 1);
+			}
+			else
+			{
+				var item = items[itemIndex];
+				var isChecked = checked[itemIndex];
+				var checkMark = " ";
+
+				if isChecked
+				{
+					checkMark = "✓";
+				}
+
+				var displayText = "[" + checkMark + "] " + item;
+
+				displayText = BFClipText(displayText, width);
+				displayText = BFPadText(displayText, width, BFALIGNLEFT);
+
+				if itemIndex == selected
+				{
+					SetAttribute(COLORBLACK);
+					SetAttribute(COLORBGWHITE);
+				}
+
+				BFDrawText(x, y + row - 1, displayText);
+
+				if itemIndex == selected
+				{
+					SetAttribute(COLORRESET);
+				}
+			}
+		}
+
+		var key = getch();
+
+		if key == BFKEYENTER
+		{
+			result = [];
+
+			for i = 1 to len(checked)
+			{
+				if checked[i]
+				{
+					result = append(result, i);
+				}
+			}
+
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 32
+		{
+			var currentState = checked[selected];
+
+			checked = checked[selected] = not currentState;
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
+				selected = selected - 1;
+			}
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
+				selected = selected + 1;
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}

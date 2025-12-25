@@ -1,0 +1,20 @@
+#!/usr/bin/chippy
+
+load("libboxflinger.chh");
+load("libtermios.chh");
+
+func Logo()
+{
+	ClearScreen();
+	HideCursor();
+
+	BFDrawBox(2, 2, 7, 3, BFBOXROUNDED);
+
+	BFDrawBox(6, 3, 7, 3, BFBOXSINGLE);
+
+	BFDrawText(16, 5, Format("boxflinger %s\n", [BFVERSION]));
+
+	ShowCursor();
+}
+
+Logo();

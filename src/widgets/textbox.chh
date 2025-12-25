@@ -1,0 +1,345 @@
+#!/usr/bin/chippy
+#
+# boxflinger - textbox.chh
+#
+
+#@ <BFTextBox(x, y, width, height, title, defaultText)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Multi-line text editor with full editing capabilities and scrolling at
+#@ position ''x'' and ''y'' with dimensions ''width'' and ''height''. The
+#@ ''title'' is displayed in top border and ''defaultText'' sets initial
+#@ content. Returns full edited text when Ctrl+D is pressed, or ''err''
+#@ if ESC is pressed. Supports arrow keys, Home/End, Page Up/Down,
+#@ Ctrl+Home/End, Backspace, Delete, Enter, and all printable characters.
+#@ Auto-scrolls to keep cursor visible. Status line shows current line
+#@ number and key hints.
+
+func BFTextBox(x, y, width, height, title, defaultText)
+{
+	if width < 5 or height < 5 { return err; }
+
+	var lines = split(defaultText, "\n");
+
+	if len(lines) == 0 { lines = append(lines, ""); }
+
+	var cursorLine = 1;
+	var cursorCol = 0;
+	var offset = 1;
+	var running = true;
+	var result = err;
+
+	HideCursor();
+
+	while running
+	{
+		if cursorLine < offset
+		{
+			offset = cursorLine;
+		}
+
+		if cursorLine >= offset + height - 4
+		{
+			offset = cursorLine - height + 4;
+		}
+
+		BFDrawFrame(x, y, width, height, title);
+
+		var currentLine = lines[cursorLine];
+		var maxLineWidth = width - 2;
+		var hScrollOffset = 0;
+
+		if cursorCol >= maxLineWidth
+		{
+			hScrollOffset = cursorCol - maxLineWidth + 1;
+		}
+
+		var visibleHeight = height - 2;
+
+		for row = 1 to visibleHeight
+		{
+			var lineIndex = offset + row - 1;
+
+			if lineIndex > len(lines)
+			{
+				BFClearRegion(x + 1, y + row, maxLineWidth, 1);
+			}
+			else
+			{
+				var line = lines[lineIndex];
+				var displayLine = line;
+
+				if lineIndex == cursorLine and len(line) > maxLineWidth
+				{
+					displayLine = substr(line, hScrollOffset + 1, maxLineWidth);
+				}
+				else
+				{
+					displayLine = BFClipText(line, maxLineWidth);
+				}
+
+				displayLine = BFPadText(displayLine, maxLineWidth, BFALIGNLEFT);
+
+				BFDrawText(x + 1, y + row, displayLine);
+			}
+		}
+
+		var status = "Line " + str(cursorLine) + "/" + str(len(lines)) + " | ESC=Cancel, Ctrl+D=Done";
+
+		status = BFClipText(status, width - 2);
+		BFDrawText(x + 1, y + height - 2, status);
+
+		var displayRow = cursorLine - offset;
+		var displayCol = cursorCol - hScrollOffset;
+
+		CursorToXY(x + 1 + displayCol, y + 1 + displayRow);
+		ShowCursor();
+
+		var key = getch();
+
+		HideCursor();
+
+		if key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 4
+		{
+			result = join(lines, "\n");
+			running = false;
+		}
+		elseif key == BFKEYENTER
+		{
+			currentLine = lines[cursorLine];
+
+			var before = substr(currentLine, 1, cursorCol);
+			var after = substr(currentLine, cursorCol + 1, len(currentLine) - cursorCol);
+
+			lines = lines[cursorLine] = before;
+
+			var newLines = [];
+
+			for i = 1 to cursorLine
+			{
+				newLines = append(newLines, lines[i]);
+			}
+
+			newLines = append(newLines, after);
+
+			for i = cursorLine + 1 to len(lines)
+			{
+				newLines = append(newLines, lines[i]);
+			}
+
+			lines = newLines;
+
+			cursorLine = cursorLine + 1;
+			cursorCol = 0;
+		}
+		elseif key == BFKEYBACKSPACE
+		{
+			currentLine = lines[cursorLine];
+
+			if cursorCol > 0
+			{
+				var before = substr(currentLine, 1, cursorCol - 1);
+				var after = substr(currentLine, cursorCol + 1, len(currentLine) - cursorCol);
+
+				lines = lines[cursorLine] = before + after;
+				cursorCol = cursorCol - 1;
+			}
+			elseif cursorLine > 1
+			{
+				var prevLine = lines[cursorLine - 1];
+				var mergedLine = prevLine + currentLine;
+
+				var newLines = [];
+
+				for i = 1 to cursorLine - 2
+				{
+					newLines = append(newLines, lines[i]);
+				}
+
+				newLines = append(newLines, mergedLine);
+
+				for i = cursorLine + 1 to len(lines)
+				{
+					newLines = append(newLines, lines[i]);
+				}
+
+				lines = newLines;
+
+				cursorLine = cursorLine - 1;
+				cursorCol = len(prevLine);
+			}
+		}
+		elseif key == BFKEYUP
+		{
+			if cursorLine > 1
+			{
+				cursorLine = cursorLine - 1;
+				currentLine = lines[cursorLine];
+
+				if cursorCol > len(currentLine)
+				{
+					cursorCol = len(currentLine);
+				}
+			}
+		}
+		elseif key == BFKEYDOWN
+		{
+			if cursorLine < len(lines)
+			{
+				cursorLine = cursorLine + 1;
+				currentLine = lines[cursorLine];
+
+				if cursorCol > len(currentLine)
+				{
+					cursorCol = len(currentLine);
+				}
+			}
+		}
+		elseif key == BFKEYLEFT
+		{
+			if cursorCol > 0
+			{
+				cursorCol = cursorCol - 1;
+			}
+			elseif cursorLine > 1
+			{
+				cursorLine = cursorLine - 1;
+				cursorCol = len(lines[cursorLine]);
+			}
+		}
+		elseif key == BFKEYRIGHT
+		{
+			currentLine = lines[cursorLine];
+
+			if cursorCol < len(currentLine)
+			{
+				cursorCol = cursorCol + 1;
+			}
+			elseif cursorLine < len(lines)
+			{
+				cursorLine = cursorLine + 1;
+				cursorCol = 0;
+			}
+		}
+		elseif key == BFKEYHOME
+		{
+			cursorCol = 0;
+		}
+		elseif key == BFKEYEND
+		{
+			currentLine = lines[cursorLine];
+			cursorCol = len(currentLine);
+		}
+		elseif key == BFKEYDELETE
+		{
+			currentLine = lines[cursorLine];
+
+			if cursorCol < len(currentLine)
+			{
+				var before = substr(currentLine, 1, cursorCol);
+				var after = substr(currentLine, cursorCol + 2, len(currentLine) - cursorCol - 1);
+
+				lines = lines[cursorLine] = before + after;
+			}
+			elseif cursorLine < len(lines)
+			{
+				var nextLine = lines[cursorLine + 1];
+				var mergedLine = currentLine + nextLine;
+
+				var newLines = [];
+
+				for i = 1 to cursorLine - 1
+				{
+					newLines = append(newLines, lines[i]);
+				}
+
+				newLines = append(newLines, mergedLine);
+
+				for i = cursorLine + 2 to len(lines)
+				{
+					newLines = append(newLines, lines[i]);
+				}
+
+				lines = newLines;
+			}
+		}
+		elseif key == BFKEYPAGEUP
+		{
+			var pageSize = height - 2;
+
+			if cursorLine > pageSize
+			{
+				cursorLine = cursorLine - pageSize;
+			}
+			else
+			{
+				cursorLine = 1;
+			}
+
+			currentLine = lines[cursorLine];
+
+			if cursorCol > len(currentLine)
+			{
+				cursorCol = len(currentLine);
+			}
+		}
+		elseif key == BFKEYPAGEDOWN
+		{
+			var pageSize = height - 2;
+
+			if cursorLine + pageSize <= len(lines)
+			{
+				cursorLine = cursorLine + pageSize;
+			}
+			else
+			{
+				cursorLine = len(lines);
+			}
+
+			currentLine = lines[cursorLine];
+
+			if cursorCol > len(currentLine)
+			{
+				cursorCol = len(currentLine);
+			}
+		}
+		elseif key == BFKEYCTRLHOME
+		{
+			cursorLine = 1;
+			cursorCol = 0;
+		}
+		elseif key == BFKEYCTRLEND
+		{
+			cursorLine = len(lines);
+			currentLine = lines[cursorLine];
+			cursorCol = len(currentLine);
+		}
+		else
+		{
+			if type(key) == "bytes" and len(key) >= 1
+			{
+				var char = unpack(key);
+
+				if len(char) > 0
+				{
+					currentLine = lines[cursorLine];
+
+					var before = substr(currentLine, 1, cursorCol);
+					var after = substr(currentLine, cursorCol + 1, len(currentLine) - cursorCol);
+
+					lines = lines[cursorLine] = before + char + after;
+					cursorCol = cursorCol + 1;
+				}
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}

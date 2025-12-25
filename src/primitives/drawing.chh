@@ -1,0 +1,383 @@
+#!/usr/bin/chippy
+#
+# boxflinger - drawing.chh
+#
+
+#@ <BFDrawText(x, y, text)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws ''text'' at specified screen coordinates ''x'' and ''y''.
+#@ Text is drawn immediately at current terminal attributes and
+#@ does not clear previous content at position.
+
+func BFDrawText(x, y, text)
+{
+	CursorToXY(x, y);
+
+	fwrite(pack(str(text)), STDOUT);
+}
+
+#@ <BFDrawBox(x, y, width, height, style)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a box border using Unicode box-drawing characters at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height'' (minimum 2x2).
+#@ The ''style'' can be ''BFBOXSINGLE'', ''BFBOXDOUBLE'', or ''BFBOXROUNDED''.
+#@ Only draws border, does not clear interior. Returns ''err'' if width
+#@ or height less than 2, or invalid style.
+
+func BFDrawBox(x, y, width, height, style)
+{
+	if width < 2 or height < 2 { return err; }
+
+	var topLeft = null;
+	var topRight = null;
+
+	var bottomLeft = null;
+	var bottomRight = null;
+
+	var horizontal = null;
+	var vertical = null;
+
+	if style == BFBOXSINGLE
+	{
+		topLeft = BFPACKEDSINGLETL;
+		topRight = BFPACKEDSINGLETR;
+
+		bottomLeft = BFPACKEDSINGLEBL;
+		bottomRight = BFPACKEDSINGLEBR;
+
+		horizontal = BFPACKEDSINGLEH;
+		vertical = BFPACKEDSINGLEV;
+	}
+	elseif style == BFBOXDOUBLE
+	{
+		topLeft = BFPACKEDDOUBLETL;
+		topRight = BFPACKEDDOUBLETR;
+
+		bottomLeft = BFPACKEDDOUBLEBL;
+		bottomRight = BFPACKEDDOUBLEBR;
+
+		horizontal = BFPACKEDDOUBLEH;
+		vertical = BFPACKEDDOUBLEV;
+	}
+	elseif style == BFBOXROUNDED
+	{
+		topLeft = BFPACKEDROUNDEDTL;
+		topRight = BFPACKEDROUNDEDTR;
+
+		bottomLeft = BFPACKEDROUNDEDBL;
+		bottomRight = BFPACKEDROUNDEDBR;
+
+		horizontal = BFPACKEDSINGLEH;
+		vertical = BFPACKEDSINGLEV;
+	}
+	else
+	{
+		return err;
+	}
+
+	CursorToXY(x, y);
+
+	fwrite(topLeft, STDOUT);
+
+	for i = 1 to width - 2
+	{
+		fwrite(horizontal, STDOUT);
+	}
+
+	fwrite(topRight, STDOUT);
+
+	for i = 1 to height - 2
+	{
+		CursorToXY(x, y + i);
+		fwrite(vertical, STDOUT);
+
+		CursorToXY(x + width - 1, y + i);
+		fwrite(vertical, STDOUT);
+	}
+
+	CursorToXY(x, y + height - 1);
+
+	fwrite(bottomLeft, STDOUT);
+
+	for i = 1 to width - 2
+	{
+		fwrite(horizontal, STDOUT);
+	}
+
+	fwrite(bottomRight, STDOUT);
+
+	return ok;
+}
+
+#@ <BFFillRect(x, y, width, height, char)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Fills a rectangular area with a repeating character ''char'' at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. Character is
+#@ converted to string and only first character is used.
+
+func BFFillRect(x, y, width, height, char)
+{
+	var fillChar = str(char);
+	var packedChar = pack(fillChar);
+
+	for row = 1 to height
+	{
+		CursorToXY(x, y + row - 1);
+
+		for col = 1 to width
+		{
+			fwrite(packedChar, STDOUT);
+		}
+	}
+}
+
+#@ <BFDrawHLine(x, y, width, char)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a horizontal line using repeating character ''char'' starting at
+#@ position ''x'' and ''y'' with length ''width''. Character is converted
+#@ to string and only first character is used.
+
+func BFDrawHLine(x, y, width, char)
+{
+	var lineChar = str(char);
+	var packedChar = pack(lineChar);
+
+	CursorToXY(x, y);
+
+	for i = 1 to width
+	{
+		fwrite(packedChar, STDOUT);
+	}
+}
+
+#@ <BFDrawVLine(x, y, height, char)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a vertical line using repeating character ''char'' starting at
+#@ position ''x'' and ''y'' with length ''height''. Character is converted
+#@ to string and only first character is used.
+
+func BFDrawVLine(x, y, height, char)
+{
+	var lineChar = str(char);
+	var packedChar = pack(lineChar);
+
+	for i = 1 to height
+	{
+		CursorToXY(x, y + i - 1);
+
+		fwrite(packedChar, STDOUT);
+	}
+}
+
+#@ <BFDrawFrame(x, y, width, height, title)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Draws a single-line box with ''title'' embedded in the top border at
+#@ position ''x'' and ''y'' with dimensions ''width'' and ''height''
+#@ (minimum 2x2). Always uses ''BFBOXSINGLE'' style. Title is displayed
+#@ as " TitleText " with spaces in top border and is auto-truncated to
+#@ fit if too long (max: width - 4). Returns ''err'' if width or height
+#@ less than 2.
+
+func BFDrawFrame(x, y, width, height, title)
+{
+	var boxResult = BFDrawBox(x, y, width, height, BFBOXSINGLE);
+
+	if boxResult == err { return err; }
+
+	var titleStr = str(title);
+	var titleLen = lenv(titleStr);
+
+	if titleLen > 0 and width > 4
+	{
+		var maxTitleLen = width - 4;
+
+		if titleLen > maxTitleLen
+		{
+			titleStr = substr(titleStr, 1, maxTitleLen);
+		}
+
+		var titleX = x + 2;
+
+		CursorToXY(titleX, y);
+
+		fwrite(pack(" " + titleStr + " "), STDOUT);
+	}
+
+	return ok;
+}
+
+#@ <BFClearRegion(x, y, width, height)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Clears a rectangular area by filling with spaces at position ''x''
+#@ and ''y'' with dimensions ''width'' and ''height''.
+
+func BFClearRegion(x, y, width, height)
+{
+	BFFillRect(x, y, width, height, " ");
+}
+
+#@ <BFDrawProgressBar(x, y, width, current, total, style)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a horizontal progress bar showing completion percentage at
+#@ position ''x'' and ''y'' with ''width'' characters. Progress is
+#@ calculated as ''current / total'' and clamped to 0-100% range.
+#@ The ''style'' can be ''BFBOXSINGLE'', ''BFBOXDOUBLE'', or
+#@ ''BFBOXROUNDED''. Returns ''ok'' on success, or ''err'' if width
+#@ less than 1, total is 0, or invalid style.
+
+func BFDrawProgressBar(x, y, width, current, total, style)
+{
+	if width < 1 { return err; }
+
+	if total == 0 { return err; }
+
+	var fillChar = BFPACKEDBLOCK;
+	var emptyChar = BFPACKEDSINGLEH;
+
+	if style == BFBOXSINGLE
+	{
+		fillChar = BFPACKEDBLOCK;
+		emptyChar = BFPACKEDSINGLEH;
+	}
+	elseif style == BFBOXDOUBLE
+	{
+		fillChar = BFPACKEDBLOCK;
+		emptyChar = BFPACKEDDOUBLEH;
+	}
+	elseif style == BFBOXROUNDED
+	{
+		fillChar = BFPACKEDDOT;
+		emptyChar = BFPACKEDSINGLEH;
+	}
+	else
+	{
+		return err;
+	}
+
+	var progress = current / total;
+
+	if progress < 0 { progress = 0; }
+
+	if progress > 1 { progress = 1; }
+
+	var filledWidth = int(width * progress);
+	var emptyWidth = width - filledWidth;
+
+	CursorToXY(x, y);
+
+	for i = 1 to filledWidth
+	{
+		fwrite(fillChar, STDOUT);
+	}
+
+	for i = 1 to emptyWidth
+	{
+		fwrite(emptyChar, STDOUT);
+	}
+
+	return ok;
+}
+
+#@ <BFDrawButton(x, y, text, selected)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a button with label ''text'' at position ''x'' and ''y''.
+#@ If ''selected'' is ''true'', draws with inverted colors.
+
+func BFDrawButton(x, y, text, selected)
+{
+	var buttonText = "[ " + str(text) + " ]";
+
+	if selected
+	{
+		SetAttribute(COLORBLACK);
+		SetAttribute(COLORBGWHITE);
+	}
+
+	BFDrawText(x, y, buttonText);
+
+	if selected { SetAttribute(COLORRESET); }
+}
+
+#@ <BFDrawCheckbox(x, y, label, checked)>
+#@ V-1.0.1 (2025-11-03)
+#@
+#@ Draws a checkbox with ''label'' text at position ''x'' and ''y''.
+#@ If ''checked'' is ''true'', shows checkmark; otherwise shows empty box.
+
+func BFDrawCheckbox(x, y, label, checked)
+{
+	var checkMark = " ";
+
+	if checked { checkMark = "✓"; }
+
+	var checkboxText = "[" + checkMark + "] " + str(label);
+
+	BFDrawText(x, y, checkboxText);
+}
+
+#@ <BFDrawList(x, y, width, height, items, selected, offset)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Draws a scrollable list with visual selection highlighting at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items''
+#@ array contains strings to display, ''selected'' is the index of
+#@ currently highlighted item, and ''offset'' is the scroll offset.
+#@ Selected item shown with inverted colors. Items auto-clipped with
+#@ ellipsis if too long and padded to full width. Always returns ''ok''.
+
+func BFDrawList(x, y, width, height, items, selected, offset)
+{
+	var maxItems = len(items);
+	var visibleItems = height;
+
+	if maxItems == 0
+	{
+		BFClearRegion(x, y, width, height);
+		return ok;
+	}
+
+	if offset < 1 { offset = 1; }
+
+	if offset > maxItems { offset = maxItems; }
+
+	for row = 1 to visibleItems
+	{
+		var itemIndex = offset + row - 1;
+
+		if itemIndex > maxItems
+		{
+			BFClearRegion(x, y + row - 1, width, 1);
+		}
+		else
+		{
+			var item = items[itemIndex];
+			var displayText = BFClipText(item, width);
+
+			displayText = BFPadText(displayText, width, BFALIGNLEFT);
+
+			if itemIndex == selected
+			{
+				SetAttribute(COLORBLACK);
+				SetAttribute(COLORBGWHITE);
+			}
+
+			BFDrawText(x, y + row - 1, displayText);
+
+			if itemIndex == selected
+			{
+				SetAttribute(COLORRESET);
+			}
+		}
+	}
+
+	return ok;
+}

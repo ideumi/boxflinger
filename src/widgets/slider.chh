@@ -1,0 +1,126 @@
+#!/usr/bin/chippy
+#
+# boxflinger - slider.chh
+#
+
+#@ <BFPACKEDBRACKETLEFT>
+#@ (2025-09-30)
+#@ Left bracket character for slider visualization
+
+var BFPACKEDBRACKETLEFT = pack("[");
+
+#@ <BFPACKEDBRACKETRIGHT>
+#@ (2025-09-30)
+#@ Right bracket character for slider visualization
+
+var BFPACKEDBRACKETRIGHT = pack("]");
+
+#@ <BFPACKEDEQUALS>
+#@ (2025-09-30)
+#@ Filled portion character in slider bar
+
+var BFPACKEDEQUALS = pack("=");
+
+#@ <BFPACKEDDASH>
+#@ (2025-09-30)
+#@ Empty portion character in slider bar
+
+var BFPACKEDDASH = pack("-");
+
+#@ <BFSlider(x, y, width, label, value, min, max, stepSize)>
+#@ V-1.0.2 (2025-11-04)
+#@
+#@ Interactive slider with arrow keys for numeric input at position ''x''
+#@ and ''y'' with slider bar ''width''. The ''label'' is displayed above
+#@ slider, ''value'' sets initial value, ''min'' and ''max'' define allowed
+#@ range, and ''stepSize'' is increment/decrement amount. Returns selected value
+#@ when Enter is pressed, or ''err'' if ESC is pressed, width less than 1, or
+#@ stepSize is 0 or less. Visual representation uses [====----] style bracket
+#@ notation. Value automatically clamped to min-max range during adjustment.
+
+func BFSlider(x, y, width, label, value, min, max, stepSize)
+{
+	if width < 1 { return err; }
+
+	if stepSize <= 0 { return err; }
+
+	var current = value;
+	var running = true;
+
+	var result = err;
+
+	if current < min { current = min; }
+
+	if current > max { current = max; }
+
+	HideCursor();
+
+	while running
+	{
+		BFClearRegion(x, y, width + 50, 2);
+		BFDrawText(x, y, label + ": " + str(int(current)));
+
+		var range = max - min;
+		var position = 0;
+
+		if range != 0
+		{
+			position = (current - min) / range;
+		}
+
+		var filledWidth = int(width * position);
+
+		CursorToXY(x, y + 1);
+
+		fwrite(BFPACKEDBRACKETLEFT, STDOUT);
+
+		for i = 1 to width
+		{
+			if i <= filledWidth
+			{
+				fwrite(BFPACKEDEQUALS, STDOUT);
+			}
+			else
+			{
+				fwrite(BFPACKEDDASH, STDOUT);
+			}
+		}
+
+		fwrite(BFPACKEDBRACKETRIGHT, STDOUT);
+
+		var key = getch();
+
+		if key == BFKEYENTER
+		{
+			result = current;
+			running = false;
+		}
+		elseif key == BFKEYESC
+		{
+			result = err;
+			running = false;
+		}
+		elseif key == BFKEYLEFT
+		{
+			current = current - stepSize;
+
+			if current < min
+			{
+				current = min;
+			}
+		}
+		elseif key == BFKEYRIGHT
+		{
+			current = current + stepSize;
+
+			if current > max
+			{
+				current = max;
+			}
+		}
+	}
+
+	ShowCursor();
+
+	return result;
+}
