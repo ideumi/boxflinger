@@ -188,7 +188,7 @@ func BFDrawFrame(x, y, width, height, title)
 {
 	var boxResult = BFDrawBox(x, y, width, height, BFBOXSINGLE);
 
-	if boxResult == err { return err; }
+	if iserr(boxResult) { return err; }
 
 	var titleStr = str(title);
 	var titleLen = lenv(titleStr);

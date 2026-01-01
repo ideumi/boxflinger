@@ -17,7 +17,7 @@ func TestTextInput()
 
 	var name = BFTextInput(4, 9, 30, "Enter your name: ", "John Doe");
 
-	if str(name) == err
+	if iserr(name)
 	{
 		BFDrawText(4, 12, "Input cancelled");
 	}
@@ -57,7 +57,7 @@ func TestSelect()
 	BFDrawBox(4, 7, 40, 8, BFBOXSINGLE);
 	var selected = BFSelect(5, 8, 38, 6, items, 3);
 
-	if str(selected) == err
+	if iserr(selected)
 	{
 		BFDrawText(4, 16, "Selection cancelled");
 	}
@@ -91,7 +91,7 @@ func TestMenu()
 
 	var selected = BFMenu(20, 8, items, 1);
 
-	if str(selected) == err
+	if iserr(selected)
 	{
 		BFDrawText(4, 14, "Menu cancelled");
 	}
@@ -118,7 +118,7 @@ func TestConfirm()
 
 	var result = BFConfirm(20, 8, "Do you want to continue?", true);
 
-	if str(result) == err
+	if iserr(result)
 	{
 		BFDrawText(4, 11, "Confirmation cancelled");
 	}
@@ -149,7 +149,7 @@ func TestNumberInput()
 
 	var number = BFNumberInput(4, 8, "Enter age", 0, 120, 25);
 
-	if str(number) == err
+	if iserr(number)
 	{
 		BFDrawText(4, 11, "Input cancelled");
 	}
@@ -176,7 +176,7 @@ func TestSlider()
 
 	var volume = BFSlider(10, 8, 40, "Volume", 50, 0, 100, 5);
 
-	if str(volume) == err
+	if iserr(volume)
 	{
 		BFDrawText(4, 11, "Input cancelled");
 	}
@@ -215,7 +215,7 @@ func TestCheckboxList()
 	BFDrawBox(4, 7, 50, 9, BFBOXSINGLE);
 	var checked = BFCheckboxList(5, 8, 48, 7, items, defaultChecked);
 
-	if str(checked) == err
+	if iserr(checked)
 	{
 		BFDrawText(4, 22, "Selection cancelled");
 	}
@@ -254,7 +254,7 @@ func TestRadioGroup()
 
 	var selected = BFRadioGroup(20, 8, items, 2);
 
-	if str(selected) == err
+	if iserr(selected)
 	{
 		BFDrawText(4, 14, "Selection cancelled");
 	}
@@ -284,7 +284,7 @@ func TestTextBox()
 
 	var text = BFTextBox(10, 8, 50, 12, "Text Editor", defaultText);
 
-	if str(text) == err
+	if iserr(text)
 	{
 		BFDrawText(4, 21, "Editing cancelled");
 	}

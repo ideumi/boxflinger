@@ -199,7 +199,7 @@ func TestForm()
 				# Name field
 				var result = BFTextInput(4, 20, 40, "Enter name: ", formData[1]);
 
-				if str(result) != err
+				if not iserr(result)
 				{
 					formData = formData[1] = result;
 				}
@@ -211,7 +211,7 @@ func TestForm()
 				# Age field
 				var result = BFNumberInput(4, 20, "Enter age", 0, 120, formData[2]);
 
-				if str(result) != err
+				if not iserr(result)
 				{
 					formData = formData[2] = result;
 				}
@@ -224,7 +224,7 @@ func TestForm()
 				var genderOptions = ["Male", "Female", "Other"];
 				var result = BFRadioGroup(4, 20, genderOptions, formData[3]);
 
-				if str(result) != err
+				if not iserr(result)
 				{
 					formData = formData[3] = result;
 				}
@@ -237,7 +237,7 @@ func TestForm()
 				var interests = ["Programming", "Music", "Sports", "Reading"];
 				var result = BFCheckboxList(4, 20, 40, len(interests), interests, formData[4]);
 
-				if str(result) != err
+				if not iserr(result)
 				{
 					formData = formData[4] = result;
 				}
@@ -249,7 +249,7 @@ func TestForm()
 				# Satisfaction field
 				var result = BFSlider(4, 20, 30, "Satisfaction", formData[5], 0, 100, 5);
 
-				if str(result) != err
+				if not iserr(result)
 				{
 					formData = formData[5] = result;
 				}
@@ -261,7 +261,7 @@ func TestForm()
 				# Submit button
 				var confirm = BFConfirm(4, 20, "Submit this form?", true);
 
-				if str(confirm) != err and confirm == true
+				if not iserr(confirm) and confirm == true
 				{
 					ClearScreen();
 					ShowCursor();
@@ -305,7 +305,7 @@ func TestForm()
 
 					running = false;
 				}
-				elseif str(confirm) != err
+				elseif not iserr(confirm)
 				{
 					# User chose No, just clear the dialog
 					BFClearRegion(4, 20, 60, 3);
