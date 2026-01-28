@@ -20,13 +20,20 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 	var running = true;
 	var result = err;
 
+	var minStr = str(int(min));
+	var maxStr = str(int(max));
+	var fullPrompt = prompt + " (" + minStr + "-" + maxStr + "): ";
+	var maxInputLen = lenv(minStr);
+
+	if lenv(maxStr) > maxInputLen { maxInputLen = lenv(maxStr); }
+
+	var errorMsg = "Value must be between " + minStr + " and " + maxStr;
+
 	HideCursor();
 
 	while running
 	{
-		var fullPrompt = prompt + " (" + str(int(min)) + "-" + str(int(max)) + "): ";
-
-		BFClearRegion(x, y, lenv(fullPrompt) + 20, 1);
+		BFClearRegion(x, y, lenv(fullPrompt) + maxInputLen, 1);
 		BFDrawText(x, y, fullPrompt);
 
 		var inputX = x + lenv(fullPrompt);
@@ -52,11 +59,11 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 				}
 				else
 				{
-					BFDrawText(x, y + 1, "Value must be between " + str(int(min)) + " and " + str(int(max)));
+					BFDrawText(x, y + 1, errorMsg);
 
 					sleep(1000);
 
-					BFClearRegion(x, y + 1, 60, 1);
+					BFClearRegion(x, y + 1, lenv(errorMsg), 1);
 				}
 			}
 		}
