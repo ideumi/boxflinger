@@ -53,11 +53,18 @@ func BFSlider(x, y, width, label, value, min, max, stepSize)
 
 	if current > max { current = max; }
 
+	var maxLabelLen = lenv(label) + 2 + lenv(str(int(max)));
+	var minLabelLen = lenv(label) + 2 + lenv(str(int(min)));
+	var clearWidth = width + 2;
+
+	if maxLabelLen > clearWidth { clearWidth = maxLabelLen; }
+	if minLabelLen > clearWidth { clearWidth = minLabelLen; }
+
 	HideCursor();
 
 	while running
 	{
-		BFClearRegion(x, y, width + 50, 2);
+		BFClearRegion(x, y, clearWidth, 2);
 		BFDrawText(x, y, label + ": " + str(int(current)));
 
 		var range = max - min;
