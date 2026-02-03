@@ -4,7 +4,7 @@
 #
 
 #@ <BFTextInput(x, y, width, prompt, defaultValue)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-02-02)
 #@
 #@ Single-line text input field with full cursor navigation and editing
 #@ at position ''x'' and ''y'' with maximum visible ''width''. The ''prompt''
@@ -111,6 +111,11 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		elseif key == BFKEYTAB { }
 		elseif key == BFKEYUP { }
 		elseif key == BFKEYDOWN { }
+		elseif key == BFKEYCTRLU
+		{
+			text = "";
+			cursorPos = 0;
+		}
 		elseif type(key) == "bytes" and len(key) >= 1
 		{
 			var char = unpack(key);

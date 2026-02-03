@@ -4,7 +4,7 @@
 #
 
 #@ <BFTextBox(x, y, width, height, title, defaultText)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-02-02)
 #@
 #@ Multi-line text editor with full editing capabilities and scrolling at
 #@ position ''x'' and ''y'' with dimensions ''width'' and ''height''. The
@@ -104,10 +104,15 @@ func BFTextBox(x, y, width, height, title, defaultText)
 			result = err;
 			running = false;
 		}
-		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 4
+		elseif key == BFKEYCTRLD
 		{
 			result = join(lines, "\n");
 			running = false;
+		}
+		elseif key == BFKEYCTRLU
+		{
+			lines = lines[cursorLine] = "";
+			cursorCol = 0;
 		}
 		elseif key == BFKEYENTER
 		{
