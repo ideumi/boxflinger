@@ -4,7 +4,7 @@
 #
 
 #@ <BFNumberInput(x, y, prompt, min, max, defaultValue)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-02-02)
 #@
 #@ Numeric input field with range validation at position ''x'' and ''y''.
 #@ Only accepts digits and optional minus sign. The ''prompt'' text has
@@ -131,6 +131,11 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 		}
 		elseif key == BFKEYUP { }
 		elseif key == BFKEYDOWN { }
+		elseif key == BFKEYCTRLU
+		{
+			text = "";
+			cursorPos = 0;
+		}
 	}
 
 	ShowCursor();

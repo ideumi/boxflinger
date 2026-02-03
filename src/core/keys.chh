@@ -92,3 +92,15 @@ var BFKEYCTRLHOME = b[27, 91, 49, 59, 53, 72];
 #@ Ctrl+End key combination
 
 var BFKEYCTRLEND = b[27, 91, 49, 59, 53, 70];
+
+#@ <BFKEYCTRLD>
+#@ (2026-02-02)
+#@ Ctrl+D key combination
+
+var BFKEYCTRLD = b[4];
+
+#@ <BFKEYCTRLU>
+#@ (2026-02-02)
+#@ Ctrl+U key combination
+
+var BFKEYCTRLU = b[21];
