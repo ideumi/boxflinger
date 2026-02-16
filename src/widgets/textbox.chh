@@ -3,19 +3,19 @@
 # boxflinger - textbox.chh
 #
 
-#@ <BFTextBox(x, y, width, height, title, defaultText)>
+#@ <BFTextBox(x, y, width, height, title, defaultText, style)>
 #@ V-1.0.3 (2026-02-02)
 #@
 #@ Multi-line text editor with full editing capabilities and scrolling at
 #@ position ''x'' and ''y'' with dimensions ''width'' and ''height''. The
 #@ ''title'' is displayed in top border and ''defaultText'' sets initial
-#@ content. Returns full edited text when Ctrl+D is pressed, or ''err''
-#@ if ESC is pressed. Supports arrow keys, Home/End, Page Up/Down,
-#@ Ctrl+Home/End, Backspace, Delete, Enter, and all printable characters.
-#@ Auto-scrolls to keep cursor visible. Status line shows current line
-#@ number and key hints.
+#@ content. Uses the provided ''style''. Returns full edited text when
+#@ Ctrl+D is pressed, or ''err'' if ESC is pressed. Supports arrow keys,
+#@ Home/End, Page Up/Down, Ctrl+Home/End, Backspace, Delete, Enter, and
+#@ all printable characters. Auto-scrolls to keep cursor visible. Status
+#@ line shows current line number and key hints.
 
-func BFTextBox(x, y, width, height, title, defaultText)
+func BFTextBox(x, y, width, height, title, defaultText, style)
 {
 	if width < 5 or height < 5 { return err; }
 
@@ -43,7 +43,7 @@ func BFTextBox(x, y, width, height, title, defaultText)
 			offset = cursorLine - height + 4;
 		}
 
-		BFDrawFrame(x, y, width, height, title);
+		BFDrawFrame(x, y, width, height, title, style);
 
 		var currentLine = lines[cursorLine];
 		var maxLineWidth = width - 2;

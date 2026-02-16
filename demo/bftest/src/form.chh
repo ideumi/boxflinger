@@ -18,7 +18,7 @@ func RenderForm()
 	ClearScreen();
 
 	# Title
-	BFDrawFrame(2, 1, 76, 18, "User Information Form");
+	BFDrawFrame(2, 1, 76, 18, "User Information Form", BFBOXSINGLE);
 	BFDrawText(4, 2, "Use TAB/UP/DOWN to navigate, ENTER to edit, ESC to exit");
 
 	# Name

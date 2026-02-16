@@ -174,19 +174,19 @@ func BFDrawVLine(x, y, height, char)
 	}
 }
 
-#@ <BFDrawFrame(x, y, width, height, title)>
-#@ V-1.0.2 (2025-11-04)
+#@ <BFDrawFrame(x, y, width, height, title, style)>
+#@ V-1.0.3 (2026-02-16)
 #@
 #@ Draws a single-line box with ''title'' embedded in the top border at
 #@ position ''x'' and ''y'' with dimensions ''width'' and ''height''
-#@ (minimum 2x2). Always uses ''BFBOXSINGLE'' style. Title is displayed
-#@ as " TitleText " with spaces in top border and is auto-truncated to
-#@ fit if too long (max: width - 4). Returns ''err'' if width or height
-#@ less than 2.
+#@ (minimum 2x2). Uses the provided ''style''. Title is displayed as
+#@ " TitleText " with spaces in top border and is auto-truncated to fit
+#@ if too long (max: width - 4). Returns ''err'' if width or height less
+#@ than 2.
 
-func BFDrawFrame(x, y, width, height, title)
+func BFDrawFrame(x, y, width, height, title, style)
 {
-	var boxResult = BFDrawBox(x, y, width, height, BFBOXSINGLE);
+	var boxResult = BFDrawBox(x, y, width, height, style);
 
 	if iserr(boxResult) { return err; }
 

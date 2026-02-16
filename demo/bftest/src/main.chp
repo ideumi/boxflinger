@@ -9,7 +9,7 @@ func TestTextInput()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 15, "TextInput Test");
+	BFDrawFrame(2, 2, 70, 15, "TextInput Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests single-line text input with cursor support.");
 	BFDrawText(4, 5, "Use arrow keys to move cursor, Backspace to delete.");
@@ -37,7 +37,7 @@ func TestSelect()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 18, "Select Test");
+	BFDrawFrame(2, 2, 70, 18, "Select Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests list selection with scrolling.");
 	BFDrawText(4, 5, "Use Up/Down arrows to navigate, Enter to select, ESC to cancel.");
@@ -77,7 +77,7 @@ func TestMenu()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 16, "Menu Test");
+	BFDrawFrame(2, 2, 70, 16, "Menu Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests vertical menu navigation.");
 	BFDrawText(4, 5, "Use Up/Down arrows to navigate, Enter to select.");
@@ -111,7 +111,7 @@ func TestConfirm()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 12, "Confirm Test");
+	BFDrawFrame(2, 2, 70, 12, "Confirm Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests Yes/No confirmation dialogs.");
 	BFDrawText(4, 5, "Use arrow keys or Y/N keys to select, Enter to confirm.");
@@ -142,7 +142,7 @@ func TestNumberInput()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 14, "NumberInput Test");
+	BFDrawFrame(2, 2, 70, 14, "NumberInput Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests numeric input with validation.");
 	BFDrawText(4, 5, "Only digits are accepted, value must be in range.");
@@ -169,7 +169,7 @@ func TestSlider()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 14, "Slider Test");
+	BFDrawFrame(2, 2, 70, 14, "Slider Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests interactive slider with arrow keys.");
 	BFDrawText(4, 5, "Use Left/Right arrows to adjust, Enter to confirm.");
@@ -196,7 +196,7 @@ func TestCheckboxList()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 20, "CheckboxList Test");
+	BFDrawFrame(2, 2, 70, 20, "CheckboxList Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests multiple selection with checkboxes.");
 	BFDrawText(4, 5, "Use Up/Down arrows, Space to toggle, Enter to confirm.");
@@ -241,7 +241,7 @@ func TestRadioGroup()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 16, "RadioGroup Test");
+	BFDrawFrame(2, 2, 70, 16, "RadioGroup Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests single selection with radio buttons.");
 	BFDrawText(4, 5, "Use Up/Down arrows to select, Enter to confirm.");
@@ -274,7 +274,7 @@ func TestTextBox()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawFrame(2, 2, 70, 20, "TextBox Test");
+	BFDrawFrame(2, 2, 70, 20, "TextBox Test", BFBOXSINGLE);
 
 	BFDrawText(4, 4, "This tests multi-line text editor with scrolling.");
 	BFDrawText(4, 5, "Use arrow keys to navigate, Enter for new line.");
@@ -282,7 +282,7 @@ func TestTextBox()
 
 	var defaultText = "Sample text.";
 
-	var text = BFTextBox(10, 8, 50, 12, "Text Editor", defaultText);
+	var text = BFTextBox(10, 8, 50, 12, "Text Editor", defaultText, BFBOXSINGLE);
 
 	if iserr(text)
 	{
@@ -304,7 +304,7 @@ func ShowMenu()
 {
 	ClearScreen();
 
-	BFDrawFrame(15, 2, 50, 22, "Boxflinger Test");
+	BFDrawFrame(15, 2, 50, 22, "Boxflinger Test", BFBOXSINGLE);
 
 	BFDrawText(17, 4, "Choose a test:");
 	BFDrawText(17, 6, " 1. TextInput");
