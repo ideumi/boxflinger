@@ -76,8 +76,8 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 		{
 			if cursorPos > 0
 			{
-				var before = substr(text, 1, cursorPos - 1);
-				var after = substr(text, cursorPos + 1, len(text) - cursorPos);
+				var before = slice(text, 1, cursorPos - 1);
+				var after = slice(text, cursorPos + 1, len(text));
 
 				text = before + after;
 				cursorPos = cursorPos - 1;
@@ -86,8 +86,8 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 		elseif type(key) == "bytes" and len(key) == 1 and key[1] >= 48 and key[1] <= 57
 		{
 			var char = unpack(key);
-			var before = substr(text, 1, cursorPos);
-			var after = substr(text, cursorPos + 1, len(text) - cursorPos);
+			var before = slice(text, 1, cursorPos);
+			var after = slice(text, cursorPos + 1, len(text));
 
 			text = before + char + after;
 			cursorPos = cursorPos + 1;
@@ -123,8 +123,8 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 		{
 			if cursorPos < len(text)
 			{
-				var before = substr(text, 1, cursorPos);
-				var after = substr(text, cursorPos + 2, len(text) - cursorPos - 1);
+				var before = slice(text, 1, cursorPos);
+				var after = slice(text, cursorPos + 2, len(text));
 
 				text = before + after;
 			}
