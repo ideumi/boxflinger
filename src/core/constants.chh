@@ -4,10 +4,10 @@
 #
 
 #@ <BFVERSION>
-#@ (2026-02-16)
+#@ (2026-03-28)
 #@ Library version
 
-var BFVERSION = "1.0.4";
+var BFVERSION = "1.0.5";
 
 #@ <BFALIGNLEFT>
 #@ (2025-09-28)

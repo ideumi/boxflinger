@@ -199,7 +199,7 @@ func BFDrawFrame(x, y, width, height, title, style)
 
 		if titleLen > maxTitleLen
 		{
-			titleStr = substr(titleStr, 1, maxTitleLen);
+			titleStr = slice(titleStr, 1, maxTitleLen);
 		}
 
 		var titleX = x + 2;

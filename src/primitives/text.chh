@@ -17,9 +17,9 @@ func BFClipText(text, maxWidth)
 
 	if textLen <= maxWidth { return textStr; }
 
-	if maxWidth <= 3 { return substr(textStr, 1, maxWidth); }
+	if maxWidth <= 3 { return slice(textStr, 1, maxWidth); }
 
-	return substr(textStr, 1, maxWidth - 3) + "...";
+	return slice(textStr, 1, maxWidth - 3) + "...";
 }
 
 #@ <BFTruncateMiddle(text, maxWidth)>
@@ -38,16 +38,16 @@ func BFTruncateMiddle(text, maxWidth)
 
 	if textLen <= maxWidth { return textStr; }
 
-	if maxWidth <= 3 { return substr(textStr, 1, maxWidth); }
+	if maxWidth <= 3 { return slice(textStr, 1, maxWidth); }
 
 	var ellipsis = "...";
 	var availableSpace = maxWidth - 3;
 	var leftChars = int(availableSpace / 2);
 	var rightChars = availableSpace - leftChars;
 
-	var leftPart = substr(textStr, 1, leftChars);
+	var leftPart = slice(textStr, 1, leftChars);
 	var actualLen = len(textStr);
-	var rightPart = substr(textStr, actualLen - rightChars + 1, rightChars);
+	var rightPart = slice(textStr, actualLen - rightChars + 1, actualLen);
 
 	return leftPart + ellipsis + rightPart;
 }
