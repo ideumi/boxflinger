@@ -3,7 +3,7 @@
 # boxflinger
 #
 
-load("libtermios.chh");
+load("libterm.chh");
 load("libhandles.chh");
 load("libprint.chh");
 
