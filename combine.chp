@@ -41,6 +41,7 @@ var External = [];
 External = External + ["libterm.chh"];
 External = External + ["libhandles.chh"];
 External = External + ["libprint.chh"];
+External = External + ["libhttp.chh"];
 
 # Options
 

@@ -1,0 +1,150 @@
+#!/usr/bin/chippy
+#
+# boxflinger - kitty.chh
+#
+
+# https://sw.kovidgoyal.net/kitty/graphics-protocol/
+
+#@ <BFISKITTY>
+#@ (2026-04-05)
+#@ ''true'' if running inside a kitty terminal, ''false'' otherwise
+
+var BFISKITTY = getenv("TERM") == "xterm-kitty";
+
+func _BFKittySend_(cmd)
+{
+	fwrite(BFAPC + pack(cmd) + BFST, STDOUT);
+}
+
+#@ <BFKittyClearImages()>
+#@ V-1.0.0 (2026-04-05)
+#@
+#@ Removes all kitty images from the terminal screen.
+
+func BFKittyClearImages()
+{
+	_BFKittySend_("Ga=d,d=A");
+}
+
+#@ <BFKittyShowImage(x, y, imagePath, cols, rows)>
+#@ V-1.0.0 (2026-04-05)
+#@
+#@ Displays image file at terminal cell position ''x'', ''y'' sized to ''cols''
+#@ columns and ''rows''. ''imagePath'' must be an absolute file path.
+
+func BFKittyShowImage(x, y, imagePath, cols, rows)
+{
+	CursorToXY(x, y);
+
+	var b64path = HttpBase64Encode(pack(imagePath));
+
+	_BFKittySend_("Ga=T,f=100,t=f,c=" + str(cols) + ",r=" + str(rows) + ";" + b64path);
+}
+
+#@ <BFKittyGetCellPixelSize()>
+#@ V-1.0.0 (2026-04-05)
+#@
+#@ Returns the pixel dimensions of one terminal cell as ''[cellW, cellH]'', or
+#@ ''err'' if the terminal does not support the query ''ESC[16t''.
+
+func BFKittyGetCellPixelSize()
+{
+	var saved = getterm();
+
+	if iserr(saved) { return err; }
+
+	setterm(MakeRaw(saved));
+
+	fwrite(CSI + BFCELLQUERY, STDOUT);
+
+	var resp = "";
+	var ch = fread(STDIN, 1);
+
+	while not iserr(ch) and ch[1] != 116
+	{
+		resp = resp + unpack(ch);
+		ch = fread(STDIN, 1);
+	}
+
+	setterm(saved);
+
+	var parts = split(resp, ";");
+
+	if len(parts) != 3 { return err; }
+
+	var cellH = num(parts[2]);
+	var cellW = num(parts[3]);
+
+	if cellH <= 0 or cellW <= 0 { return err; }
+
+	return [int(cellW), int(cellH)];
+}
+
+#@ <BFKittyRenderImage(x, y, imagePath, pixelW, pixelH)>
+#@ V-1.0.0 (2026-04-05)
+#@
+#@ Displays image file at terminal cell position ''x'', ''y'' scaled to
+#@ approximately ''pixelW'' by ''pixelH'' pixels while preserving the aspect ratio
+#@ of the image. Queries the terminal for cell pixel size and computes the best
+#@ cols/rows pair that minimises distortion. Returns ''err'' if the terminal does
+#@ not support the cell-size query.
+
+func BFKittyRenderImage(x, y, imagePath, pixelW, pixelH)
+{
+	var cell = BFKittyGetCellPixelSize();
+
+	if iserr(cell) { return err; }
+
+	var cellW = cell[1];
+	var cellH = cell[2];
+	var targetRatio = pixelW / pixelH;
+
+	var baseCols = int(pixelW / cellW + 0.5);
+
+	if baseCols < 1 { baseCols = 1; }
+
+	var bestCols = baseCols;
+	var bestRows = int(pixelH / cellH + 0.5);
+
+	if bestRows < 1 { bestRows = 1; }
+
+	var bestErr = 999999;
+
+	var c = baseCols - 2;
+
+	if c < 1 { c = 1; }
+
+	while c <= baseCols + 2
+	{
+		var idealRows = (c * cellW * pixelH) / (pixelW * cellH);
+		var rFloor = int(idealRows);
+		var rCeil = int(idealRows) + 1;
+
+		if rFloor < 1 { rFloor = 1; }
+
+		var r = rFloor;
+
+		while r <= rCeil
+		{
+			var dispW = c * cellW;
+			var dispH = r * cellH;
+			var dispRatio = dispW / dispH;
+			var ratioErr = (dispRatio - targetRatio) / targetRatio;
+
+			if ratioErr < 0 { ratioErr = 0 - ratioErr; }
+
+			if ratioErr < bestErr
+			{
+				bestErr = ratioErr;
+				bestCols = c;
+				bestRows = r;
+			}
+
+			r = r + 1;
+		}
+
+		c = c + 1;
+	}
+
+	BFKittyShowImage(x, y, imagePath, bestCols, bestRows);
+}
