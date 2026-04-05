@@ -4,7 +4,7 @@
 #
 
 #@ <BFCheckboxList(x, y, width, height, items, checkedItems)>
-#@ V-1.0.1 (2025-11-03)
+#@ V-1.0.2 (2026-04-04)
 #@
 #@ Multiple selection list with toggleable checkboxes and scrolling at
 #@ position ''x'' and ''y'' with dimensions ''width'' and ''height''.
@@ -15,6 +15,32 @@
 #@ "[ ] Item". Current item shown with inverted colors. List
 #@ automatically scrolls to keep selection visible. Can check/uncheck
 #@ any number of items.
+
+func _BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset)
+{
+	var item = items[itemIndex];
+	var isChecked = checked[itemIndex];
+	var checkMark = " ";
+
+	if isChecked { checkMark = "✓"; }
+
+	var displayText = "[" + checkMark + "] " + item;
+	displayText = BFClipText(displayText, width);
+	displayText = BFPadText(displayText, width, BFALIGNLEFT);
+
+	if itemIndex == selected
+	{
+		SetAttribute(COLORBLACK);
+		SetAttribute(COLORBGWHITE);
+	}
+
+	BFDrawText(x, y + itemIndex - offset, displayText);
+
+	if itemIndex == selected
+	{
+		SetAttribute(COLORRESET);
+	}
+}
 
 func BFCheckboxList(x, y, width, height, items, checkedItems)
 {
@@ -42,57 +68,25 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 
 	HideCursor();
 
+	for row = 1 to height
+	{
+		var itemIndex = offset + row - 1;
+
+		if itemIndex > len(items)
+		{
+			BFClearRegion(x, y + row - 1, width, 1);
+		}
+		else
+		{
+			_BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset);
+		}
+	}
+
 	while running
 	{
-		if selected < offset
-		{
-			offset = selected;
-		}
-
-		if selected >= offset + height
-		{
-			offset = selected - height + 1;
-		}
-
-		for row = 1 to height
-		{
-			var itemIndex = offset + row - 1;
-
-			if itemIndex > len(items)
-			{
-				BFClearRegion(x, y + row - 1, width, 1);
-			}
-			else
-			{
-				var item = items[itemIndex];
-				var isChecked = checked[itemIndex];
-				var checkMark = " ";
-
-				if isChecked
-				{
-					checkMark = "✓";
-				}
-
-				var displayText = "[" + checkMark + "] " + item;
-
-				displayText = BFClipText(displayText, width);
-				displayText = BFPadText(displayText, width, BFALIGNLEFT);
-
-				if itemIndex == selected
-				{
-					SetAttribute(COLORBLACK);
-					SetAttribute(COLORBGWHITE);
-				}
-
-				BFDrawText(x, y + row - 1, displayText);
-
-				if itemIndex == selected
-				{
-					SetAttribute(COLORRESET);
-				}
-			}
-		}
-
+		var prevSelected = selected;
+		var prevOffset = offset;
+		var spaceToggled = false;
 		var key = getch();
 
 		if key == BFKEYENTER
@@ -117,8 +111,8 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 32
 		{
 			var currentState = checked[selected];
-
 			checked = checked[selected] = not currentState;
+			spaceToggled = true;
 		}
 		elseif key == BFKEYUP
 		{
@@ -132,6 +126,39 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 			if selected < len(items)
 			{
 				selected = selected + 1;
+			}
+		}
+
+		if running
+		{
+			if selected < offset { offset = selected; }
+
+			if selected >= offset + height { offset = selected - height + 1; }
+
+			if offset != prevOffset
+			{
+				for row = 1 to height
+				{
+					var itemIndex = offset + row - 1;
+
+					if itemIndex > len(items)
+					{
+						BFClearRegion(x, y + row - 1, width, 1);
+					}
+					else
+					{
+						_BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset);
+					}
+				}
+			}
+			elseif selected != prevSelected
+			{
+				_BFCheckboxRow_(x, y, width, items, checked, prevSelected, selected, offset);
+				_BFCheckboxRow_(x, y, width, items, checked, selected, selected, offset);
+			}
+			elseif spaceToggled
+			{
+				_BFCheckboxRow_(x, y, width, items, checked, selected, selected, offset);
 			}
 		}
 	}

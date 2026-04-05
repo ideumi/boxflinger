@@ -4,7 +4,7 @@
 #
 
 #@ <BFTextInput(x, y, width, prompt, defaultValue)>
-#@ V-1.0.3 (2026-02-02)
+#@ V-1.0.4 (2026-04-04)
 #@
 #@ Single-line text input field with full cursor navigation and editing
 #@ at position ''x'' and ''y'' with maximum visible ''width''. The ''prompt''
@@ -22,38 +22,38 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 
 	var running = true;
 	var result = err;
+	var inputX = x + lenv(prompt);
 
 	HideCursor();
 
+	BFDrawText(x, y, prompt);
+
+	var scrollOffset = 0;
+
+	if len(text) > width and cursorPos >= width
+	{
+		scrollOffset = cursorPos - width + 1;
+	}
+
+	var displayText = text;
+
+	if len(text) > width
+	{
+		displayText = slice(text, scrollOffset + 1, scrollOffset + width);
+	}
+
+	BFClearRegion(inputX, y, width, 1);
+	BFDrawText(inputX, y, displayText);
+	CursorToXY(inputX + cursorPos - scrollOffset, y);
+	ShowCursor();
+
 	while running
 	{
-		BFClearRegion(x, y, width + lenv(prompt) + 2, 1);
-		BFDrawText(x, y, prompt);
-
-		var inputX = x + lenv(prompt);
-		var displayText = text;
-		var scrollOffset = 0;
-
-		if len(text) > width
-		{
-			if cursorPos >= width
-			{
-				scrollOffset = cursorPos - width + 1;
-			}
-
-			displayText = slice(text, scrollOffset + 1, scrollOffset + width);
-		}
-
-		BFDrawText(inputX, y, displayText);
-
-		var displayCursor = cursorPos - scrollOffset;
-
-		CursorToXY(inputX + displayCursor, y);
-		ShowCursor();
-
 		var key = getch();
 
 		HideCursor();
+
+		var textChanged = false;
 
 		if key == BFKEYENTER
 		{
@@ -74,6 +74,7 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 
 				text = before + after;
 				cursorPos = cursorPos - 1;
+				textChanged = true;
 			}
 		}
 		elseif key == BFKEYLEFT
@@ -106,6 +107,7 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 				var after = slice(text, cursorPos + 2, len(text));
 
 				text = before + after;
+				textChanged = true;
 			}
 		}
 		elseif key == BFKEYTAB { }
@@ -115,6 +117,7 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		{
 			text = "";
 			cursorPos = 0;
+			textChanged = true;
 		}
 		elseif type(key) == "bytes" and len(key) >= 1
 		{
@@ -127,7 +130,36 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 
 				text = before + char + after;
 				cursorPos = cursorPos + 1;
+				textChanged = true;
 			}
+		}
+
+		if running
+		{
+			var newScrollOffset = 0;
+
+			if len(text) > width and cursorPos >= width
+			{
+				newScrollOffset = cursorPos - width + 1;
+			}
+
+			if textChanged or newScrollOffset != scrollOffset
+			{
+				scrollOffset = newScrollOffset;
+
+				var newDisplayText = text;
+
+				if len(text) > width
+				{
+					newDisplayText = slice(text, scrollOffset + 1, scrollOffset + width);
+				}
+
+				BFClearRegion(inputX, y, width, 1);
+				BFDrawText(inputX, y, newDisplayText);
+			}
+
+			CursorToXY(inputX + cursorPos - scrollOffset, y);
+			ShowCursor();
 		}
 	}
 

@@ -86,3 +86,44 @@ var BFPACKEDROUNDEDTR = pack("╮");
 var BFPACKEDROUNDEDBL = pack("╰");
 var BFPACKEDROUNDEDBR = pack("╯");
 
+#@ <BFPACKEDBRACKETLEFT>
+#@ (2025-09-30)
+#@ Left bracket character for slider visualization
+
+var BFPACKEDBRACKETLEFT = pack("[");
+
+#@ <BFPACKEDBRACKETRIGHT>
+#@ (2025-09-30)
+#@ Right bracket character for slider visualization
+
+var BFPACKEDBRACKETRIGHT = pack("]");
+
+#@ <BFPACKEDEQUALS>
+#@ (2025-09-30)
+#@ Filled portion character in slider bar
+
+var BFPACKEDEQUALS = pack("=");
+
+#@ <BFPACKEDDASH>
+#@ (2025-09-30)
+#@ Empty portion character in slider bar
+
+var BFPACKEDDASH = pack("-");
+
+#@ <BFAPC>
+#@ (2026-04-05)
+#@ APC start sequence
+
+var BFAPC = b[27, 95];
+
+#@ <BFST>
+#@ (2026-04-05)
+#@ String terminator
+
+var BFST = b[27, 92];
+
+#@ <BFCELLQUERY>
+#@ (2026-04-05)
+#@ Cell pixel size query sequence (CSI + BFCELLQUERY)
+
+var BFCELLQUERY = b[49, 54, 116];

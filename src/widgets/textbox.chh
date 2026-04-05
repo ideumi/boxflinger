@@ -3,8 +3,40 @@
 # boxflinger - textbox.chh
 #
 
+func _BFTextBoxLine_(x, y, width, lines, lineIndex, offset, cursorLine, cursorCol)
+{
+	var maxLineWidth = width - 2;
+	var row = lineIndex - offset + 1;
+
+	if lineIndex > len(lines)
+	{
+		BFClearRegion(x + 1, y + row, maxLineWidth, 1);
+	}
+	else
+	{
+		var line = lines[lineIndex];
+		var displayLine = line;
+
+		if lineIndex == cursorLine and len(line) > maxLineWidth
+		{
+			var hScrollOffset = cursorCol - maxLineWidth + 1;
+
+			if hScrollOffset < 0 { hScrollOffset = 0; }
+
+			displayLine = slice(line, hScrollOffset + 1, hScrollOffset + maxLineWidth);
+		}
+		else
+		{
+			displayLine = BFClipText(line, maxLineWidth);
+		}
+
+		displayLine = BFPadText(displayLine, maxLineWidth, BFALIGNLEFT);
+		BFDrawText(x + 1, y + row, displayLine);
+	}
+}
+
 #@ <BFTextBox(x, y, width, height, title, defaultText, style)>
-#@ V-1.0.3 (2026-02-02)
+#@ V-1.0.4 (2026-04-04)
 #@
 #@ Multi-line text editor with full editing capabilities and scrolling at
 #@ position ''x'' and ''y'' with dimensions ''width'' and ''height''. The
@@ -28,76 +60,40 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 	var offset = 1;
 	var running = true;
 	var result = err;
+	var maxLineWidth = width - 2;
+	var visibleHeight = height - 3;
 
 	HideCursor();
 
+	BFDrawFrame(x, y, width, height, title, style);
+
+	for row = 1 to visibleHeight
+	{
+		_BFTextBoxLine_(x, y, width, lines, offset + row - 1, offset, cursorLine, cursorCol);
+	}
+
+	var initStatus = "Line " + str(cursorLine) + "/" + str(len(lines)) + " | ESC=Cancel, Ctrl+D=Done";
+	initStatus = BFClipText(initStatus, width - 2);
+	BFDrawText(x + 1, y + height - 2, initStatus);
+
+	CursorToXY(x + 1, y + 1);
+	ShowCursor();
+
 	while running
 	{
-		if cursorLine < offset
-		{
-			offset = cursorLine;
-		}
-
-		if cursorLine >= offset + height - 4
-		{
-			offset = cursorLine - height + 4;
-		}
-
-		BFDrawFrame(x, y, width, height, title, style);
-
-		var currentLine = lines[cursorLine];
-		var maxLineWidth = width - 2;
-		var hScrollOffset = 0;
-
-		if cursorCol >= maxLineWidth
-		{
-			hScrollOffset = cursorCol - maxLineWidth + 1;
-		}
-
-		var visibleHeight = height - 2;
-
-		for row = 1 to visibleHeight
-		{
-			var lineIndex = offset + row - 1;
-
-			if lineIndex > len(lines)
-			{
-				BFClearRegion(x + 1, y + row, maxLineWidth, 1);
-			}
-			else
-			{
-				var line = lines[lineIndex];
-				var displayLine = line;
-
-				if lineIndex == cursorLine and len(line) > maxLineWidth
-				{
-					displayLine = slice(line, hScrollOffset + 1, hScrollOffset + maxLineWidth);
-				}
-				else
-				{
-					displayLine = BFClipText(line, maxLineWidth);
-				}
-
-				displayLine = BFPadText(displayLine, maxLineWidth, BFALIGNLEFT);
-
-				BFDrawText(x + 1, y + row, displayLine);
-			}
-		}
-
-		var status = "Line " + str(cursorLine) + "/" + str(len(lines)) + " | ESC=Cancel, Ctrl+D=Done";
-
-		status = BFClipText(status, width - 2);
-		BFDrawText(x + 1, y + height - 2, status);
-
-		var displayRow = cursorLine - offset;
-		var displayCol = cursorCol - hScrollOffset;
-
-		CursorToXY(x + 1 + displayCol, y + 1 + displayRow);
-		ShowCursor();
-
 		var key = getch();
 
 		HideCursor();
+
+		var prevCursorLine = cursorLine;
+		var prevOffset = offset;
+
+		# redrawCurrent: redraw the current cursorLine row
+		# redrawPrev: also redraw prevCursorLine (when cursorLine changed)
+		# fromRedrawLine: redraw from this line index to bottom of visible area (0 = unused)
+		var redrawCurrent = false;
+		var redrawPrev = false;
+		var fromRedrawLine = 0;
 
 		if key == BFKEYESC
 		{
@@ -113,11 +109,11 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 		{
 			lines = lines[cursorLine] = "";
 			cursorCol = 0;
+			redrawCurrent = true;
 		}
 		elseif key == BFKEYENTER
 		{
-			currentLine = lines[cursorLine];
-
+			var currentLine = lines[cursorLine];
 			var before = slice(currentLine, 1, cursorCol);
 			var after = slice(currentLine, cursorCol + 1, len(currentLine));
 
@@ -138,13 +134,13 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			}
 
 			lines = newLines;
-
+			fromRedrawLine = cursorLine;
 			cursorLine = cursorLine + 1;
 			cursorCol = 0;
 		}
 		elseif key == BFKEYBACKSPACE
 		{
-			currentLine = lines[cursorLine];
+			var currentLine = lines[cursorLine];
 
 			if cursorCol > 0
 			{
@@ -153,6 +149,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 				lines = lines[cursorLine] = before + after;
 				cursorCol = cursorCol - 1;
+				redrawCurrent = true;
 			}
 			elseif cursorLine > 1
 			{
@@ -174,9 +171,9 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				}
 
 				lines = newLines;
-
 				cursorLine = cursorLine - 1;
 				cursorCol = len(prevLine);
+				fromRedrawLine = cursorLine;
 			}
 		}
 		elseif key == BFKEYUP
@@ -184,12 +181,12 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			if cursorLine > 1
 			{
 				cursorLine = cursorLine - 1;
-				currentLine = lines[cursorLine];
+				var currentLine = lines[cursorLine];
 
-				if cursorCol > len(currentLine)
-				{
-					cursorCol = len(currentLine);
-				}
+				if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+
+				redrawCurrent = true;
+				redrawPrev = true;
 			}
 		}
 		elseif key == BFKEYDOWN
@@ -197,52 +194,74 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			if cursorLine < len(lines)
 			{
 				cursorLine = cursorLine + 1;
-				currentLine = lines[cursorLine];
+				var currentLine = lines[cursorLine];
 
-				if cursorCol > len(currentLine)
-				{
-					cursorCol = len(currentLine);
-				}
+				if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+
+				redrawCurrent = true;
+				redrawPrev = true;
 			}
 		}
 		elseif key == BFKEYLEFT
 		{
 			if cursorCol > 0
 			{
+				var prevHScroll = 0;
+				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
 				cursorCol = cursorCol - 1;
+				var newHScroll = 0;
+				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
+				if newHScroll != prevHScroll { redrawCurrent = true; }
 			}
 			elseif cursorLine > 1
 			{
 				cursorLine = cursorLine - 1;
 				cursorCol = len(lines[cursorLine]);
+				redrawCurrent = true;
+				redrawPrev = true;
 			}
 		}
 		elseif key == BFKEYRIGHT
 		{
-			currentLine = lines[cursorLine];
+			var currentLine = lines[cursorLine];
 
 			if cursorCol < len(currentLine)
 			{
+				var prevHScroll = 0;
+				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
 				cursorCol = cursorCol + 1;
+				var newHScroll = 0;
+				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
+				if newHScroll != prevHScroll { redrawCurrent = true; }
 			}
 			elseif cursorLine < len(lines)
 			{
 				cursorLine = cursorLine + 1;
 				cursorCol = 0;
+				redrawCurrent = true;
+				redrawPrev = true;
 			}
 		}
 		elseif key == BFKEYHOME
 		{
+			var prevHScroll = 0;
+			if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
 			cursorCol = 0;
+			if prevHScroll != 0 { redrawCurrent = true; }
 		}
 		elseif key == BFKEYEND
 		{
-			currentLine = lines[cursorLine];
+			var prevHScroll = 0;
+			if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
+			var currentLine = lines[cursorLine];
 			cursorCol = len(currentLine);
+			var newHScroll = 0;
+			if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
+			if newHScroll != prevHScroll { redrawCurrent = true; }
 		}
 		elseif key == BFKEYDELETE
 		{
-			currentLine = lines[cursorLine];
+			var currentLine = lines[cursorLine];
 
 			if cursorCol < len(currentLine)
 			{
@@ -250,6 +269,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				var after = slice(currentLine, cursorCol + 2, len(currentLine));
 
 				lines = lines[cursorLine] = before + after;
+				redrawCurrent = true;
 			}
 			elseif cursorLine < len(lines)
 			{
@@ -271,11 +291,12 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				}
 
 				lines = newLines;
+				fromRedrawLine = cursorLine;
 			}
 		}
 		elseif key == BFKEYPAGEUP
 		{
-			var pageSize = height - 2;
+			var pageSize = height - 3;
 
 			if cursorLine > pageSize
 			{
@@ -286,16 +307,14 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				cursorLine = 1;
 			}
 
-			currentLine = lines[cursorLine];
-
-			if cursorCol > len(currentLine)
-			{
-				cursorCol = len(currentLine);
-			}
+			var currentLine = lines[cursorLine];
+			if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+			redrawCurrent = true;
+			redrawPrev = true;
 		}
 		elseif key == BFKEYPAGEDOWN
 		{
-			var pageSize = height - 2;
+			var pageSize = height - 3;
 
 			if cursorLine + pageSize <= len(lines)
 			{
@@ -306,23 +325,25 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				cursorLine = len(lines);
 			}
 
-			currentLine = lines[cursorLine];
-
-			if cursorCol > len(currentLine)
-			{
-				cursorCol = len(currentLine);
-			}
+			var currentLine = lines[cursorLine];
+			if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+			redrawCurrent = true;
+			redrawPrev = true;
 		}
 		elseif key == BFKEYCTRLHOME
 		{
 			cursorLine = 1;
 			cursorCol = 0;
+			redrawCurrent = true;
+			redrawPrev = true;
 		}
 		elseif key == BFKEYCTRLEND
 		{
 			cursorLine = len(lines);
-			currentLine = lines[cursorLine];
+			var currentLine = lines[cursorLine];
 			cursorCol = len(currentLine);
+			redrawCurrent = true;
+			redrawPrev = true;
 		}
 		else
 		{
@@ -332,15 +353,77 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 				if len(char) > 0
 				{
-					currentLine = lines[cursorLine];
-
+					var currentLine = lines[cursorLine];
 					var before = slice(currentLine, 1, cursorCol);
 					var after = slice(currentLine, cursorCol + 1, len(currentLine));
 
 					lines = lines[cursorLine] = before + char + after;
 					cursorCol = cursorCol + 1;
+					redrawCurrent = true;
 				}
 			}
+		}
+
+		if running
+		{
+			if cursorLine < offset { offset = cursorLine; }
+
+			if cursorLine >= offset + height - 4 { offset = cursorLine - height + 4; }
+
+			# Scroll changed: override with full redraw from top
+			if offset != prevOffset
+			{
+				fromRedrawLine = offset;
+				redrawCurrent = false;
+				redrawPrev = false;
+			}
+
+			if fromRedrawLine > 0
+			{
+				var startRow = fromRedrawLine - offset + 1;
+
+				if startRow < 1 { startRow = 1; }
+
+				for row = startRow to visibleHeight
+				{
+					_BFTextBoxLine_(x, y, width, lines, offset + row - 1, offset, cursorLine, cursorCol);
+				}
+			}
+			else
+			{
+				if redrawPrev and prevCursorLine != cursorLine
+				{
+					var prevRow = prevCursorLine - offset + 1;
+
+					if prevRow >= 1 and prevRow <= visibleHeight
+					{
+						_BFTextBoxLine_(x, y, width, lines, prevCursorLine, offset, cursorLine, cursorCol);
+					}
+				}
+
+				if redrawCurrent
+				{
+					var curRow = cursorLine - offset + 1;
+
+					if curRow >= 1 and curRow <= visibleHeight
+					{
+						_BFTextBoxLine_(x, y, width, lines, cursorLine, offset, cursorLine, cursorCol);
+					}
+				}
+			}
+
+			var status = "Line " + str(cursorLine) + "/" + str(len(lines)) + " | ESC=Cancel, Ctrl+D=Done";
+			status = BFClipText(status, width - 2);
+			BFDrawText(x + 1, y + height - 2, status);
+
+			var hScrollOffset = 0;
+			if cursorCol >= maxLineWidth { hScrollOffset = cursorCol - maxLineWidth + 1; }
+
+			var displayRow = cursorLine - offset;
+			var displayCol = cursorCol - hScrollOffset;
+
+			CursorToXY(x + 1 + displayCol, y + 1 + displayRow);
+			ShowCursor();
 		}
 	}
 
