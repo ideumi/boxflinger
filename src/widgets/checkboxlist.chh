@@ -6,15 +6,14 @@
 #@ <BFCheckboxList(x, y, width, height, items, checkedItems)>
 #@ V-1.0.2 (2026-04-04)
 #@
-#@ Multiple selection list with toggleable checkboxes and scrolling at
-#@ position ''x'' and ''y'' with dimensions ''width'' and ''height''.
-#@ The ''items'' array contains strings for checkbox options and
-#@ ''checkedItems'' array contains initially checked indices. Returns
-#@ list of checked item indices when Enter is pressed, or ''err'' if
-#@ ESC is pressed. Checked items display as "[✓] Item", unchecked as
-#@ "[ ] Item". Current item shown with inverted colors. List
-#@ automatically scrolls to keep selection visible. Can check/uncheck
-#@ any number of items.
+#@ Multiple selection list with toggleable checkboxes and scrolling at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items'' array
+#@ contains strings for checkbox options and ''checkedItems'' array contains
+#@ initially checked indices. Returns list of checked item indices when Enter is
+#@ pressed, or ''err'' if ESC is pressed. Checked items display as "[✓] Item",
+#@ unchecked as "[ ] Item". Current item shown with inverted colors. List
+#@ automatically scrolls to keep selection visible. Can check/uncheck any number
+#@ of items.
 
 func _BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset)
 {

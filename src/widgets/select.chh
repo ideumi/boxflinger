@@ -6,13 +6,12 @@
 #@ <BFSelect(x, y, width, height, items, defaultIndex)>
 #@ V-1.0.3 (2026-04-04)
 #@
-#@ Scrollable list selection widget with visual highlighting at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items''
-#@ array contains strings to display and ''defaultIndex'' sets initially
-#@ selected item. Returns index of selected item when Enter is pressed, or
-#@ ''err'' if ESC is pressed. Selected item shown with inverted colors.
-#@ List automatically scrolls to keep selection visible. Items are
-#@ clipped/padded to fit width.
+#@ Scrollable list selection widget with visual highlighting at position ''x''
+#@ and ''y'' with dimensions ''width'' and ''height''. The ''items'' array
+#@ contains strings to display and ''defaultIndex'' sets initially selected item.
+#@ Returns index of selected item when Enter is pressed, or ''err'' if ESC is
+#@ pressed. Selected item shown with inverted colors. List automatically scrolls
+#@ to keep selection visible. Items are clipped/padded to fit width.
 
 func BFSelect(x, y, width, height, items, defaultIndex)
 {

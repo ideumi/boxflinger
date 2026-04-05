@@ -6,13 +6,13 @@
 #@ <BFSlider(x, y, width, label, value, min, max, stepSize)>
 #@ V-1.0.3 (2026-04-04)
 #@
-#@ Interactive slider with arrow keys for numeric input at position ''x''
-#@ and ''y'' with slider bar ''width''. The ''label'' is displayed above
-#@ slider, ''value'' sets initial value, ''min'' and ''max'' define allowed
-#@ range, and ''stepSize'' is increment/decrement amount. Returns selected value
-#@ when Enter is pressed, or ''err'' if ESC is pressed, width less than 1, or
-#@ stepSize is 0 or less. Visual representation uses [====----] style bracket
-#@ notation. Value automatically clamped to min-max range during adjustment.
+#@ Interactive slider with arrow keys for numeric input at position ''x'' and
+#@ ''y'' with slider bar ''width''. The ''label'' is displayed above slider,
+#@ ''value'' sets initial value, ''min'' and ''max'' define allowed range, and
+#@ ''stepSize'' is increment/decrement amount. Returns selected value when Enter
+#@ is pressed, or ''err'' if ESC is pressed, width less than 1, or stepSize is 0
+#@ or less. Visual representation uses [====----] style bracket notation. Value
+#@ automatically clamped to min-max range during adjustment.
 
 func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
 {

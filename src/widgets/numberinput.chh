@@ -6,12 +6,12 @@
 #@ <BFNumberInput(x, y, prompt, min, max, defaultValue)>
 #@ V-1.0.4 (2026-04-04)
 #@
-#@ Numeric input field with range validation at position ''x'' and ''y''.
-#@ Only accepts digits and optional minus sign. The ''prompt'' text has
-#@ range appended automatically. The ''min'' and ''max'' define allowed range,
-#@ and ''defaultValue'' sets initial value. Returns validated number when
-#@ Enter is pressed, or ''err'' if ESC is pressed. Shows error message for 1
-#@ second if value outside range. Only supports integers.
+#@ Numeric input field with range validation at position ''x'' and ''y''. Only
+#@ accepts digits and optional minus sign. The ''prompt'' text has range appended
+#@ automatically. The ''min'' and ''max'' define allowed range, and ''defaultValue''
+#@ sets initial value. Returns validated number when Enter is pressed, or ''err''
+#@ if ESC is pressed. Shows error message for 1 second if value outside range.
+#@ Only supports integers.
 
 func BFNumberInput(x, y, prompt, min, max, defaultValue)
 {

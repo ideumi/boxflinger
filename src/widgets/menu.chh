@@ -6,12 +6,11 @@
 #@ <BFMenu(x, y, items, defaultIndex)>
 #@ V-1.0.3 (2026-04-04)
 #@
-#@ Simple vertical menu with visual highlighting at position ''x'' and ''y''.
-#@ The ''items'' array contains strings for menu items and ''defaultIndex''
-#@ sets initially selected item. Returns index of selected item when Enter
-#@ is pressed, or ''err'' if ESC is pressed. Selected item shown with
-#@ inverted colors. Items displayed with padding: "  Item  ". No scrolling
-#@ support, all items are visible.
+#@ Simple vertical menu with visual highlighting at position ''x'' and ''y''. The
+#@ ''items'' array contains strings for menu items and ''defaultIndex'' sets
+#@ initially selected item. Returns index of selected item when Enter is pressed,
+#@ or ''err'' if ESC is pressed. Selected item shown with inverted colors. Items
+#@ displayed with padding: "  Item  ". No scrolling support, all items are visible.
 
 func BFMenu(x, y, items, defaultIndex)
 {

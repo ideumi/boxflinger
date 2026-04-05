@@ -6,12 +6,12 @@
 #@ <BFRadioGroup(x, y, items, defaultIndex)>
 #@ V-1.0.3 (2026-04-04)
 #@
-#@ Radio button group for single selection from multiple options at position
-#@ ''x'' and ''y''. The ''items'' array contains strings for each radio
-#@ button option and ''defaultIndex'' sets initially selected item. Returns
-#@ index of selected item when Enter is pressed, or ''err'' if ESC is
-#@ pressed. Displays as "( ) Option" for unselected and "(•) Option" for
-#@ selected. Items stacked vertically at consecutive y positions.
+#@ Radio button group for single selection from multiple options at position ''x''
+#@ and ''y''. The ''items'' array contains strings for each radio button option
+#@ and ''defaultIndex'' sets initially selected item. Returns index of selected
+#@ item when Enter is pressed, or ''err'' if ESC is pressed. Displays as "( ) Option"
+#@ for unselected and "(•) Option" for selected. Items stacked vertically at
+#@ consecutive y positions.
 
 func BFRadioGroup(x, y, items, defaultIndex)
 {

@@ -6,9 +6,9 @@
 #@ <BFClipText(text, maxWidth)>
 #@ V-1.0.2 (2025-11-04)
 #@
-#@ Truncates ''text'' to fit within ''maxWidth'' characters, adding ellipsis
-#@ if truncated. Returns original text if fits, otherwise truncated with
-#@ "..." appended.
+#@ Truncates ''text'' to fit within ''maxWidth'' characters, adding ellipsis if
+#@ truncated. Returns original text if fits, otherwise truncated with "..."
+#@ appended.
 
 func BFClipText(text, maxWidth)
 {
@@ -25,11 +25,10 @@ func BFClipText(text, maxWidth)
 #@ <BFTruncateMiddle(text, maxWidth)>
 #@ V-1.0.2 (2025-11-04)
 #@
-#@ Truncates ''text'' in the middle while preserving start and end portions
-#@ to fit within ''maxWidth'' characters. Returns original text if fits,
-#@ otherwise "start...end" format. If maxWidth is 3 or less, truncates
-#@ without ellipsis. Left side gets floor(available/2) chars, right side
-#@ gets remainder.
+#@ Truncates ''text'' in the middle while preserving start and end portions to
+#@ fit within ''maxWidth'' characters. Returns original text if fits, otherwise
+#@ "start...end" format. If maxWidth is 3 or less, truncates without ellipsis.
+#@ Left side gets floor(available/2) chars, right side gets remainder.
 
 func BFTruncateMiddle(text, maxWidth)
 {
@@ -55,11 +54,11 @@ func BFTruncateMiddle(text, maxWidth)
 #@ <BFPadText(text, width, align)>
 #@ V-1.0.2 (2025-11-04)
 #@
-#@ Pads ''text'' with spaces to reach specified ''width'' with alignment
-#@ mode ''align''. Alignment can be ''BFALIGNLEFT'' (adds spaces to right),
+#@ Pads ''text'' with spaces to reach specified ''width'' with alignment mode
+#@ ''align''. Alignment can be ''BFALIGNLEFT'' (adds spaces to right),
 #@ ''BFALIGNRIGHT'' (adds spaces to left), or ''BFALIGNCENTER'' (distributes
-#@ spaces, left gets floor(padding/2)). Returns padded text at specified
-#@ width, or original if already at or exceeds width.
+#@ spaces, left gets floor(padding/2)). Returns padded text at specified width,
+#@ or original if already at or exceeds width.
 
 func BFPadText(text, width, align)
 {
@@ -105,9 +104,9 @@ func BFMeasureText(text)
 #@ V-1.0.2 (2025-11-04)
 #@
 #@ Wraps ''text'' into multiple lines based on word boundaries and ''width''
-#@ limit. Returns list of text lines, each at or under width characters
-#@ when possible. Splits on spaces (word boundaries) and keeps words intact
-#@ when possible. If single word exceeds width, places it on its own line.
+#@ limit. Returns list of text lines, each at or under width characters when
+#@ possible. Splits on spaces (word boundaries) and keeps words intact when
+#@ possible. If single word exceeds width, places it on its own line.
 
 func BFWrapText(text, width)
 {

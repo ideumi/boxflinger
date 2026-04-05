@@ -6,9 +6,9 @@
 #@ <BFDrawText(x, y, text)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws ''text'' at specified screen coordinates ''x'' and ''y''.
-#@ Text is drawn immediately at current terminal attributes and
-#@ does not clear previous content at position.
+#@ Draws ''text'' at specified screen coordinates ''x'' and ''y''. Text is drawn
+#@ immediately at current terminal attributes and does not clear previous content
+#@ at position.
 
 func BFDrawText(x, y, text)
 {
@@ -20,11 +20,11 @@ func BFDrawText(x, y, text)
 #@ <BFDrawBox(x, y, width, height, style)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a box border using Unicode box-drawing characters at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height'' (minimum 2x2).
-#@ The ''style'' can be ''BFBOXSINGLE'', ''BFBOXDOUBLE'', or ''BFBOXROUNDED''.
-#@ Only draws border, does not clear interior. Returns ''err'' if width
-#@ or height less than 2, or invalid style.
+#@ Draws a box border using Unicode box-drawing characters at position ''x'' and
+#@ ''y'' with dimensions ''width'' and ''height'' (minimum 2x2). The ''style''
+#@ can be ''BFBOXSINGLE'', ''BFBOXDOUBLE'', or ''BFBOXROUNDED''. Only draws
+#@ border, does not clear interior. Returns ''err'' if width or height less than
+#@ 2, or invalid style.
 
 func BFDrawBox(x, y, width, height, style)
 {
@@ -114,9 +114,9 @@ func BFDrawBox(x, y, width, height, style)
 #@ <BFFillRect(x, y, width, height, char)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Fills a rectangular area with a repeating character ''char'' at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. Character is
-#@ converted to string and only first character is used.
+#@ Fills a rectangular area with a repeating character ''char'' at position ''x''
+#@ and ''y'' with dimensions ''width'' and ''height''. Character is converted to
+#@ string and only first character is used.
 
 func BFFillRect(x, y, width, height, char)
 {
@@ -137,9 +137,9 @@ func BFFillRect(x, y, width, height, char)
 #@ <BFDrawHLine(x, y, width, char)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a horizontal line using repeating character ''char'' starting at
-#@ position ''x'' and ''y'' with length ''width''. Character is converted
-#@ to string and only first character is used.
+#@ Draws a horizontal line using repeating character ''char'' starting at position
+#@ ''x'' and ''y'' with length ''width''. Character is converted to string and
+#@ only first character is used.
 
 func BFDrawHLine(x, y, width, char)
 {
@@ -157,9 +157,9 @@ func BFDrawHLine(x, y, width, char)
 #@ <BFDrawVLine(x, y, height, char)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a vertical line using repeating character ''char'' starting at
-#@ position ''x'' and ''y'' with length ''height''. Character is converted
-#@ to string and only first character is used.
+#@ Draws a vertical line using repeating character ''char'' starting at position
+#@ ''x'' and ''y'' with length ''height''. Character is converted to string and
+#@ only first character is used.
 
 func BFDrawVLine(x, y, height, char)
 {
@@ -177,12 +177,11 @@ func BFDrawVLine(x, y, height, char)
 #@ <BFDrawFrame(x, y, width, height, title, style)>
 #@ V-1.0.3 (2026-02-16)
 #@
-#@ Draws a single-line box with ''title'' embedded in the top border at
-#@ position ''x'' and ''y'' with dimensions ''width'' and ''height''
-#@ (minimum 2x2). Uses the provided ''style''. Title is displayed as
-#@ " TitleText " with spaces in top border and is auto-truncated to fit
-#@ if too long (max: width - 4). Returns ''err'' if width or height less
-#@ than 2.
+#@ Draws a single-line box with ''title'' embedded in the top border at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height'' (minimum 2x2). Uses
+#@ the provided ''style''. Title is displayed as " TitleText " with spaces in top
+#@ border and is auto-truncated to fit if too long (max: width - 4). Returns
+#@ ''err'' if width or height less than 2.
 
 func BFDrawFrame(x, y, width, height, title, style)
 {
@@ -215,8 +214,8 @@ func BFDrawFrame(x, y, width, height, title, style)
 #@ <BFClearRegion(x, y, width, height)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Clears a rectangular area by filling with spaces at position ''x''
-#@ and ''y'' with dimensions ''width'' and ''height''.
+#@ Clears a rectangular area by filling with spaces at position ''x'' and ''y''
+#@ with dimensions ''width'' and ''height''.
 
 func BFClearRegion(x, y, width, height)
 {
@@ -226,12 +225,11 @@ func BFClearRegion(x, y, width, height)
 #@ <BFDrawProgressBar(x, y, width, current, total, style)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a horizontal progress bar showing completion percentage at
-#@ position ''x'' and ''y'' with ''width'' characters. Progress is
-#@ calculated as ''current / total'' and clamped to 0-100% range.
-#@ The ''style'' can be ''BFBOXSINGLE'', ''BFBOXDOUBLE'', or
-#@ ''BFBOXROUNDED''. Returns ''ok'' on success, or ''err'' if width
-#@ less than 1, total is 0, or invalid style.
+#@ Draws a horizontal progress bar showing completion percentage at position
+#@ ''x'' and ''y'' with ''width'' characters. Progress is calculated as ''current
+#@ / total'' and clamped to 0-100% range. The ''style'' can be ''BFBOXSINGLE'',
+#@ ''BFBOXDOUBLE'', or ''BFBOXROUNDED''. Returns ''ok'' on success, or ''err'' if
+#@ width less than 1, total is 0, or invalid style.
 
 func BFDrawProgressBar(x, y, width, current, total, style)
 {
@@ -289,8 +287,8 @@ func BFDrawProgressBar(x, y, width, current, total, style)
 #@ <BFDrawButton(x, y, text, selected)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a button with label ''text'' at position ''x'' and ''y''.
-#@ If ''selected'' is ''true'', draws with inverted colors.
+#@ Draws a button with label ''text'' at position ''x'' and ''y''. If ''selected''
+#@ is ''true'', draws with inverted colors.
 
 func BFDrawButton(x, y, text, selected)
 {
@@ -310,8 +308,8 @@ func BFDrawButton(x, y, text, selected)
 #@ <BFDrawCheckbox(x, y, label, checked)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Draws a checkbox with ''label'' text at position ''x'' and ''y''.
-#@ If ''checked'' is ''true'', shows checkmark; otherwise shows empty box.
+#@ Draws a checkbox with ''label'' text at position ''x'' and ''y''. If ''checked''
+#@ is ''true'', shows checkmark; otherwise shows empty box.
 
 func BFDrawCheckbox(x, y, label, checked)
 {
@@ -327,12 +325,12 @@ func BFDrawCheckbox(x, y, label, checked)
 #@ <BFDrawList(x, y, width, height, items, selected, offset)>
 #@ V-1.0.2 (2025-11-04)
 #@
-#@ Draws a scrollable list with visual selection highlighting at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items''
-#@ array contains strings to display, ''selected'' is the index of
-#@ currently highlighted item, and ''offset'' is the scroll offset.
-#@ Selected item shown with inverted colors. Items auto-clipped with
-#@ ellipsis if too long and padded to full width. Always returns ''ok''.
+#@ Draws a scrollable list with visual selection highlighting at position ''x''
+#@ and ''y'' with dimensions ''width'' and ''height''. The ''items'' array contains
+#@ strings to display, ''selected'' is the index of currently highlighted item, and
+#@ ''offset'' is the scroll offset. Selected item shown with inverted colors. Items
+#@ auto-clipped with ellipsis if too long and padded to full width. Always returns
+#@ ''ok''.
 
 func BFDrawList(x, y, width, height, items, selected, offset)
 {

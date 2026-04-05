@@ -6,13 +6,12 @@
 #@ <BFConfirm(x, y, message, defaultYes)>
 #@ V-1.0.2 (2026-04-04)
 #@
-#@ Yes/No confirmation dialog with button navigation at position ''x'' and
-#@ ''y''. The ''message'' is displayed above buttons and ''defaultYes''
-#@ determines initially selected button. Returns ''true'' if Yes is
-#@ confirmed (Enter on Yes button or 'y'/'Y' key), ''false'' if No is
-#@ confirmed (Enter on No button or 'n'/'N' key), or ''err'' if ESC is
-#@ pressed. Selected button shown with inverted colors. Buttons displayed
-#@ as [ Yes ] and [ No ].
+#@ Yes/No confirmation dialog with button navigation at position ''x'' and ''y''.
+#@ The ''message'' is displayed above buttons and ''defaultYes'' determines
+#@ initially selected button. Returns ''true'' if Yes is confirmed (Enter on Yes
+#@ button or 'y'/'Y' key), ''false'' if No is confirmed (Enter on No button or
+#@ 'n'/'N' key), or ''err'' if ESC is pressed. Selected button shown with inverted
+#@ colors. Buttons displayed as [ Yes ] and [ No ].
 
 func BFConfirm(x, y, message, defaultYes)
 {

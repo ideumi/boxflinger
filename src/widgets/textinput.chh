@@ -6,12 +6,12 @@
 #@ <BFTextInput(x, y, width, prompt, defaultValue)>
 #@ V-1.0.4 (2026-04-04)
 #@
-#@ Single-line text input field with full cursor navigation and editing
-#@ at position ''x'' and ''y'' with maximum visible ''width''. The ''prompt''
-#@ is displayed before input field and ''defaultValue'' sets initial text.
-#@ Returns entered text when Enter is pressed, or ''err'' if ESC is pressed
-#@ or width less than 1. Supports Left/Right arrows, Home/End, Backspace,
-#@ Delete, and all printable characters.
+#@ Single-line text input field with full cursor navigation and editing at
+#@ position ''x'' and ''y'' with maximum visible ''width''. The ''prompt'' is
+#@ displayed before input field and ''defaultValue'' sets initial text. Returns
+#@ entered text when Enter is pressed, or ''err'' if ESC is pressed or width less
+#@ than 1. Supports Left/Right arrows, Home/End, Backspace, Delete, and all
+#@ printable characters.
 
 func BFTextInput(x, y, width, prompt, defaultValue)
 {
