@@ -26,13 +26,13 @@ func BFKittyClearImages()
 	_BFKittySend_("Ga=d,d=A");
 }
 
-#@ <BFKittyShowImage(x, y, imagePath, cols, rows)>
+#@ <BFKittyDrawImage(x, y, imagePath, cols, rows)>
 #@ V-1.0.0 (2026-04-05)
 #@
-#@ Displays image file at terminal cell position ''x'', ''y'' sized to ''cols''
-#@ columns and ''rows''. ''imagePath'' must be an absolute file path.
+#@ Draws an image at terminal cell position ''x'', ''y'' spanning ''cols'' by
+#@ ''rows'' cells. ''imagePath'' must be an absolute file path.
 
-func BFKittyShowImage(x, y, imagePath, cols, rows)
+func BFKittyDrawImage(x, y, imagePath, cols, rows)
 {
 	CursorToXY(x, y);
 
@@ -80,71 +80,18 @@ func BFKittyGetCellPixelSize()
 	return [int(cellW), int(cellH)];
 }
 
-#@ <BFKittyRenderImage(x, y, imagePath, pixelW, pixelH)>
+#@ <BFKittyDrawImageAuto(x, y, imagePath, cols)>
 #@ V-1.0.0 (2026-04-05)
 #@
-#@ Displays image file at terminal cell position ''x'', ''y'' scaled to
-#@ approximately ''pixelW'' by ''pixelH'' pixels while preserving the aspect ratio
-#@ of the image. Queries the terminal for cell pixel size and computes the best
-#@ cols/rows pair that minimises distortion. Returns ''err'' if the terminal does
-#@ not support the cell-size query.
+#@ Draws an image at terminal cell position ''x'', ''y'' spanning ''cols'' cells
+#@ wide. Row count is computed automatically by the terminal to preserve the image
+#@ aspect ratio. ''imagePath'' must be an absolute file path.
 
-func BFKittyRenderImage(x, y, imagePath, pixelW, pixelH)
+func BFKittyDrawImageAuto(x, y, imagePath, cols)
 {
-	var cell = BFKittyGetCellPixelSize();
+	CursorToXY(x, y);
 
-	if iserr(cell) { return err; }
+	var b64path = HttpBase64Encode(pack(imagePath));
 
-	var cellW = cell[1];
-	var cellH = cell[2];
-	var targetRatio = pixelW / pixelH;
-
-	var baseCols = int(pixelW / cellW + 0.5);
-
-	if baseCols < 1 { baseCols = 1; }
-
-	var bestCols = baseCols;
-	var bestRows = int(pixelH / cellH + 0.5);
-
-	if bestRows < 1 { bestRows = 1; }
-
-	var bestErr = 999999;
-
-	var c = baseCols - 2;
-
-	if c < 1 { c = 1; }
-
-	while c <= baseCols + 2
-	{
-		var idealRows = (c * cellW * pixelH) / (pixelW * cellH);
-		var rFloor = int(idealRows);
-		var rCeil = int(idealRows) + 1;
-
-		if rFloor < 1 { rFloor = 1; }
-
-		var r = rFloor;
-
-		while r <= rCeil
-		{
-			var dispW = c * cellW;
-			var dispH = r * cellH;
-			var dispRatio = dispW / dispH;
-			var ratioErr = (dispRatio - targetRatio) / targetRatio;
-
-			if ratioErr < 0 { ratioErr = 0 - ratioErr; }
-
-			if ratioErr < bestErr
-			{
-				bestErr = ratioErr;
-				bestCols = c;
-				bestRows = r;
-			}
-
-			r = r + 1;
-		}
-
-		c = c + 1;
-	}
-
-	BFKittyShowImage(x, y, imagePath, bestCols, bestRows);
+	_BFKittySend_("Ga=T,f=100,t=f,c=" + str(cols) + ";" + b64path);
 }

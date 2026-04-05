@@ -325,7 +325,7 @@ func ShowMenu()
 
 	if kitty
 	{
-		BFKittyRenderImage(22, 2, logoPath, 300, 92);
+		BFKittyDrawImageAuto(20, 2, logoPath, 40);
 	}
 
 	BFDrawFrame(15, menuY, 50, menuH, "Boxflinger Test", BFBOXSINGLE);
