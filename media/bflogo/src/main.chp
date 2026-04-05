@@ -1,7 +1,7 @@
 #!/usr/bin/chippy
 
 load("libboxflinger.chh");
-load("libtermios.chh");
+load("libterm.chh");
 
 func Logo()
 {
