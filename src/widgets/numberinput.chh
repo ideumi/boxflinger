@@ -4,14 +4,14 @@
 #
 
 #@ <BFNumberInput(x, y, prompt, min, max, defaultValue)>
-#@ V-1.0.3 (2026-02-02)
+#@ V-1.0.4 (2026-04-04)
 #@
-#@ Numeric input field with range validation at position ''x'' and ''y''.
-#@ Only accepts digits and optional minus sign. The ''prompt'' text has
-#@ range appended automatically. The ''min'' and ''max'' define allowed range,
-#@ and ''defaultValue'' sets initial value. Returns validated number when
-#@ Enter is pressed, or ''err'' if ESC is pressed. Shows error message for 1
-#@ second if value outside range. Only supports integers.
+#@ Numeric input field with range validation at position ''x'' and ''y''. Only
+#@ accepts digits and optional minus sign. The ''prompt'' text has range appended
+#@ automatically. The ''min'' and ''max'' define allowed range, and ''defaultValue''
+#@ sets initial value. Returns validated number when Enter is pressed, or ''err''
+#@ if ESC is pressed. Shows error message for 1 second if value outside range.
+#@ Only supports integers.
 
 func BFNumberInput(x, y, prompt, min, max, defaultValue)
 {
@@ -28,23 +28,24 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 	if lenv(maxStr) > maxInputLen { maxInputLen = lenv(maxStr); }
 
 	var errorMsg = "Value must be between " + minStr + " and " + maxStr;
+	var inputX = x + lenv(fullPrompt);
 
 	HideCursor();
 
+	BFDrawText(x, y, fullPrompt);
+
+	BFClearRegion(inputX, y, maxInputLen, 1);
+	BFDrawText(inputX, y, text);
+	CursorToXY(inputX + cursorPos, y);
+	ShowCursor();
+
 	while running
 	{
-		BFClearRegion(x, y, lenv(fullPrompt) + maxInputLen, 1);
-		BFDrawText(x, y, fullPrompt);
-
-		var inputX = x + lenv(fullPrompt);
-
-		BFDrawText(inputX, y, text);
-		CursorToXY(inputX + cursorPos, y);
-		ShowCursor();
-
 		var key = getch();
 
 		HideCursor();
+
+		var textChanged = false;
 
 		if key == BFKEYENTER
 		{
@@ -81,6 +82,7 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 
 				text = before + after;
 				cursorPos = cursorPos - 1;
+				textChanged = true;
 			}
 		}
 		elseif type(key) == "bytes" and len(key) == 1 and key[1] >= 48 and key[1] <= 57
@@ -91,11 +93,13 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 
 			text = before + char + after;
 			cursorPos = cursorPos + 1;
+			textChanged = true;
 		}
 		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 45 and cursorPos == 0
 		{
 			text = "-" + text;
 			cursorPos = 1;
+			textChanged = true;
 		}
 		elseif key == BFKEYLEFT
 		{
@@ -127,6 +131,7 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 				var after = slice(text, cursorPos + 2, len(text));
 
 				text = before + after;
+				textChanged = true;
 			}
 		}
 		elseif key == BFKEYUP { }
@@ -135,10 +140,22 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 		{
 			text = "";
 			cursorPos = 0;
+			textChanged = true;
+		}
+
+		if running
+		{
+			if textChanged
+			{
+				BFClearRegion(inputX, y, maxInputLen, 1);
+				BFDrawText(inputX, y, text);
+			}
+
+			CursorToXY(inputX + cursorPos, y);
+			ShowCursor();
 		}
 	}
 
 	ShowCursor();
-
 	return result;
 }

@@ -12,6 +12,7 @@ A simple terminal UI library for [ChipLang](https://codeberg.org/ideumi/chip-go)
 - **Drawing**: Boxes, frames, lines, progress bars, buttons
 - **Text**: Clipping, padding, wrapping, alignment
 - **Layout**: Proportional horizontal / vertical splitting
+- **Graphics**: Image display via the [Kitty Graphics Protocol](https://sw.kovidgoyal.net/kitty/graphics-protocol/)
 
 ## Screenshots
 

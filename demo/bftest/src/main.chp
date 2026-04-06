@@ -1,7 +1,9 @@
 #!/usr/bin/chippy
 
 load("libboxflinger.chh");
-load("libtermios.chh");
+load("libterm.chh");
+load("libpaths.chh");
+load("libstat.chh");
 load("form.chh");
 
 func TestTextInput()
@@ -286,15 +288,15 @@ func TestTextBox()
 
 	if iserr(text)
 	{
-		BFDrawText(4, 21, "Editing cancelled");
+		BFDrawText(4, 22, "Editing cancelled");
 	}
 	else
 	{
 		var lines = split(text, "\n");
-		BFDrawText(4, 21, "You entered " + str(len(lines)) + " lines (" + str(len(text)) + " chars)");
+		BFDrawText(4, 22, "You entered " + str(len(lines)) + " lines (" + str(len(text)) + " chars)");
 	}
 
-	BFDrawText(4, 22, "Press any key to continue...");
+	BFDrawText(4, 23, "Press any key to continue...");
 	ShowCursor();
 
 	getch();
@@ -303,26 +305,50 @@ func TestTextBox()
 func ShowMenu()
 {
 	ClearScreen();
+	HideCursor();
 
-	BFDrawFrame(15, 2, 50, 22, "Boxflinger Test", BFBOXSINGLE);
+	var logoPath = JoinPath(getcwd(), "/../../media/bflogo/bflogo.png");
 
-	BFDrawText(17, 4, "Choose a test:");
-	BFDrawText(17, 6, " 1. TextInput");
-	BFDrawText(17, 7, " 2. Select");
-	BFDrawText(17, 8, " 3. Menu");
-	BFDrawText(17, 9, " 4. Confirm Dialog");
-	BFDrawText(17, 10, " 5. NumberInput");
-	BFDrawText(17, 11, " 6. Slider");
-	BFDrawText(17, 12, " 7. CheckboxList");
-	BFDrawText(17, 13, " 8. RadioGroup");
-	BFDrawText(17, 14, " 9. TextBox");
-	BFDrawText(17, 15, " A. Form Demo");
-	BFDrawText(17, 16, " 0. Exit");
+	var logoFileExists = IsFile(logoPath);
 
-	BFDrawText(17, 18, "Press 1-9, A, 0 (exit), or Q to select:");
+	var kitty = BFISKITTY and logoFileExists;
+
+	var menuY = 2;
+	var menuH = 22;
+
+	if kitty
+	{
+		BFKittyClearImages();
+		menuY = 8;
+		menuH = 18;
+	}
+
+	if kitty
+	{
+		BFKittyDrawImageAuto(20, 2, logoPath, 40);
+	}
+
+	BFDrawFrame(15, menuY, 50, menuH, "Boxflinger Test", BFBOXSINGLE);
+
+	BFDrawText(17, menuY + 2, "Choose a test:");
+	BFDrawText(17, menuY + 4, " 1. TextInput");
+	BFDrawText(17, menuY + 5, " 2. Select");
+	BFDrawText(17, menuY + 6, " 3. Menu");
+	BFDrawText(17, menuY + 7, " 4. Confirm Dialog");
+	BFDrawText(17, menuY + 8, " 5. NumberInput");
+	BFDrawText(17, menuY + 9, " 6. Slider");
+	BFDrawText(17, menuY + 10, " 7. CheckboxList");
+	BFDrawText(17, menuY + 11, " 8. RadioGroup");
+	BFDrawText(17, menuY + 12, " 9. TextBox");
+	BFDrawText(17, menuY + 13, " A. Form Demo");
+	BFDrawText(17, menuY + 14, " 0. Exit");
+
+	BFDrawText(17, menuY + 16, "Press 1-9, A, 0 (exit), or Q to select:");
 
 	var key = getch();
 	var choice = unpack(key);
+
+	ShowCursor();
 
 	if choice == "1"
 	{

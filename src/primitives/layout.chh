@@ -6,11 +6,11 @@
 #@ <BFHSplit(width, ratios)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Splits a horizontal ''width'' proportionally based on ''ratios'' array
-#@ of positive numbers. Returns list of calculated widths. Ratios are
-#@ normalized automatically (e.g., [1, 2, 1] gives 25%, 50%, 25% of total
-#@ width). Last column gets any remaining pixels from rounding. Returns
-#@ ''err'' if ratios is empty, contains negative values, or sum is zero.
+#@ Splits a horizontal ''width'' proportionally based on ''ratios'' array of
+#@ positive numbers. Returns list of calculated widths. Ratios are normalized
+#@ automatically (e.g., [1, 2, 1] gives 25%, 50%, 25% of total width). Last
+#@ column gets any remaining pixels from rounding. Returns ''err'' if ratios is
+#@ empty, contains negative values, or sum is zero.
 
 func BFHSplit(width, ratios)
 {
@@ -49,12 +49,11 @@ func BFHSplit(width, ratios)
 #@ <BFVSplit(height, ratios)>
 #@ V-1.0.1 (2025-11-03)
 #@
-#@ Splits a vertical ''height'' proportionally based on ''ratios'' array
-#@ of positive numbers. Returns list of calculated heights. Ratios are
-#@ normalized automatically (e.g., [2, 1, 1] gives 50%, 25%, 25% of total
-#@ height). Last row gets any remaining pixels from rounding. Useful for
-#@ creating multi-row layouts. Returns ''err'' if ratios is empty, contains
-#@ negative values, or sum is zero.
+#@ Splits a vertical ''height'' proportionally based on ''ratios'' array of
+#@ positive numbers. Returns list of calculated heights. Ratios are normalized
+#@ automatically (e.g., [2, 1, 1] gives 50%, 25%, 25% of total height). Last row
+#@ gets any remaining pixels from rounding. Useful for creating multi-row layouts.
+#@ Returns ''err'' if ratios is empty, contains negative values, or sum is zero.
 
 func BFVSplit(height, ratios)
 {

@@ -4,15 +4,14 @@
 #
 
 #@ <BFSelect(x, y, width, height, items, defaultIndex)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-04-04)
 #@
-#@ Scrollable list selection widget with visual highlighting at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items''
-#@ array contains strings to display and ''defaultIndex'' sets initially
-#@ selected item. Returns index of selected item when Enter is pressed, or
-#@ ''err'' if ESC is pressed. Selected item shown with inverted colors.
-#@ List automatically scrolls to keep selection visible. Items are
-#@ clipped/padded to fit width.
+#@ Scrollable list selection widget with visual highlighting at position ''x''
+#@ and ''y'' with dimensions ''width'' and ''height''. The ''items'' array
+#@ contains strings to display and ''defaultIndex'' sets initially selected item.
+#@ Returns index of selected item when Enter is pressed, or ''err'' if ESC is
+#@ pressed. Selected item shown with inverted colors. List automatically scrolls
+#@ to keep selection visible. Items are clipped/padded to fit width.
 
 func BFSelect(x, y, width, height, items, defaultIndex)
 {
@@ -27,16 +26,18 @@ func BFSelect(x, y, width, height, items, defaultIndex)
 
 	if selected > len(items) { selected = len(items); }
 
+	if selected < offset { offset = selected; }
+
+	if selected >= offset + height { offset = selected - height + 1; }
+
 	HideCursor();
+
+	BFDrawList(x, y, width, height, items, selected, offset);
 
 	while running
 	{
-		if selected < offset { offset = selected; }
-
-		if selected >= offset + height { offset = selected - height + 1; }
-
-		BFDrawList(x, y, width, height, items, selected, offset);
-
+		var prevSelected = selected;
+		var prevOffset = offset;
 		var key = getch();
 
 		if key == BFKEYENTER
@@ -61,6 +62,31 @@ func BFSelect(x, y, width, height, items, defaultIndex)
 			if selected < len(items)
 			{
 				selected = selected + 1;
+			}
+		}
+
+		if running
+		{
+			if selected < offset { offset = selected; }
+
+			if selected >= offset + height { offset = selected - height + 1; }
+
+			if offset != prevOffset
+			{
+				BFDrawList(x, y, width, height, items, selected, offset);
+			}
+			elseif selected != prevSelected
+			{
+				var prevText = BFClipText(items[prevSelected], width);
+				prevText = BFPadText(prevText, width, BFALIGNLEFT);
+				BFDrawText(x, y + prevSelected - offset, prevText);
+
+				var newText = BFClipText(items[selected], width);
+				newText = BFPadText(newText, width, BFALIGNLEFT);
+				SetAttribute(COLORBLACK);
+				SetAttribute(COLORBGWHITE);
+				BFDrawText(x, y + selected - offset, newText);
+				SetAttribute(COLORRESET);
 			}
 		}
 	}

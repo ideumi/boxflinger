@@ -4,14 +4,13 @@
 #
 
 #@ <BFMenu(x, y, items, defaultIndex)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-04-04)
 #@
-#@ Simple vertical menu with visual highlighting at position ''x'' and ''y''.
-#@ The ''items'' array contains strings for menu items and ''defaultIndex''
-#@ sets initially selected item. Returns index of selected item when Enter
-#@ is pressed, or ''err'' if ESC is pressed. Selected item shown with
-#@ inverted colors. Items displayed with padding: "  Item  ". No scrolling
-#@ support, all items are visible.
+#@ Simple vertical menu with visual highlighting at position ''x'' and ''y''. The
+#@ ''items'' array contains strings for menu items and ''defaultIndex'' sets
+#@ initially selected item. Returns index of selected item when Enter is pressed,
+#@ or ''err'' if ESC is pressed. Selected item shown with inverted colors. Items
+#@ displayed with padding: "  Item  ". No scrolling support, all items are visible.
 
 func BFMenu(x, y, items, defaultIndex)
 {
@@ -27,26 +26,27 @@ func BFMenu(x, y, items, defaultIndex)
 
 	HideCursor();
 
-	while running
+	for i = 1 to len(items)
 	{
-		for i = 1 to len(items)
+		var item = items[i];
+
+		if i == selected
 		{
-			var item = items[i];
-
-			if i == selected
-			{
-				SetAttribute(COLORBLACK);
-				SetAttribute(COLORBGWHITE);
-			}
-
-			BFDrawText(x, y + i - 1, "  " + item + "  ");
-
-			if i == selected
-			{
-				SetAttribute(COLORRESET);
-			}
+			SetAttribute(COLORBLACK);
+			SetAttribute(COLORBGWHITE);
 		}
 
+		BFDrawText(x, y + i - 1, "  " + item + "  ");
+
+		if i == selected
+		{
+			SetAttribute(COLORRESET);
+		}
+	}
+
+	while running
+	{
+		var prevSelected = selected;
 		var key = getch();
 
 		if key == BFKEYENTER
@@ -72,6 +72,16 @@ func BFMenu(x, y, items, defaultIndex)
 			{
 				selected = selected + 1;
 			}
+		}
+
+		if running and selected != prevSelected
+		{
+			BFDrawText(x, y + prevSelected - 1, "  " + items[prevSelected] + "  ");
+
+			SetAttribute(COLORBLACK);
+			SetAttribute(COLORBGWHITE);
+			BFDrawText(x, y + selected - 1, "  " + items[selected] + "  ");
+			SetAttribute(COLORRESET);
 		}
 	}
 

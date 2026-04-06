@@ -3,9 +3,10 @@
 # boxflinger
 #
 
-load("libtermios.chh");
+load("libterm.chh");
 load("libhandles.chh");
 load("libprint.chh");
+load("libhttp.chh");
 
 # ---
 
@@ -15,6 +16,7 @@ load("core/keys.chh");
 load("primitives/drawing.chh");
 load("primitives/text.chh");
 load("primitives/layout.chh");
+load("primitives/kitty.chh");
 
 load("widgets/textinput.chh");
 load("widgets/numberinput.chh");

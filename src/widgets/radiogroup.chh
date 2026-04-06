@@ -4,14 +4,14 @@
 #
 
 #@ <BFRadioGroup(x, y, items, defaultIndex)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-04-04)
 #@
-#@ Radio button group for single selection from multiple options at position
-#@ ''x'' and ''y''. The ''items'' array contains strings for each radio
-#@ button option and ''defaultIndex'' sets initially selected item. Returns
-#@ index of selected item when Enter is pressed, or ''err'' if ESC is
-#@ pressed. Displays as "( ) Option" for unselected and "(•) Option" for
-#@ selected. Items stacked vertically at consecutive y positions.
+#@ Radio button group for single selection from multiple options at position ''x''
+#@ and ''y''. The ''items'' array contains strings for each radio button option
+#@ and ''defaultIndex'' sets initially selected item. Returns index of selected
+#@ item when Enter is pressed, or ''err'' if ESC is pressed. Displays as "( ) Option"
+#@ for unselected and "(•) Option" for selected. Items stacked vertically at
+#@ consecutive y positions.
 
 func BFRadioGroup(x, y, items, defaultIndex)
 {
@@ -27,18 +27,18 @@ func BFRadioGroup(x, y, items, defaultIndex)
 
 	HideCursor();
 
+	for i = 1 to len(items)
+	{
+		var radio = "( )";
+
+		if i == selected { radio = "(•)"; }
+
+		BFDrawText(x, y + i - 1, radio + " " + items[i]);
+	}
+
 	while running
 	{
-		for i = 1 to len(items)
-		{
-			var item = items[i];
-			var radio = "( )";
-
-			if i == selected { radio = "(•)"; }
-
-			BFDrawText(x, y + i - 1, radio + " " + item);
-		}
-
+		var prevSelected = selected;
 		var key = getch();
 
 		if key == BFKEYENTER
@@ -64,6 +64,12 @@ func BFRadioGroup(x, y, items, defaultIndex)
 			{
 				selected = selected + 1;
 			}
+		}
+
+		if running and selected != prevSelected
+		{
+			BFDrawText(x, y + prevSelected - 1, "( ) " + items[prevSelected]);
+			BFDrawText(x, y + selected - 1, "(•) " + items[selected]);
 		}
 	}
 

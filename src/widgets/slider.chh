@@ -3,40 +3,50 @@
 # boxflinger - slider.chh
 #
 
-#@ <BFPACKEDBRACKETLEFT>
-#@ (2025-09-30)
-#@ Left bracket character for slider visualization
-
-var BFPACKEDBRACKETLEFT = pack("[");
-
-#@ <BFPACKEDBRACKETRIGHT>
-#@ (2025-09-30)
-#@ Right bracket character for slider visualization
-
-var BFPACKEDBRACKETRIGHT = pack("]");
-
-#@ <BFPACKEDEQUALS>
-#@ (2025-09-30)
-#@ Filled portion character in slider bar
-
-var BFPACKEDEQUALS = pack("=");
-
-#@ <BFPACKEDDASH>
-#@ (2025-09-30)
-#@ Empty portion character in slider bar
-
-var BFPACKEDDASH = pack("-");
-
 #@ <BFSlider(x, y, width, label, value, min, max, stepSize)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-04-04)
 #@
-#@ Interactive slider with arrow keys for numeric input at position ''x''
-#@ and ''y'' with slider bar ''width''. The ''label'' is displayed above
-#@ slider, ''value'' sets initial value, ''min'' and ''max'' define allowed
-#@ range, and ''stepSize'' is increment/decrement amount. Returns selected value
-#@ when Enter is pressed, or ''err'' if ESC is pressed, width less than 1, or
-#@ stepSize is 0 or less. Visual representation uses [====----] style bracket
-#@ notation. Value automatically clamped to min-max range during adjustment.
+#@ Interactive slider with arrow keys for numeric input at position ''x'' and
+#@ ''y'' with slider bar ''width''. The ''label'' is displayed above slider,
+#@ ''value'' sets initial value, ''min'' and ''max'' define allowed range, and
+#@ ''stepSize'' is increment/decrement amount. Returns selected value when Enter
+#@ is pressed, or ''err'' if ESC is pressed, width less than 1, or stepSize is 0
+#@ or less. Visual representation uses [====----] style bracket notation. Value
+#@ automatically clamped to min-max range during adjustment.
+
+func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
+{
+	BFClearRegion(x, y, clearWidth, 2);
+	BFDrawText(x, y, label + ": " + str(int(current)));
+
+	var range = max - min;
+	var position = 0;
+
+	if range != 0
+	{
+		position = (current - min) / range;
+	}
+
+	var filledWidth = int(width * position);
+
+	CursorToXY(x, y + 1);
+
+	fwrite(BFPACKEDBRACKETLEFT, STDOUT);
+
+	for i = 1 to width
+	{
+		if i <= filledWidth
+		{
+			fwrite(BFPACKEDEQUALS, STDOUT);
+		}
+		else
+		{
+			fwrite(BFPACKEDDASH, STDOUT);
+		}
+	}
+
+	fwrite(BFPACKEDBRACKETRIGHT, STDOUT);
+}
 
 func BFSlider(x, y, width, label, value, min, max, stepSize)
 {
@@ -62,39 +72,11 @@ func BFSlider(x, y, width, label, value, min, max, stepSize)
 
 	HideCursor();
 
+	_BFSliderDraw_(x, y, width, label, current, min, max, clearWidth);
+
 	while running
 	{
-		BFClearRegion(x, y, clearWidth, 2);
-		BFDrawText(x, y, label + ": " + str(int(current)));
-
-		var range = max - min;
-		var position = 0;
-
-		if range != 0
-		{
-			position = (current - min) / range;
-		}
-
-		var filledWidth = int(width * position);
-
-		CursorToXY(x, y + 1);
-
-		fwrite(BFPACKEDBRACKETLEFT, STDOUT);
-
-		for i = 1 to width
-		{
-			if i <= filledWidth
-			{
-				fwrite(BFPACKEDEQUALS, STDOUT);
-			}
-			else
-			{
-				fwrite(BFPACKEDDASH, STDOUT);
-			}
-		}
-
-		fwrite(BFPACKEDBRACKETRIGHT, STDOUT);
-
+		var prevCurrent = current;
 		var key = getch();
 
 		if key == BFKEYENTER
@@ -124,6 +106,11 @@ func BFSlider(x, y, width, label, value, min, max, stepSize)
 			{
 				current = max;
 			}
+		}
+
+		if running and current != prevCurrent
+		{
+			_BFSliderDraw_(x, y, width, label, current, min, max, clearWidth);
 		}
 	}
 
