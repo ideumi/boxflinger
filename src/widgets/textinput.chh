@@ -10,8 +10,8 @@
 #@ position ''x'' and ''y'' with maximum visible ''width''. The ''prompt'' is
 #@ displayed before input field and ''defaultValue'' sets initial text. Returns
 #@ entered text when Enter is pressed, or ''err'' if ESC is pressed or width less
-#@ than 1. Supports Left/Right arrows, Home/End, Backspace, Delete, and all
-#@ printable characters.
+#@ than 1. Supports Left/Right arrows, Ctrl+Left/Right, Home/End, Backspace,
+#@ Delete, and all printable characters.
 
 func BFTextInput(x, y, width, prompt, defaultValue)
 {
@@ -58,7 +58,7 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		if key == BFKEYENTER
 		{
 			result = text;
-			running = false;
+			running = false;(word jump)
 		}
 		elseif key == BFKEYESC
 		{
@@ -91,6 +91,14 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 				cursorPos = cursorPos + 1;
 			}
 		}
+		elseif key == BFKEYCTRLLEFT
+		{
+			cursorPos = BFPrevWordPos(text, cursorPos);
+		}
+		elseif key == BFKEYCTRLRIGHT
+		{
+			cursorPos = BFNextWordPos(text, cursorPos);
+		}
 		elseif key == BFKEYHOME
 		{
 			cursorPos = 0;
@@ -113,6 +121,8 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		elseif key == BFKEYTAB { }
 		elseif key == BFKEYUP { }
 		elseif key == BFKEYDOWN { }
+		elseif key == BFKEYCTRLUP { }
+		elseif key == BFKEYCTRLDOWN { }
 		elseif key == BFKEYCTRLU
 		{
 			text = "";
