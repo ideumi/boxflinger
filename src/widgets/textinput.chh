@@ -58,7 +58,7 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		if key == BFKEYENTER
 		{
 			result = text;
-			running = false;(word jump)
+			running = false;
 		}
 		elseif key == BFKEYESC
 		{
