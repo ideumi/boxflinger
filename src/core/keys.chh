@@ -93,6 +93,30 @@ var BFKEYCTRLHOME = b[27, 91, 49, 59, 53, 72];
 
 var BFKEYCTRLEND = b[27, 91, 49, 59, 53, 70];
 
+#@ <BFKEYCTRLUP>
+#@ (2026-05-04)
+#@ Ctrl+Up arrow key combination
+
+var BFKEYCTRLUP = b[27, 91, 49, 59, 53, 65];
+
+#@ <BFKEYCTRLDOWN>
+#@ (2026-05-04)
+#@ Ctrl+Down arrow key combination
+
+var BFKEYCTRLDOWN = b[27, 91, 49, 59, 53, 66];
+
+#@ <BFKEYCTRLRIGHT>
+#@ (2026-05-04)
+#@ Ctrl+Right arrow key combination
+
+var BFKEYCTRLRIGHT = b[27, 91, 49, 59, 53, 67];
+
+#@ <BFKEYCTRLLEFT>
+#@ (2026-05-04)
+#@ Ctrl+Left arrow key combination
+
+var BFKEYCTRLLEFT = b[27, 91, 49, 59, 53, 68];
+
 #@ <BFKEYCTRLD>
 #@ (2026-02-02)
 #@ Ctrl+D key combination

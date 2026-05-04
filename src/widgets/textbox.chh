@@ -42,9 +42,10 @@ func _BFTextBoxLine_(x, y, width, lines, lineIndex, offset, cursorLine, cursorCo
 #@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''title'' is
 #@ displayed in top border and ''defaultText'' sets initial content. Uses the
 #@ provided ''style''. Returns full edited text when Ctrl+D is pressed, or ''err''
-#@ if ESC is pressed. Supports arrow keys, Home/End, Page Up/Down, Ctrl+Home/End,
-#@ Backspace, Delete, Enter, and all printable characters. Auto-scrolls to keep
-#@ cursor visible. Status line shows current line number and key hints.
+#@ if ESC is pressed. Supports arrow keys, Ctrl+Left/Right, Home/End, Page Up/Down,
+#@ Ctrl+Home/End, Backspace, Delete, Enter, and all printable characters. Auto-
+#@ scrolls to keep cursor visible. Status line shows current line number and key
+#@ hints.
 
 func BFTextBox(x, y, width, height, title, defaultText, style)
 {
@@ -179,7 +180,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				fromRedrawLine = cursorLine;
 			}
 		}
-		elseif key == BFKEYUP
+		elseif key == BFKEYUP or key == BFKEYCTRLUP
 		{
 			if cursorLine > 1
 			{
@@ -192,7 +193,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				redrawPrev = true;
 			}
 		}
-		elseif key == BFKEYDOWN
+		elseif key == BFKEYDOWN or key == BFKEYCTRLDOWN
 		{
 			if cursorLine < len(lines)
 			{
@@ -211,7 +212,9 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			{
 				var prevHScroll = 0;
 				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
+
 				cursorCol = cursorCol - 1;
+
 				var newHScroll = 0;
 				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
 				if newHScroll != prevHScroll { redrawCurrent = true; }
@@ -220,6 +223,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			{
 				cursorLine = cursorLine - 1;
 				cursorCol = len(lines[cursorLine]);
+
 				redrawCurrent = true;
 				redrawPrev = true;
 			}
@@ -232,7 +236,9 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			{
 				var prevHScroll = 0;
 				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
+
 				cursorCol = cursorCol + 1;
+
 				var newHScroll = 0;
 				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
 				if newHScroll != prevHScroll { redrawCurrent = true; }
@@ -241,6 +247,53 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			{
 				cursorLine = cursorLine + 1;
 				cursorCol = 0;
+
+				redrawCurrent = true;
+				redrawPrev = true;
+			}
+		}
+		elseif key == BFKEYCTRLLEFT
+		{
+			if cursorCol > 0
+			{
+				var prevHScroll = 0;
+				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
+
+				cursorCol = BFPrevWordPos(lines[cursorLine], cursorCol);
+
+				var newHScroll = 0;
+				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
+				if newHScroll != prevHScroll { redrawCurrent = true; }
+			}
+			elseif cursorLine > 1
+			{
+				cursorLine = cursorLine - 1;
+				cursorCol = len(lines[cursorLine]);
+
+				redrawCurrent = true;
+				redrawPrev = true;
+			}
+		}
+		elseif key == BFKEYCTRLRIGHT
+		{
+			var currentLine = lines[cursorLine];
+
+			if cursorCol < len(currentLine)
+			{
+				var prevHScroll = 0;
+				if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
+
+				cursorCol = BFNextWordPos(currentLine, cursorCol);
+
+				var newHScroll = 0;
+				if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
+				if newHScroll != prevHScroll { redrawCurrent = true; }
+			}
+			elseif cursorLine < len(lines)
+			{
+				cursorLine = cursorLine + 1;
+				cursorCol = 0;
+
 				redrawCurrent = true;
 				redrawPrev = true;
 			}
@@ -257,7 +310,9 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			var prevHScroll = 0;
 			if cursorCol >= maxLineWidth { prevHScroll = cursorCol - maxLineWidth + 1; }
 			var currentLine = lines[cursorLine];
+
 			cursorCol = len(currentLine);
+
 			var newHScroll = 0;
 			if cursorCol >= maxLineWidth { newHScroll = cursorCol - maxLineWidth + 1; }
 			if newHScroll != prevHScroll { redrawCurrent = true; }
@@ -311,7 +366,9 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			}
 
 			var currentLine = lines[cursorLine];
+
 			if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+
 			redrawCurrent = true;
 			redrawPrev = true;
 		}
@@ -330,6 +387,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 			var currentLine = lines[cursorLine];
 			if cursorCol > len(currentLine) { cursorCol = len(currentLine); }
+
 			redrawCurrent = true;
 			redrawPrev = true;
 		}
