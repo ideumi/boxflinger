@@ -27,3 +27,5 @@ load("widgets/radiogroup.chh");
 load("widgets/checkboxlist.chh");
 load("widgets/confirm.chh");
 load("widgets/slider.chh");
+load("widgets/keybindsbar.chh");
+load("widgets/dialogs.chh");

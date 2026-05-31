@@ -88,3 +88,27 @@ func BFVSplit(height, ratios)
 
 	return result;
 }
+
+#@ <BFCenterRect(region, dialogWidth, dialogHeight)>
+#@ V-1.0.0 (2026-05-29)
+#@
+#@ Returns the top left ''[x, y]'' position for a dialog of ''dialogWidth'' by
+#@ ''dialogHeight'' that is centered within ''region'': ''[x, y, width, height]''.
+#@ If the dialog is larger than the region in either axis, the result is clamped
+#@ to the region's origin so it remains visible.
+
+func BFCenterRect(region, dialogWidth, dialogHeight)
+{
+	var rx = region[1];
+	var ry = region[2];
+	var width = region[3];
+	var height = region[4];
+
+	var x = rx + int((width - dialogWidth) / 2);
+	var y = ry + int((height - dialogHeight) / 2);
+
+	if x < rx { x = rx; }
+	if y < ry { y = ry; }
+
+	return [x, y];
+}

@@ -1,0 +1,102 @@
+#!/usr/bin/chippy
+#
+# boxflinger - dialogs.chh
+#
+
+#@ <BFShowMessage(region, dialogWidth, title, message, color)>
+#@ V-1.0.0 (2026-05-31)
+#@
+#@ Shows a message dialog centered within ''region'': ''[x, y, width, height]''.
+#@ The dialog is ''dialogWidth'' columns wide and auto-sizes its height from the
+#@ wrapped ''message'', clamped to the region. ''color'' is applied to each
+#@ message line. Dialog is dismissed by pressing any key. Always returns ''ok''.
+
+func BFShowMessage(region, dialogWidth, title, message, color)
+{
+	HideCursor();
+
+	var contentWidth = dialogWidth - 4;
+	var wrapped = BFWrapText(message, contentWidth);
+	var lineCount = len(wrapped);
+
+	var dialogHeight = lineCount + 5;
+	var maxHeight = region[4];
+
+	if dialogHeight > maxHeight
+	{
+		dialogHeight = maxHeight;
+		lineCount = dialogHeight - 5;
+
+		if lineCount < 0 { lineCount = 0; }
+	}
+
+	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
+	var x = origin[1];
+	var y = origin[2];
+
+	BFClearRegion(x, y, dialogWidth, dialogHeight);
+	BFDrawFrame(x, y, dialogWidth, dialogHeight, title, BFBOXROUNDED);
+
+	var contentX = x + 2;
+
+	for i = 1 to lineCount
+	{
+		SetAttribute(color);
+		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
+		SetAttribute(COLORRESET);
+	}
+
+	BFDrawText(contentX, y + dialogHeight - 2, "Press any key...");
+
+	getch();
+
+	ShowCursor();
+
+	return ok;
+}
+
+#@ <BFShowConfirm(region, dialogWidth, title, message, defaultYes)>
+#@ V-1.0.0 (2026-05-31)
+#@
+#@ Shows a Yes / No dialog centered within ''region'': ''[x, y, width, height]''.
+#@ The dialog is ''dialogWidth'' columns wide and auto-sizes its height from the
+#@ wrapped ''message'', clamped to the region. ''defaultYes'' selects the initial
+#@ button. Returns ''true'' on Yes, ''false'' on No, or ''err'' if ESC is pressed.
+
+func BFShowConfirm(region, dialogWidth, title, message, defaultYes)
+{
+	HideCursor();
+
+	var contentWidth = dialogWidth - 4;
+	var wrapped = BFWrapText(message, contentWidth);
+	var lineCount = len(wrapped);
+
+	var dialogHeight = lineCount + 5;
+	var maxHeight = region[4];
+
+	if dialogHeight > maxHeight
+	{
+		dialogHeight = maxHeight;
+		lineCount = dialogHeight - 5;
+
+		if lineCount < 0 { lineCount = 0; }
+	}
+
+	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
+	var x = origin[1];
+	var y = origin[2];
+
+	BFClearRegion(x, y, dialogWidth, dialogHeight);
+	BFDrawFrame(x, y, dialogWidth, dialogHeight, title, BFBOXROUNDED);
+
+	var contentX = x + 2;
+
+	for i = 1 to lineCount
+	{
+		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
+	}
+
+	# BFConfirm does Cursor hiding / showing internally, no need here
+
+	return BFConfirm(contentX, y + lineCount + 2, "", defaultYes);
+}
