@@ -29,9 +29,10 @@ func TestTextInput()
 	}
 
 	BFDrawText(4, 14, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestSelect()
@@ -69,9 +70,10 @@ func TestSelect()
 	}
 
 	BFDrawText(4, 17, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestMenu()
@@ -103,9 +105,10 @@ func TestMenu()
 	}
 
 	BFDrawText(4, 15, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestConfirm()
@@ -134,9 +137,10 @@ func TestConfirm()
 	}
 
 	BFDrawText(4, 12, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestNumberInput()
@@ -161,9 +165,10 @@ func TestNumberInput()
 	}
 
 	BFDrawText(4, 13, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestSlider()
@@ -188,9 +193,10 @@ func TestSlider()
 	}
 
 	BFDrawText(4, 13, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestCheckboxList()
@@ -233,9 +239,10 @@ func TestCheckboxList()
 	}
 
 	BFDrawText(4, 22 + len(checked) + 1, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestRadioGroup()
@@ -266,9 +273,10 @@ func TestRadioGroup()
 	}
 
 	BFDrawText(4, 15, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
 }
 
 func TestTextBox()
@@ -297,9 +305,99 @@ func TestTextBox()
 	}
 
 	BFDrawText(4, 23, "Press any key to continue...");
-	ShowCursor();
 
 	getch();
+
+	ShowCursor();
+}
+
+func TestKeybindsBar()
+{
+	ClearScreen();
+	HideCursor();
+
+	BFDrawFrame(2, 2, 70, 12, "KeybindsBar Test", BFBOXSINGLE);
+
+	BFDrawText(4, 4, "This tests the keybinds bar widget.");
+
+	BFDrawText(4, 6, "Press any key to continue...");
+
+	var row1 = [];
+	row1 = append(row1, ["↑↓←→", "Navigate"]);
+	row1 = append(row1, ["Enter", "Open"]);
+	row1 = append(row1, ["Tab", "Sidebar"]);
+	row1 = append(row1, ["Esc", "Quit"]);
+
+	var row2 = [];
+	row2 = append(row2, ["Ctrl+C", "Copy"]);
+	row2 = append(row2, ["Ctrl+X", "Cut"]);
+	row2 = append(row2, ["Ctrl+V", "Paste"]);
+	row2 = append(row2, ["Del", "Delete"]);
+
+	var row3 = [];
+	row3 = append(row3, ["F1", "Term"]);
+	row3 = append(row3, ["h", "Hidden"]);
+	row3 = append(row3, ["i", "Info"]);
+	row3 = append(row3, ["t", "Sort"]);
+
+	var rows = [row1, row2, row3];
+
+	BFKeybindsBar(2, 14, 70, rows);
+
+	getch();
+
+	ShowCursor();
+}
+
+func TestMessageDialog()
+{
+	ClearScreen();
+	HideCursor();
+
+	var sidebarWidth = 20;
+
+	BFDrawBox(1, 1, sidebarWidth, 22, BFBOXSINGLE);
+
+	var region = [sidebarWidth + 1, 1, 78 - sidebarWidth, 22];
+
+	BFDrawBox(region[1], region[2], region[3], region[4], BFBOXSINGLE);
+
+	BFShowMessage(region, 44, "ShowMessage Test", "Message", COLORRESET);
+
+	ShowCursor();
+}
+
+func TestConfirmDialog()
+{
+	ClearScreen();
+	HideCursor();
+
+	BFDrawFrame(2, 2, 70, 20, "ShowConfirm Test", BFBOXSINGLE);
+
+	BFDrawText(4, 4, "This tests the confirm dialog.");
+
+	var region = [2, 8, 70, 15];
+
+	var result = BFShowConfirm(region, 46, "Confirm", "Ya like jazz?", true);
+
+	if iserr(result)
+	{
+		BFDrawText(4, 22, "Confirmation cancelled (ESC)");
+	}
+	elseif result
+	{
+		BFDrawText(4, 22, "You chose: Yes");
+	}
+	else
+	{
+		BFDrawText(4, 22, "You chose: No");
+	}
+
+	BFDrawText(4, 23, "Press any key to continue...");
+
+	getch();
+
+	ShowCursor();
 }
 
 func ShowMenu()
@@ -307,43 +405,42 @@ func ShowMenu()
 	ClearScreen();
 	HideCursor();
 
-	var logoPath = JoinPath(getcwd(), "/../../media/bflogo/bflogo.png");
+	var logoPath = JoinPath(getcwd(), "media/sym-blr.png");
 
 	var logoFileExists = IsFile(logoPath);
 
 	var kitty = BFISKITTY and logoFileExists;
 
 	var menuY = 2;
-	var menuH = 22;
+	var menuH = 13;
 
 	if kitty
 	{
 		BFKittyClearImages();
-		menuY = 8;
-		menuH = 18;
-	}
+		menuY = 10;
 
-	if kitty
-	{
 		BFKittyDrawImageAuto(20, 2, logoPath, 40);
 	}
 
 	BFDrawFrame(15, menuY, 50, menuH, "Boxflinger Test", BFBOXSINGLE);
 
 	BFDrawText(17, menuY + 2, "Choose a test:");
+
 	BFDrawText(17, menuY + 4, " 1. TextInput");
 	BFDrawText(17, menuY + 5, " 2. Select");
 	BFDrawText(17, menuY + 6, " 3. Menu");
-	BFDrawText(17, menuY + 7, " 4. Confirm Dialog");
+	BFDrawText(17, menuY + 7, " 4. Confirm");
 	BFDrawText(17, menuY + 8, " 5. NumberInput");
 	BFDrawText(17, menuY + 9, " 6. Slider");
 	BFDrawText(17, menuY + 10, " 7. CheckboxList");
-	BFDrawText(17, menuY + 11, " 8. RadioGroup");
-	BFDrawText(17, menuY + 12, " 9. TextBox");
-	BFDrawText(17, menuY + 13, " A. Form Demo");
-	BFDrawText(17, menuY + 14, " 0. Exit");
 
-	BFDrawText(17, menuY + 16, "Press 1-9, A, 0 (exit), or Q to select:");
+	BFDrawText(42, menuY + 4, " 8. RadioGroup");
+	BFDrawText(42, menuY + 5, " 9. TextBox");
+	BFDrawText(42, menuY + 6, " A. Form Demo");
+	BFDrawText(42, menuY + 7, " B. KeybindsBar");
+	BFDrawText(42, menuY + 8, " C. ShowMessage");
+	BFDrawText(42, menuY + 9, " D. ShowConfirm");
+	BFDrawText(42, menuY + 10, " 0. Exit");
 
 	var key = getch();
 	var choice = unpack(key);
@@ -389,6 +486,18 @@ func ShowMenu()
 	elseif choice == "a" or choice == "A"
 	{
 		TestForm();
+	}
+	elseif choice == "b" or choice == "B"
+	{
+		TestKeybindsBar();
+	}
+	elseif choice == "c" or choice == "C"
+	{
+		TestMessageDialog();
+	}
+	elseif choice == "d" or choice == "D"
+	{
+		TestConfirmDialog();
 	}
 	elseif choice == "0" or choice == "q" or choice == "Q"
 	{
