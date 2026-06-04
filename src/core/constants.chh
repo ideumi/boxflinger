@@ -4,10 +4,10 @@
 #
 
 #@ <BFVERSION>
-#@ (2026-04-04)
+#@ (2026-05-31)
 #@ Library version
 
-var BFVERSION = "1.0.7";
+var BFVERSION = "1.0.8";
 
 #@ <BFALIGNLEFT>
 #@ (2025-09-28)
@@ -26,6 +26,13 @@ var BFALIGNCENTER = 1;
 #@ Right text alignment
 
 var BFALIGNRIGHT = 2;
+
+#@ <BFPAGEITEMS>
+#@ (2026-06-02)
+#@ Number of items to jump when PageUp/PageDown is pressed in non-scrollable
+#@ list widgets
+
+var BFPAGEITEMS = 5;
 
 # ---
 
@@ -127,3 +134,9 @@ var BFST = b[27, 92];
 #@ Cell pixel size query sequence (CSI + BFCELLQUERY)
 
 var BFCELLQUERY = b[49, 54, 116];
+
+#@ <BFISKITTY>
+#@ (2026-04-05)
+#@ ''true'' if running inside a kitty terminal, ''false'' otherwise
+
+var BFISKITTY = getenv("TERM") == "xterm-kitty";

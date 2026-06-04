@@ -5,12 +5,6 @@
 
 # https://sw.kovidgoyal.net/kitty/graphics-protocol/
 
-#@ <BFISKITTY>
-#@ (2026-04-05)
-#@ ''true'' if running inside a kitty terminal, ''false'' otherwise
-
-var BFISKITTY = getenv("TERM") == "xterm-kitty";
-
 func _BFKittySend_(cmd)
 {
 	fwrite(BFAPC + pack(cmd) + BFST, STDOUT);

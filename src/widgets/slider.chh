@@ -4,7 +4,7 @@
 #
 
 #@ <BFSlider(x, y, width, label, value, min, max, stepSize)>
-#@ V-1.0.3 (2026-04-04)
+#@ V-1.0.4 (2026-06-02)
 #@
 #@ Interactive slider with arrow keys for numeric input at position ''x'' and
 #@ ''y'' with slider bar ''width''. The ''label'' is displayed above slider,
@@ -106,6 +106,14 @@ func BFSlider(x, y, width, label, value, min, max, stepSize)
 			{
 				current = max;
 			}
+		}
+		elseif key == BFKEYHOME
+		{
+			current = min;
+		}
+		elseif key == BFKEYEND
+		{
+			current = max;
 		}
 
 		if running and current != prevCurrent

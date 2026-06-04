@@ -8,11 +8,11 @@ func Logo()
 	ClearScreen();
 	HideCursor();
 
-	BFDrawBox(2, 2, 7, 3, BFBOXROUNDED);
+	BFDrawBox(6, 2, 7, 3, BFBOXROUNDED);
 
-	BFDrawBox(6, 3, 7, 3, BFBOXSINGLE);
+	BFDrawBox(2, 3, 7, 3, BFBOXSINGLE);
 
-	BFDrawText(16, 5, Format("boxflinger %s\n", [BFVERSION]));
+	BFDrawText(10, 5, Format("boxflinger %s\n", [BFVERSION]));
 
 	ShowCursor();
 }
