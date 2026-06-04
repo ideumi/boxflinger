@@ -27,6 +27,13 @@ var BFALIGNCENTER = 1;
 
 var BFALIGNRIGHT = 2;
 
+#@ <BFPAGEITEMS>
+#@ (2026-06-02)
+#@ Number of items to jump when PageUp/PageDown is pressed in non-scrollable
+#@ list widgets
+
+var BFPAGEITEMS = 5;
+
 # ---
 
 #@ <BFPACKEDSPACE>

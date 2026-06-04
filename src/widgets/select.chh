@@ -4,7 +4,7 @@
 #
 
 #@ <BFSelect(x, y, width, height, items, defaultIndex)>
-#@ V-1.0.3 (2026-04-04)
+#@ V-1.0.4 (2026-06-02)
 #@
 #@ Scrollable list selection widget with visual highlighting at position ''x''
 #@ and ''y'' with dimensions ''width'' and ''height''. The ''items'' array
@@ -62,6 +62,36 @@ func BFSelect(x, y, width, height, items, defaultIndex)
 			if selected < len(items)
 			{
 				selected = selected + 1;
+			}
+		}
+		elseif key == BFKEYHOME
+		{
+			selected = 1;
+		}
+		elseif key == BFKEYEND
+		{
+			selected = len(items);
+		}
+		elseif key == BFKEYPAGEUP
+		{
+			if selected > height
+			{
+				selected = selected - height + 1;
+			}
+			else
+			{
+				selected = 1;
+			}
+		}
+		elseif key == BFKEYPAGEDOWN
+		{
+			if selected + height <= len(items)
+			{
+				selected = selected + height - 1;
+			}
+			else
+			{
+				selected = len(items);
 			}
 		}
 

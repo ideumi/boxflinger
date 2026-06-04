@@ -4,7 +4,7 @@
 #
 
 #@ <BFMenu(x, y, items, defaultIndex)>
-#@ V-1.0.3 (2026-04-04)
+#@ V-1.0.4 (2026-06-02)
 #@
 #@ Simple vertical menu with visual highlighting at position ''x'' and ''y''. The
 #@ ''items'' array contains strings for menu items and ''defaultIndex'' sets
@@ -71,6 +71,36 @@ func BFMenu(x, y, items, defaultIndex)
 			if selected < len(items)
 			{
 				selected = selected + 1;
+			}
+		}
+		elseif key == BFKEYHOME
+		{
+			selected = 1;
+		}
+		elseif key == BFKEYEND
+		{
+			selected = len(items);
+		}
+		elseif key == BFKEYPAGEUP
+		{
+			if selected > BFPAGEITEMS
+			{
+				selected = selected - BFPAGEITEMS;
+			}
+			else
+			{
+				selected = 1;
+			}
+		}
+		elseif key == BFKEYPAGEDOWN
+		{
+			if selected + BFPAGEITEMS <= len(items)
+			{
+				selected = selected + BFPAGEITEMS;
+			}
+			else
+			{
+				selected = len(items);
 			}
 		}
 
