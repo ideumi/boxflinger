@@ -4,7 +4,7 @@
 #
 
 #@ <BFCheckboxList(x, y, width, height, items, checkedItems)>
-#@ V-1.0.2 (2026-04-04)
+#@ V-1.0.3 (2026-06-14)
 #@
 #@ Multiple selection list with toggleable checkboxes and scrolling at position
 #@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''items'' array
@@ -59,7 +59,7 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 			}
 		}
 
-		checked = append(checked, isChecked);
+		append(checked, isChecked);
 	}
 
 	var running = true;
@@ -96,7 +96,7 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 			{
 				if checked[i]
 				{
-					result = append(result, i);
+					append(result, i);
 				}
 			}
 
@@ -110,7 +110,7 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 32
 		{
 			var currentState = checked[selected];
-			checked = checked[selected] = not currentState;
+			checked[selected] = not currentState;
 			spaceToggled = true;
 		}
 		elseif key == BFKEYUP

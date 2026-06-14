@@ -4,7 +4,7 @@
 #
 
 #@ <BFHSplit(width, ratios)>
-#@ V-1.0.1 (2025-11-03)
+#@ V-1.0.2 (2026-06-14)
 #@
 #@ Splits a horizontal ''width'' proportionally based on ''ratios'' array of
 #@ positive numbers. Returns list of calculated widths. Ratios are normalized
@@ -37,17 +37,17 @@ func BFHSplit(width, ratios)
 		var proportion = ratios[i] / totalRatio;
 		var colWidth = int(width * proportion);
 
-		result = append(result, colWidth);
+		append(result, colWidth);
 		remaining = remaining - colWidth;
 	}
 
-	result = append(result, remaining);
+	append(result, remaining);
 
 	return result;
 }
 
 #@ <BFVSplit(height, ratios)>
-#@ V-1.0.1 (2025-11-03)
+#@ V-1.0.2 (2026-06-14)
 #@
 #@ Splits a vertical ''height'' proportionally based on ''ratios'' array of
 #@ positive numbers. Returns list of calculated heights. Ratios are normalized
@@ -80,11 +80,11 @@ func BFVSplit(height, ratios)
 		var proportion = ratios[i] / totalRatio;
 		var rowHeight = int(height * proportion);
 
-		result = append(result, rowHeight);
+		append(result, rowHeight);
 		remaining = remaining - rowHeight;
 	}
 
-	result = append(result, remaining);
+	append(result, remaining);
 
 	return result;
 }

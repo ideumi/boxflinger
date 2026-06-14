@@ -46,16 +46,16 @@ func TestSelect()
 	BFDrawText(4, 5, "Use Up/Down arrows to navigate, Enter to select, ESC to cancel.");
 
 	var items = [];
-	items = append(items, "Apple");
-	items = append(items, "Banana");
-	items = append(items, "Cherry");
-	items = append(items, "Date");
-	items = append(items, "Elderberry");
-	items = append(items, "Fig");
-	items = append(items, "Grape");
-	items = append(items, "Honeydew");
-	items = append(items, "Kiwi");
-	items = append(items, "Lemon");
+	append(items, "Apple");
+	append(items, "Banana");
+	append(items, "Cherry");
+	append(items, "Date");
+	append(items, "Elderberry");
+	append(items, "Fig");
+	append(items, "Grape");
+	append(items, "Honeydew");
+	append(items, "Kiwi");
+	append(items, "Lemon");
 
 	BFDrawBox(4, 7, 40, 8, BFBOXSINGLE);
 	var selected = BFSelect(5, 8, 38, 6, items, 3);
@@ -87,11 +87,11 @@ func TestMenu()
 	BFDrawText(4, 5, "Use Up/Down arrows to navigate, Enter to select.");
 
 	var items = [];
-	items = append(items, "New File");
-	items = append(items, "Open File");
-	items = append(items, "Save");
-	items = append(items, "Save As...");
-	items = append(items, "Exit");
+	append(items, "New File");
+	append(items, "Open File");
+	append(items, "Save");
+	append(items, "Save As...");
+	append(items, "Exit");
 
 	var selected = BFMenu(20, 8, items, 1);
 
@@ -210,13 +210,13 @@ func TestCheckboxList()
 	BFDrawText(4, 5, "Use Up/Down arrows, Space to toggle, Enter to confirm.");
 
 	var items = [];
-	items = append(items, "Enable logging");
-	items = append(items, "Enable debug mode");
-	items = append(items, "Enable auto-save");
-	items = append(items, "Enable spell check");
-	items = append(items, "Enable syntax highlighting");
-	items = append(items, "Enable line numbers");
-	items = append(items, "Enable word wrap");
+	append(items, "Enable logging");
+	append(items, "Enable debug mode");
+	append(items, "Enable auto-save");
+	append(items, "Enable spell check");
+	append(items, "Enable syntax highlighting");
+	append(items, "Enable line numbers");
+	append(items, "Enable word wrap");
 
 	var defaultChecked = [1, 3, 5];
 
@@ -256,10 +256,10 @@ func TestRadioGroup()
 	BFDrawText(4, 5, "Use Up/Down arrows to select, Enter to confirm.");
 
 	var items = [];
-	items = append(items, "Small");
-	items = append(items, "Medium");
-	items = append(items, "Large");
-	items = append(items, "Extra Large");
+	append(items, "Small");
+	append(items, "Medium");
+	append(items, "Large");
+	append(items, "Extra Large");
 
 	var selected = BFRadioGroup(20, 8, items, 2);
 
@@ -323,22 +323,22 @@ func TestKeybindsBar()
 	BFDrawText(4, 6, "Press any key to continue...");
 
 	var row1 = [];
-	row1 = append(row1, ["↑↓←→", "Navigate"]);
-	row1 = append(row1, ["Enter", "Open"]);
-	row1 = append(row1, ["Tab", "Sidebar"]);
-	row1 = append(row1, ["Esc", "Quit"]);
+	append(row1, ["↑↓←→", "Navigate"]);
+	append(row1, ["Enter", "Open"]);
+	append(row1, ["Tab", "Sidebar"]);
+	append(row1, ["Esc", "Quit"]);
 
 	var row2 = [];
-	row2 = append(row2, ["Ctrl+C", "Copy"]);
-	row2 = append(row2, ["Ctrl+X", "Cut"]);
-	row2 = append(row2, ["Ctrl+V", "Paste"]);
-	row2 = append(row2, ["Del", "Delete"]);
+	append(row2, ["Ctrl+C", "Copy"]);
+	append(row2, ["Ctrl+X", "Cut"]);
+	append(row2, ["Ctrl+V", "Paste"]);
+	append(row2, ["Del", "Delete"]);
 
 	var row3 = [];
-	row3 = append(row3, ["F1", "Term"]);
-	row3 = append(row3, ["h", "Hidden"]);
-	row3 = append(row3, ["i", "Info"]);
-	row3 = append(row3, ["t", "Sort"]);
+	append(row3, ["F1", "Term"]);
+	append(row3, ["h", "Hidden"]);
+	append(row3, ["i", "Info"]);
+	append(row3, ["t", "Sort"]);
 
 	var rows = [row1, row2, row3];
 

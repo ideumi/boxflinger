@@ -4,11 +4,11 @@ load("libboxflinger.chh");
 
 # Form state
 var formData = [];
-formData = append(formData, "John Doe");      # Name
-formData = append(formData, 25);              # Age
-formData = append(formData, 1);               # Gender index
-formData = append(formData, []);              # Interests
-formData = append(formData, 50);              # Satisfaction slider
+append(formData, "John Doe");      # Name
+append(formData, 25);              # Age
+append(formData, 1);               # Gender index
+append(formData, []);              # Interests
+append(formData, 50);              # Satisfaction slider
 
 var fieldCount = 5;
 var currentField = 1;
@@ -201,7 +201,7 @@ func TestForm()
 
 				if not iserr(result)
 				{
-					formData = formData[1] = result;
+					formData[1] = result;
 				}
 
 				BFClearRegion(4, 20, 60, 1);
@@ -213,7 +213,7 @@ func TestForm()
 
 				if not iserr(result)
 				{
-					formData = formData[2] = result;
+					formData[2] = result;
 				}
 
 				BFClearRegion(4, 20, 60, 2);
@@ -226,7 +226,7 @@ func TestForm()
 
 				if not iserr(result)
 				{
-					formData = formData[3] = result;
+					formData[3] = result;
 				}
 
 				BFClearRegion(4, 20, 40, len(genderOptions));
@@ -239,7 +239,7 @@ func TestForm()
 
 				if not iserr(result)
 				{
-					formData = formData[4] = result;
+					formData[4] = result;
 				}
 
 				BFClearRegion(4, 20, 40, len(interests));
@@ -251,7 +251,7 @@ func TestForm()
 
 				if not iserr(result)
 				{
-					formData = formData[5] = result;
+					formData[5] = result;
 				}
 
 				BFClearRegion(4, 20, 60, 2);

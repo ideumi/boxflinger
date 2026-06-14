@@ -3,6 +3,14 @@
 # boxflinger - keybindsbar.chh
 #
 
+#@ <BFKeybindsBar(x, y, width, rows)>
+#@ V-1.0.0 (2026-05-29)
+#@
+#@ Draws a keybinds bar at ''x'' and ''y'' spanning ''width'' columns and ''len(rows)''
+#@ lines. ''rows'' is a list of rows, each a list of ''[key, action]'' pairs drawn
+#@ centered on its line; an empty row leaves a blank padding line. Always returns
+#@ ''ok''.
+
 func _BFKeybindWidth_(key, action)
 {
 	return lenv(key) + 1 + lenv(action) + 3;
@@ -23,14 +31,6 @@ func _BFDrawKeybind_(x, y, key, action)
 
 	return actionX + lenv(action) + 4;
 }
-
-#@ <BFKeybindsBar(x, y, width, rows)>
-#@ V-1.0.0 (2026-05-29)
-#@
-#@ Draws a keybinds bar at ''x'' and ''y'' spanning ''width'' columns and ''len(rows)''
-#@ lines. ''rows'' is a list of rows, each a list of ''[key, action]'' pairs drawn
-#@ centered on its line; an empty row leaves a blank padding line. Always returns
-#@ ''ok''.
 
 func BFKeybindsBar(x, y, width, rows)
 {
