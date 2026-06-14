@@ -4,7 +4,7 @@
 #
 
 #@ <BFNumberInput(x, y, prompt, min, max, defaultValue)>
-#@ V-1.0.4 (2026-04-04)
+#@ V-1.0.5 (2026-06-14)
 #@
 #@ Numeric input field with range validation at position ''x'' and ''y''. Only
 #@ accepts digits and optional minus sign. The ''prompt'' text has range appended
@@ -53,7 +53,7 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 			{
 				var value = num(text);
 
-				if value >= min and value <= max
+				if not iserr(value) and value >= min and value <= max
 				{
 					result = value;
 					running = false;

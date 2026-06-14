@@ -3,6 +3,18 @@
 # boxflinger - textbox.chh
 #
 
+#@ <BFTextBox(x, y, width, height, title, defaultText, style)>
+#@ V-1.0.5 (2026-06-14)
+#@
+#@ Multi-line text editor with full editing capabilities and scrolling at position
+#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''title'' is
+#@ displayed in top border and ''defaultText'' sets initial content. Uses the
+#@ provided ''style''. Returns full edited text when Ctrl+D is pressed, or ''err''
+#@ if ESC is pressed. Supports arrow keys, Ctrl+Left/Right, Home/End, Page Up/Down,
+#@ Ctrl+Home/End, Backspace, Delete, Enter, and all printable characters. Auto-
+#@ scrolls to keep cursor visible. Status line shows current line number and key
+#@ hints.
+
 func _BFTextBoxLine_(x, y, width, lines, lineIndex, offset, cursorLine, cursorCol)
 {
 	var maxLineWidth = width - 2;
@@ -35,25 +47,13 @@ func _BFTextBoxLine_(x, y, width, lines, lineIndex, offset, cursorLine, cursorCo
 	}
 }
 
-#@ <BFTextBox(x, y, width, height, title, defaultText, style)>
-#@ V-1.0.4 (2026-04-04)
-#@
-#@ Multi-line text editor with full editing capabilities and scrolling at position
-#@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''title'' is
-#@ displayed in top border and ''defaultText'' sets initial content. Uses the
-#@ provided ''style''. Returns full edited text when Ctrl+D is pressed, or ''err''
-#@ if ESC is pressed. Supports arrow keys, Ctrl+Left/Right, Home/End, Page Up/Down,
-#@ Ctrl+Home/End, Backspace, Delete, Enter, and all printable characters. Auto-
-#@ scrolls to keep cursor visible. Status line shows current line number and key
-#@ hints.
-
 func BFTextBox(x, y, width, height, title, defaultText, style)
 {
 	if width < 5 or height < 5 { return err; }
 
 	var lines = split(defaultText, "\n");
 
-	if len(lines) == 0 { lines = append(lines, ""); }
+	if len(lines) == 0 { append(lines, ""); }
 
 	var cursorLine = 1;
 	var cursorCol = 0;
@@ -111,7 +111,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 		}
 		elseif key == BFKEYCTRLU
 		{
-			lines = lines[cursorLine] = "";
+			lines[cursorLine] = "";
 			cursorCol = 0;
 			redrawCurrent = true;
 		}
@@ -121,20 +121,20 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 			var before = slice(currentLine, 1, cursorCol);
 			var after = slice(currentLine, cursorCol + 1, len(currentLine));
 
-			lines = lines[cursorLine] = before;
+			lines[cursorLine] = before;
 
 			var newLines = [];
 
 			for i = 1 to cursorLine
 			{
-				newLines = append(newLines, lines[i]);
+				append(newLines, lines[i]);
 			}
 
-			newLines = append(newLines, after);
+			append(newLines, after);
 
 			for i = cursorLine + 1 to len(lines)
 			{
-				newLines = append(newLines, lines[i]);
+				append(newLines, lines[i]);
 			}
 
 			lines = newLines;
@@ -151,7 +151,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				var before = slice(currentLine, 1, cursorCol - 1);
 				var after = slice(currentLine, cursorCol + 1, len(currentLine));
 
-				lines = lines[cursorLine] = before + after;
+				lines[cursorLine] = before + after;
 				cursorCol = cursorCol - 1;
 				redrawCurrent = true;
 			}
@@ -164,14 +164,14 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 				for i = 1 to cursorLine - 2
 				{
-					newLines = append(newLines, lines[i]);
+					append(newLines, lines[i]);
 				}
 
-				newLines = append(newLines, mergedLine);
+				append(newLines, mergedLine);
 
 				for i = cursorLine + 1 to len(lines)
 				{
-					newLines = append(newLines, lines[i]);
+					append(newLines, lines[i]);
 				}
 
 				lines = newLines;
@@ -326,7 +326,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				var before = slice(currentLine, 1, cursorCol);
 				var after = slice(currentLine, cursorCol + 2, len(currentLine));
 
-				lines = lines[cursorLine] = before + after;
+				lines[cursorLine] = before + after;
 				redrawCurrent = true;
 			}
 			elseif cursorLine < len(lines)
@@ -338,14 +338,14 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 				for i = 1 to cursorLine - 1
 				{
-					newLines = append(newLines, lines[i]);
+					append(newLines, lines[i]);
 				}
 
-				newLines = append(newLines, mergedLine);
+				append(newLines, mergedLine);
 
 				for i = cursorLine + 2 to len(lines)
 				{
-					newLines = append(newLines, lines[i]);
+					append(newLines, lines[i]);
 				}
 
 				lines = newLines;
@@ -418,7 +418,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 					var before = slice(currentLine, 1, cursorCol);
 					var after = slice(currentLine, cursorCol + 1, len(currentLine));
 
-					lines = lines[cursorLine] = before + char + after;
+					lines[cursorLine] = before + char + after;
 					cursorCol = cursorCol + 1;
 					redrawCurrent = true;
 				}

@@ -36,7 +36,7 @@ func BFKittyDrawImage(x, y, imagePath, cols, rows)
 }
 
 #@ <BFKittyGetCellPixelSize()>
-#@ V-1.0.0 (2026-04-05)
+#@ V-1.0.1 (2026-06-14)
 #@
 #@ Returns the pixel dimensions of one terminal cell as ''[cellW, cellH]'', or
 #@ ''err'' if the terminal does not support the query ''ESC[16t''.
@@ -68,6 +68,8 @@ func BFKittyGetCellPixelSize()
 
 	var cellH = num(parts[2]);
 	var cellW = num(parts[3]);
+
+	if iserr(cellH) or iserr(cellW) { return err; }
 
 	if cellH <= 0 or cellW <= 0 { return err; }
 

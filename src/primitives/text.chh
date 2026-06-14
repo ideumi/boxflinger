@@ -146,7 +146,7 @@ func BFPrevWordPos(text, pos)
 }
 
 #@ <BFWrapText(text, width)>
-#@ V-1.0.2 (2025-11-04)
+#@ V-1.0.3 (2026-06-14)
 #@
 #@ Wraps ''text'' into multiple lines based on word boundaries and ''width''
 #@ limit. Returns list of text lines, each at or under width characters when
@@ -182,12 +182,12 @@ func BFWrapText(text, width)
 		{
 			if lenv(currentLine) > 0
 			{
-				lines = append(lines, currentLine);
+				append(lines, currentLine);
 				currentLine = word;
 			}
 			else
 			{
-				lines = append(lines, word);
+				append(lines, word);
 				currentLine = "";
 			}
 		}
@@ -195,7 +195,7 @@ func BFWrapText(text, width)
 
 	if lenv(currentLine) > 0
 	{
-		lines = append(lines, currentLine);
+		append(lines, currentLine);
 	}
 
 	return lines;
