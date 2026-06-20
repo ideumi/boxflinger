@@ -3,8 +3,7 @@
 load("libboxflinger.chh");
 load("libterm.chh");
 
-func Logo()
-{
+func Logo() {
 	ClearScreen();
 	HideCursor();
 
