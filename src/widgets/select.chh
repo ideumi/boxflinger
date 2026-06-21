@@ -52,17 +52,11 @@ func BFSelect(x, y, width, height, items, defaultIndex)
 		}
 		elseif key == BFKEYUP
 		{
-			if selected > 1
-			{
-				selected = selected - 1;
-			}
+			if selected > 1 { selected = selected - 1; }
 		}
 		elseif key == BFKEYDOWN
 		{
-			if selected < len(items)
-			{
-				selected = selected + 1;
-			}
+			if selected < len(items) { selected = selected + 1; }
 		}
 		elseif key == BFKEYHOME
 		{
@@ -74,14 +68,8 @@ func BFSelect(x, y, width, height, items, defaultIndex)
 		}
 		elseif key == BFKEYPAGEUP
 		{
-			if selected > height
-			{
-				selected = selected - height + 1;
-			}
-			else
-			{
-				selected = 1;
-			}
+			if selected > height { selected = selected - height + 1; }
+			else { selected = 1; }
 		}
 		elseif key == BFKEYPAGEDOWN
 		{

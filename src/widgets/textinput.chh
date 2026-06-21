@@ -79,17 +79,11 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 		}
 		elseif key == BFKEYLEFT
 		{
-			if cursorPos > 0
-			{
-				cursorPos = cursorPos - 1;
-			}
+			if cursorPos > 0 { cursorPos = cursorPos - 1; }
 		}
 		elseif key == BFKEYRIGHT
 		{
-			if cursorPos < len(text)
-			{
-				cursorPos = cursorPos + 1;
-			}
+			if cursorPos < len(text) { cursorPos = cursorPos + 1; }
 		}
 		elseif key == BFKEYCTRLLEFT
 		{
@@ -118,11 +112,21 @@ func BFTextInput(x, y, width, prompt, defaultValue)
 				textChanged = true;
 			}
 		}
-		elseif key == BFKEYTAB { }
-		elseif key == BFKEYUP { }
-		elseif key == BFKEYDOWN { }
-		elseif key == BFKEYCTRLUP { }
-		elseif key == BFKEYCTRLDOWN { }
+		elseif key == BFKEYTAB
+		{
+		}
+		elseif key == BFKEYUP
+		{
+		}
+		elseif key == BFKEYDOWN
+		{
+		}
+		elseif key == BFKEYCTRLUP
+		{
+		}
+		elseif key == BFKEYCTRLDOWN
+		{
+		}
 		elseif key == BFKEYCTRLU
 		{
 			text = "";

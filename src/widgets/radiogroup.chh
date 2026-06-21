@@ -53,17 +53,11 @@ func BFRadioGroup(x, y, items, defaultIndex)
 		}
 		elseif key == BFKEYUP
 		{
-			if selected > 1
-			{
-				selected = selected - 1;
-			}
+			if selected > 1 { selected = selected - 1; }
 		}
 		elseif key == BFKEYDOWN
 		{
-			if selected < len(items)
-			{
-				selected = selected + 1;
-			}
+			if selected < len(items) { selected = selected + 1; }
 		}
 		elseif key == BFKEYHOME
 		{
@@ -75,14 +69,8 @@ func BFRadioGroup(x, y, items, defaultIndex)
 		}
 		elseif key == BFKEYPAGEUP
 		{
-			if selected > BFPAGEITEMS
-			{
-				selected = selected - BFPAGEITEMS;
-			}
-			else
-			{
-				selected = 1;
-			}
+			if selected > BFPAGEITEMS { selected = selected - BFPAGEITEMS; }
+			else { selected = 1; }
 		}
 		elseif key == BFKEYPAGEDOWN
 		{

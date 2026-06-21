@@ -22,10 +22,7 @@ func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
 	var range = max - min;
 	var position = 0;
 
-	if range != 0
-	{
-		position = (current - min) / range;
-	}
+	if range != 0 { position = (current - min) / range; }
 
 	var filledWidth = int(width * position);
 
@@ -35,14 +32,8 @@ func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
 
 	for i = 1 to width
 	{
-		if i <= filledWidth
-		{
-			fwrite(BFPACKEDEQUALS, STDOUT);
-		}
-		else
-		{
-			fwrite(BFPACKEDDASH, STDOUT);
-		}
+		if i <= filledWidth { fwrite(BFPACKEDEQUALS, STDOUT); }
+		else { fwrite(BFPACKEDDASH, STDOUT); }
 	}
 
 	fwrite(BFPACKEDBRACKETRIGHT, STDOUT);
@@ -93,19 +84,13 @@ func BFSlider(x, y, width, label, value, min, max, stepSize)
 		{
 			current = current - stepSize;
 
-			if current < min
-			{
-				current = min;
-			}
+			if current < min { current = min; }
 		}
 		elseif key == BFKEYRIGHT
 		{
 			current = current + stepSize;
 
-			if current > max
-			{
-				current = max;
-			}
+			if current > max { current = max; }
 		}
 		elseif key == BFKEYHOME
 		{

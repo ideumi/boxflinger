@@ -35,10 +35,7 @@ func _BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset)
 
 	BFDrawText(x, y + itemIndex - offset, displayText);
 
-	if itemIndex == selected
-	{
-		SetAttribute(COLORRESET);
-	}
+	if itemIndex == selected { SetAttribute(COLORRESET); }
 }
 
 func BFCheckboxList(x, y, width, height, items, checkedItems)
@@ -53,10 +50,7 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 
 		for j = 1 to len(checkedItems)
 		{
-			if i == checkedItems[j]
-			{
-				isChecked = true;
-			}
+			if i == checkedItems[j] { isChecked = true; }
 		}
 
 		append(checked, isChecked);
@@ -94,10 +88,7 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 
 			for i = 1 to len(checked)
 			{
-				if checked[i]
-				{
-					append(result, i);
-				}
+				if checked[i] { append(result, i); }
 			}
 
 			running = false;
@@ -115,17 +106,11 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 		}
 		elseif key == BFKEYUP
 		{
-			if selected > 1
-			{
-				selected = selected - 1;
-			}
+			if selected > 1 { selected = selected - 1; }
 		}
 		elseif key == BFKEYDOWN
 		{
-			if selected < len(items)
-			{
-				selected = selected + 1;
-			}
+			if selected < len(items) { selected = selected + 1; }
 		}
 
 		if running

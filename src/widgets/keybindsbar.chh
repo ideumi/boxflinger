@@ -39,10 +39,7 @@ func BFKeybindsBar(x, y, width, rows)
 
 	var pad = BFPadText("", width, BFALIGNLEFT);
 
-	for r = 1 to len(rows)
-	{
-		BFDrawText(x, y + r - 1, pad);
-	}
+	for r = 1 to len(rows) { BFDrawText(x, y + r - 1, pad); }
 
 	for r = 1 to len(rows)
 	{

@@ -4,11 +4,11 @@ load("libboxflinger.chh");
 
 # Form state
 var formData = [];
-append(formData, "John Doe");      # Name
-append(formData, 25);              # Age
-append(formData, 1);               # Gender index
-append(formData, []);              # Interests
-append(formData, 50);              # Satisfaction slider
+append(formData, "John Doe"); # Name
+append(formData, 25); # Age
+append(formData, 1); # Gender index
+append(formData, []); # Interests
+append(formData, 50); # Satisfaction slider
 
 var fieldCount = 5;
 var currentField = 1;
@@ -88,18 +88,12 @@ func RenderForm()
 		var idx = checkedIndices[i];
 		var interest = interests[idx];
 
-		if i > 1
-		{
-			interestsList = interestsList + ", ";
-		}
+		if i > 1 { interestsList = interestsList + ", "; }
 
 		interestsList = interestsList + interest;
 	}
 
-	if len(interestsList) == 0
-	{
-		interestsList = "(none)";
-	}
+	if len(interestsList) == 0 { interestsList = "(none)"; }
 
 	if currentField == 4
 	{
@@ -134,14 +128,8 @@ func RenderForm()
 	}
 
 	# Submit button
-	if currentField == 6
-	{
-		BFDrawButton(4, 10, "Submit Form", true);
-	}
-	else
-	{
-		BFDrawButton(4, 10, "Submit Form", false);
-	}
+	if currentField == 6 { BFDrawButton(4, 10, "Submit Form", true); }
+	else { BFDrawButton(4, 10, "Submit Form", false); }
 
 	# Instructions
 	BFDrawText(4, 12, "Navigation:");
@@ -176,20 +164,14 @@ func TestForm()
 			# Move to next field
 			currentField = currentField + 1;
 
-			if currentField > fieldCount + 1
-			{
-				currentField = 1;
-			}
+			if currentField > fieldCount + 1 { currentField = 1; }
 		}
 		elseif key == BFKEYUP
 		{
 			# Move to previous field
 			currentField = currentField - 1;
 
-			if currentField < 1
-			{
-				currentField = fieldCount + 1;
-			}
+			if currentField < 1 { currentField = fieldCount + 1; }
 		}
 		elseif key == BFKEYENTER
 		{
@@ -199,10 +181,7 @@ func TestForm()
 				# Name field
 				var result = BFTextInput(4, 20, 40, "Enter name: ", formData[1]);
 
-				if not iserr(result)
-				{
-					formData[1] = result;
-				}
+				if not iserr(result) { formData[1] = result; }
 
 				BFClearRegion(4, 20, 60, 1);
 			}
@@ -211,10 +190,7 @@ func TestForm()
 				# Age field
 				var result = BFNumberInput(4, 20, "Enter age", 0, 120, formData[2]);
 
-				if not iserr(result)
-				{
-					formData[2] = result;
-				}
+				if not iserr(result) { formData[2] = result; }
 
 				BFClearRegion(4, 20, 60, 2);
 			}
@@ -224,10 +200,7 @@ func TestForm()
 				var genderOptions = ["Male", "Female", "Other"];
 				var result = BFRadioGroup(4, 20, genderOptions, formData[3]);
 
-				if not iserr(result)
-				{
-					formData[3] = result;
-				}
+				if not iserr(result) { formData[3] = result; }
 
 				BFClearRegion(4, 20, 40, len(genderOptions));
 			}
@@ -237,10 +210,7 @@ func TestForm()
 				var interests = ["Programming", "Music", "Sports", "Reading"];
 				var result = BFCheckboxList(4, 20, 40, len(interests), interests, formData[4]);
 
-				if not iserr(result)
-				{
-					formData[4] = result;
-				}
+				if not iserr(result) { formData[4] = result; }
 
 				BFClearRegion(4, 20, 40, len(interests));
 			}
@@ -249,10 +219,7 @@ func TestForm()
 				# Satisfaction field
 				var result = BFSlider(4, 20, 30, "Satisfaction", formData[5], 0, 100, 5);
 
-				if not iserr(result)
-				{
-					formData[5] = result;
-				}
+				if not iserr(result) { formData[5] = result; }
 
 				BFClearRegion(4, 20, 60, 2);
 			}
@@ -286,10 +253,7 @@ func TestForm()
 					{
 						for i = 1 to len(checkedIndices)
 						{
-							if i > 1
-							{
-								Print(", ");
-							}
+							if i > 1 { Print(", "); }
 
 							Print(interests[checkedIndices[i]]);
 						}

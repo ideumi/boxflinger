@@ -37,14 +37,8 @@ func BFConfirm(x, y, message, defaultYes)
 
 		if key == BFKEYENTER
 		{
-			if selected == 1
-			{
-				result = true;
-			}
-			else
-			{
-				result = false;
-			}
+			if selected == 1 { result = true; }
+			else { result = false; }
 
 			running = false;
 		}

@@ -81,10 +81,7 @@ func BFDrawBox(x, y, width, height, style)
 
 	fwrite(topLeft, STDOUT);
 
-	for i = 1 to width - 2
-	{
-		fwrite(horizontal, STDOUT);
-	}
+	for i = 1 to width - 2 { fwrite(horizontal, STDOUT); }
 
 	fwrite(topRight, STDOUT);
 
@@ -101,10 +98,7 @@ func BFDrawBox(x, y, width, height, style)
 
 	fwrite(bottomLeft, STDOUT);
 
-	for i = 1 to width - 2
-	{
-		fwrite(horizontal, STDOUT);
-	}
+	for i = 1 to width - 2 { fwrite(horizontal, STDOUT); }
 
 	fwrite(bottomRight, STDOUT);
 
@@ -127,10 +121,7 @@ func BFFillRect(x, y, width, height, char)
 	{
 		CursorToXY(x, y + row - 1);
 
-		for col = 1 to width
-		{
-			fwrite(packedChar, STDOUT);
-		}
+		for col = 1 to width { fwrite(packedChar, STDOUT); }
 	}
 }
 
@@ -148,10 +139,7 @@ func BFDrawHLine(x, y, width, char)
 
 	CursorToXY(x, y);
 
-	for i = 1 to width
-	{
-		fwrite(packedChar, STDOUT);
-	}
+	for i = 1 to width { fwrite(packedChar, STDOUT); }
 }
 
 #@ <BFDrawVLine(x, y, height, char)>
@@ -271,15 +259,9 @@ func BFDrawProgressBar(x, y, width, current, total, style)
 
 	CursorToXY(x, y);
 
-	for i = 1 to filledWidth
-	{
-		fwrite(fillChar, STDOUT);
-	}
+	for i = 1 to filledWidth { fwrite(fillChar, STDOUT); }
 
-	for i = 1 to emptyWidth
-	{
-		fwrite(emptyChar, STDOUT);
-	}
+	for i = 1 to emptyWidth { fwrite(emptyChar, STDOUT); }
 
 	return ok;
 }
@@ -370,10 +352,7 @@ func BFDrawList(x, y, width, height, items, selected, offset)
 
 			BFDrawText(x, y + row - 1, displayText);
 
-			if itemIndex == selected
-			{
-				SetAttribute(COLORRESET);
-			}
+			if itemIndex == selected { SetAttribute(COLORRESET); }
 		}
 	}
 

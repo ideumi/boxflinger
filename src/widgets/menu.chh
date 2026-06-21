@@ -38,10 +38,7 @@ func BFMenu(x, y, items, defaultIndex)
 
 		BFDrawText(x, y + i - 1, "  " + item + "  ");
 
-		if i == selected
-		{
-			SetAttribute(COLORRESET);
-		}
+		if i == selected { SetAttribute(COLORRESET); }
 	}
 
 	while running
@@ -61,17 +58,11 @@ func BFMenu(x, y, items, defaultIndex)
 		}
 		elseif key == BFKEYUP
 		{
-			if selected > 1
-			{
-				selected = selected - 1;
-			}
+			if selected > 1 { selected = selected - 1; }
 		}
 		elseif key == BFKEYDOWN
 		{
-			if selected < len(items)
-			{
-				selected = selected + 1;
-			}
+			if selected < len(items) { selected = selected + 1; }
 		}
 		elseif key == BFKEYHOME
 		{
@@ -83,14 +74,8 @@ func BFMenu(x, y, items, defaultIndex)
 		}
 		elseif key == BFKEYPAGEUP
 		{
-			if selected > BFPAGEITEMS
-			{
-				selected = selected - BFPAGEITEMS;
-			}
-			else
-			{
-				selected = 1;
-			}
+			if selected > BFPAGEITEMS { selected = selected - BFPAGEITEMS; }
+			else { selected = 1; }
 		}
 		elseif key == BFKEYPAGEDOWN
 		{
