@@ -13,85 +13,100 @@
 #@ pressed. Selected item shown with inverted colors. List automatically scrolls
 #@ to keep selection visible. Items are clipped/padded to fit width.
 
-func BFSelect(x, y, width, height, items, defaultIndex) {
+func BFSelect(x, y, width, height, items, defaultIndex)
+{
 	var selected = defaultIndex;
 	var offset = 1;
 	var running = true;
 	var result = err;
 
-	if len(items) == 0 {
-		return err;
-	}
+	if len(items) == 0 { return err; }
 
-	if selected < 1 {
-		selected = 1;
-	}
+	if selected < 1 { selected = 1; }
 
-	if selected > len(items) {
-		selected = len(items);
-	}
+	if selected > len(items) { selected = len(items); }
 
-	if selected < offset {
-		offset = selected;
-	}
+	if selected < offset { offset = selected; }
 
-	if selected >= offset + height {
-		offset = selected - height + 1;
-	}
+	if selected >= offset + height { offset = selected - height + 1; }
 
 	HideCursor();
 
 	BFDrawList(x, y, width, height, items, selected, offset);
 
-	while running {
+	while running
+	{
 		var prevSelected = selected;
 		var prevOffset = offset;
 		var key = getch();
 
-		if key == BFKEYENTER {
+		if key == BFKEYENTER
+		{
 			result = selected;
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYUP {
-			if selected > 1 {
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
 				selected = selected - 1;
 			}
-		} elseif key == BFKEYDOWN {
-			if selected < len(items) {
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
 				selected = selected + 1;
 			}
-		} elseif key == BFKEYHOME {
+		}
+		elseif key == BFKEYHOME
+		{
 			selected = 1;
-		} elseif key == BFKEYEND {
+		}
+		elseif key == BFKEYEND
+		{
 			selected = len(items);
-		} elseif key == BFKEYPAGEUP {
-			if selected > height {
+		}
+		elseif key == BFKEYPAGEUP
+		{
+			if selected > height
+			{
 				selected = selected - height + 1;
-			} else {
+			}
+			else
+			{
 				selected = 1;
 			}
-		} elseif key == BFKEYPAGEDOWN {
-			if selected + height <= len(items) {
+		}
+		elseif key == BFKEYPAGEDOWN
+		{
+			if selected + height <= len(items)
+			{
 				selected = selected + height - 1;
-			} else {
+			}
+			else
+			{
 				selected = len(items);
 			}
 		}
 
-		if running {
-			if selected < offset {
-				offset = selected;
-			}
+		if running
+		{
+			if selected < offset { offset = selected; }
 
-			if selected >= offset + height {
-				offset = selected - height + 1;
-			}
+			if selected >= offset + height { offset = selected - height + 1; }
 
-			if offset != prevOffset {
+			if offset != prevOffset
+			{
 				BFDrawList(x, y, width, height, items, selected, offset);
-			} elseif selected != prevSelected {
+			}
+			elseif selected != prevSelected
+			{
 				var prevText = BFClipText(items[prevSelected], width);
 				prevText = BFPadText(prevText, width, BFALIGNLEFT);
 				BFDrawText(x, y + prevSelected - offset, prevText);

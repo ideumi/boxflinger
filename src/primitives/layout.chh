@@ -12,31 +12,28 @@
 #@ column gets any remaining pixels from rounding. Returns ''err'' if ratios is
 #@ empty, contains negative values, or sum is zero.
 
-func BFHSplit(width, ratios) {
-	if len(ratios) == 0 {
-		return err;
-	}
+func BFHSplit(width, ratios)
+{
+	if len(ratios) == 0 { return err; }
 
 	var totalRatio = 0;
 	var result = [];
 
-	for i = 1 to len(ratios) {
+	for i = 1 to len(ratios)
+	{
 		var ratio = ratios[i];
 
-		if ratio < 0 {
-			return err;
-		}
+		if ratio < 0 { return err; }
 
 		totalRatio = totalRatio + ratio;
 	}
 
-	if totalRatio == 0 {
-		return err;
-	}
+	if totalRatio == 0 { return err; }
 
 	var remaining = width;
 
-	for i = 1 to len(ratios) - 1 {
+	for i = 1 to len(ratios) - 1
+	{
 		var proportion = ratios[i] / totalRatio;
 		var colWidth = int(width * proportion);
 
@@ -58,31 +55,28 @@ func BFHSplit(width, ratios) {
 #@ gets any remaining pixels from rounding. Useful for creating multi-row layouts.
 #@ Returns ''err'' if ratios is empty, contains negative values, or sum is zero.
 
-func BFVSplit(height, ratios) {
-	if len(ratios) == 0 {
-		return err;
-	}
+func BFVSplit(height, ratios)
+{
+	if len(ratios) == 0 { return err; }
 
 	var totalRatio = 0;
 	var result = [];
 
-	for i = 1 to len(ratios) {
+	for i = 1 to len(ratios)
+	{
 		var ratio = ratios[i];
 
-		if ratio < 0 {
-			return err;
-		}
+		if ratio < 0 { return err; }
 
 		totalRatio = totalRatio + ratio;
 	}
 
-	if totalRatio == 0 {
-		return err;
-	}
+	if totalRatio == 0 { return err; }
 
 	var remaining = height;
 
-	for i = 1 to len(ratios) - 1 {
+	for i = 1 to len(ratios) - 1
+	{
 		var proportion = ratios[i] / totalRatio;
 		var rowHeight = int(height * proportion);
 
@@ -103,7 +97,8 @@ func BFVSplit(height, ratios) {
 #@ If the dialog is larger than the region in either axis, the result is clamped
 #@ to the region's origin so it remains visible.
 
-func BFCenterRect(region, dialogWidth, dialogHeight) {
+func BFCenterRect(region, dialogWidth, dialogHeight)
+{
 	var rx = region[1];
 	var ry = region[2];
 	var width = region[3];
@@ -112,12 +107,8 @@ func BFCenterRect(region, dialogWidth, dialogHeight) {
 	var x = rx + int((width - dialogWidth) / 2);
 	var y = ry + int((height - dialogHeight) / 2);
 
-	if x < rx {
-		x = rx;
-	}
-	if y < ry {
-		y = ry;
-	}
+	if x < rx { x = rx; }
+	if y < ry { y = ry; }
 
 	return [x, y];
 }

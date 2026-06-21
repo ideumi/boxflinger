@@ -15,41 +15,46 @@
 #@ automatically scrolls to keep selection visible. Can check/uncheck any number
 #@ of items.
 
-func _BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset) {
+func _BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset)
+{
 	var item = items[itemIndex];
 	var isChecked = checked[itemIndex];
 	var checkMark = " ";
 
-	if isChecked {
-		checkMark = "✓";
-	}
+	if isChecked { checkMark = "✓"; }
 
 	var displayText = "[" + checkMark + "] " + item;
 	displayText = BFClipText(displayText, width);
 	displayText = BFPadText(displayText, width, BFALIGNLEFT);
 
-	if itemIndex == selected {
+	if itemIndex == selected
+	{
 		SetAttribute(COLORBLACK);
 		SetAttribute(COLORBGWHITE);
 	}
 
 	BFDrawText(x, y + itemIndex - offset, displayText);
 
-	if itemIndex == selected {
+	if itemIndex == selected
+	{
 		SetAttribute(COLORRESET);
 	}
 }
 
-func BFCheckboxList(x, y, width, height, items, checkedItems) {
+func BFCheckboxList(x, y, width, height, items, checkedItems)
+{
 	var selected = 1;
 	var offset = 1;
 	var checked = [];
 
-	for i = 1 to len(items) {
+	for i = 1 to len(items)
+	{
 		var isChecked = false;
 
-		for j = 1 to len(checkedItems) {
-			if i == checkedItems[j] {
+		for j = 1 to len(checkedItems)
+		{
+			if i == checkedItems[j]
+			{
 				isChecked = true;
 			}
 		}
@@ -62,72 +67,96 @@ func BFCheckboxList(x, y, width, height, items, checkedItems) {
 
 	HideCursor();
 
-	for row = 1 to height {
+	for row = 1 to height
+	{
 		var itemIndex = offset + row - 1;
 
-		if itemIndex > len(items) {
+		if itemIndex > len(items)
+		{
 			BFClearRegion(x, y + row - 1, width, 1);
-		} else {
+		}
+		else
+		{
 			_BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset);
 		}
 	}
 
-	while running {
+	while running
+	{
 		var prevSelected = selected;
 		var prevOffset = offset;
 		var spaceToggled = false;
 		var key = getch();
 
-		if key == BFKEYENTER {
+		if key == BFKEYENTER
+		{
 			result = [];
 
-			for i = 1 to len(checked) {
-				if checked[i] {
+			for i = 1 to len(checked)
+			{
+				if checked[i]
+				{
 					append(result, i);
 				}
 			}
 
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif type(key) == "bytes" and len(key) == 1 and key[1] == 32 {
+		}
+		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 32
+		{
 			var currentState = checked[selected];
 			checked[selected] = not currentState;
 			spaceToggled = true;
-		} elseif key == BFKEYUP {
-			if selected > 1 {
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
 				selected = selected - 1;
 			}
-		} elseif key == BFKEYDOWN {
-			if selected < len(items) {
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
 				selected = selected + 1;
 			}
 		}
 
-		if running {
-			if selected < offset {
-				offset = selected;
-			}
+		if running
+		{
+			if selected < offset { offset = selected; }
 
-			if selected >= offset + height {
-				offset = selected - height + 1;
-			}
+			if selected >= offset + height { offset = selected - height + 1; }
 
-			if offset != prevOffset {
-				for row = 1 to height {
+			if offset != prevOffset
+			{
+				for row = 1 to height
+				{
 					var itemIndex = offset + row - 1;
 
-					if itemIndex > len(items) {
+					if itemIndex > len(items)
+					{
 						BFClearRegion(x, y + row - 1, width, 1);
-					} else {
+					}
+					else
+					{
 						_BFCheckboxRow_(x, y, width, items, checked, itemIndex, selected, offset);
 					}
 				}
-			} elseif selected != prevSelected {
+			}
+			elseif selected != prevSelected
+			{
 				_BFCheckboxRow_(x, y, width, items, checked, prevSelected, selected, offset);
 				_BFCheckboxRow_(x, y, width, items, checked, selected, selected, offset);
-			} elseif spaceToggled {
+			}
+			elseif spaceToggled
+			{
 				_BFCheckboxRow_(x, y, width, items, checked, selected, selected, offset);
 			}
 		}

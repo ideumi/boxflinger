@@ -10,7 +10,8 @@
 #@ immediately at current terminal attributes and does not clear previous content
 #@ at position.
 
-func BFDrawText(x, y, text) {
+func BFDrawText(x, y, text)
+{
 	CursorToXY(x, y);
 
 	fwrite(pack(str(text)), STDOUT);
@@ -25,10 +26,9 @@ func BFDrawText(x, y, text) {
 #@ border, does not clear interior. Returns ''err'' if width or height less than
 #@ 2, or invalid style.
 
-func BFDrawBox(x, y, width, height, style) {
-	if width < 2 or height < 2 {
-		return err;
-	}
+func BFDrawBox(x, y, width, height, style)
+{
+	if width < 2 or height < 2 { return err; }
 
 	var topLeft = null;
 	var topRight = null;
@@ -39,7 +39,8 @@ func BFDrawBox(x, y, width, height, style) {
 	var horizontal = null;
 	var vertical = null;
 
-	if style == BFBOXSINGLE {
+	if style == BFBOXSINGLE
+	{
 		topLeft = BFPACKEDSINGLETL;
 		topRight = BFPACKEDSINGLETR;
 
@@ -48,7 +49,9 @@ func BFDrawBox(x, y, width, height, style) {
 
 		horizontal = BFPACKEDSINGLEH;
 		vertical = BFPACKEDSINGLEV;
-	} elseif style == BFBOXDOUBLE {
+	}
+	elseif style == BFBOXDOUBLE
+	{
 		topLeft = BFPACKEDDOUBLETL;
 		topRight = BFPACKEDDOUBLETR;
 
@@ -57,7 +60,9 @@ func BFDrawBox(x, y, width, height, style) {
 
 		horizontal = BFPACKEDDOUBLEH;
 		vertical = BFPACKEDDOUBLEV;
-	} elseif style == BFBOXROUNDED {
+	}
+	elseif style == BFBOXROUNDED
+	{
 		topLeft = BFPACKEDROUNDEDTL;
 		topRight = BFPACKEDROUNDEDTR;
 
@@ -66,7 +71,9 @@ func BFDrawBox(x, y, width, height, style) {
 
 		horizontal = BFPACKEDSINGLEH;
 		vertical = BFPACKEDSINGLEV;
-	} else {
+	}
+	else
+	{
 		return err;
 	}
 
@@ -74,13 +81,15 @@ func BFDrawBox(x, y, width, height, style) {
 
 	fwrite(topLeft, STDOUT);
 
-	for i = 1 to width - 2 {
+	for i = 1 to width - 2
+	{
 		fwrite(horizontal, STDOUT);
 	}
 
 	fwrite(topRight, STDOUT);
 
-	for i = 1 to height - 2 {
+	for i = 1 to height - 2
+	{
 		CursorToXY(x, y + i);
 		fwrite(vertical, STDOUT);
 
@@ -92,7 +101,8 @@ func BFDrawBox(x, y, width, height, style) {
 
 	fwrite(bottomLeft, STDOUT);
 
-	for i = 1 to width - 2 {
+	for i = 1 to width - 2
+	{
 		fwrite(horizontal, STDOUT);
 	}
 
@@ -108,14 +118,17 @@ func BFDrawBox(x, y, width, height, style) {
 #@ and ''y'' with dimensions ''width'' and ''height''. Character is converted to
 #@ string and only first character is used.
 
-func BFFillRect(x, y, width, height, char) {
+func BFFillRect(x, y, width, height, char)
+{
 	var fillChar = str(char);
 	var packedChar = pack(fillChar);
 
-	for row = 1 to height {
+	for row = 1 to height
+	{
 		CursorToXY(x, y + row - 1);
 
-		for col = 1 to width {
+		for col = 1 to width
+		{
 			fwrite(packedChar, STDOUT);
 		}
 	}
@@ -128,13 +141,15 @@ func BFFillRect(x, y, width, height, char) {
 #@ ''x'' and ''y'' with length ''width''. Character is converted to string and
 #@ only first character is used.
 
-func BFDrawHLine(x, y, width, char) {
+func BFDrawHLine(x, y, width, char)
+{
 	var lineChar = str(char);
 	var packedChar = pack(lineChar);
 
 	CursorToXY(x, y);
 
-	for i = 1 to width {
+	for i = 1 to width
+	{
 		fwrite(packedChar, STDOUT);
 	}
 }
@@ -146,11 +161,13 @@ func BFDrawHLine(x, y, width, char) {
 #@ ''x'' and ''y'' with length ''height''. Character is converted to string and
 #@ only first character is used.
 
-func BFDrawVLine(x, y, height, char) {
+func BFDrawVLine(x, y, height, char)
+{
 	var lineChar = str(char);
 	var packedChar = pack(lineChar);
 
-	for i = 1 to height {
+	for i = 1 to height
+	{
 		CursorToXY(x, y + i - 1);
 
 		fwrite(packedChar, STDOUT);
@@ -166,20 +183,21 @@ func BFDrawVLine(x, y, height, char) {
 #@ border and is auto-truncated to fit if too long (max: width - 4). Returns
 #@ ''err'' if width or height less than 2.
 
-func BFDrawFrame(x, y, width, height, title, style) {
+func BFDrawFrame(x, y, width, height, title, style)
+{
 	var boxResult = BFDrawBox(x, y, width, height, style);
 
-	if iserr(boxResult) {
-		return err;
-	}
+	if iserr(boxResult) { return err; }
 
 	var titleStr = str(title);
 	var titleLen = lenv(titleStr);
 
-	if titleLen > 0 and width > 4 {
+	if titleLen > 0 and width > 4
+	{
 		var maxTitleLen = width - 4;
 
-		if titleLen > maxTitleLen {
+		if titleLen > maxTitleLen
+		{
 			titleStr = slice(titleStr, 1, maxTitleLen);
 		}
 
@@ -199,7 +217,8 @@ func BFDrawFrame(x, y, width, height, title, style) {
 #@ Clears a rectangular area by filling with spaces at position ''x'' and ''y''
 #@ with dimensions ''width'' and ''height''.
 
-func BFClearRegion(x, y, width, height) {
+func BFClearRegion(x, y, width, height)
+{
 	BFFillRect(x, y, width, height, " ");
 }
 
@@ -212,51 +231,53 @@ func BFClearRegion(x, y, width, height) {
 #@ ''BFBOXDOUBLE'', or ''BFBOXROUNDED''. Returns ''ok'' on success, or ''err'' if
 #@ width less than 1, total is 0, or invalid style.
 
-func BFDrawProgressBar(x, y, width, current, total, style) {
-	if width < 1 {
-		return err;
-	}
+func BFDrawProgressBar(x, y, width, current, total, style)
+{
+	if width < 1 { return err; }
 
-	if total == 0 {
-		return err;
-	}
+	if total == 0 { return err; }
 
 	var fillChar = BFPACKEDBLOCK;
 	var emptyChar = BFPACKEDSINGLEH;
 
-	if style == BFBOXSINGLE {
+	if style == BFBOXSINGLE
+	{
 		fillChar = BFPACKEDBLOCK;
 		emptyChar = BFPACKEDSINGLEH;
-	} elseif style == BFBOXDOUBLE {
+	}
+	elseif style == BFBOXDOUBLE
+	{
 		fillChar = BFPACKEDBLOCK;
 		emptyChar = BFPACKEDDOUBLEH;
-	} elseif style == BFBOXROUNDED {
+	}
+	elseif style == BFBOXROUNDED
+	{
 		fillChar = BFPACKEDDOT;
 		emptyChar = BFPACKEDSINGLEH;
-	} else {
+	}
+	else
+	{
 		return err;
 	}
 
 	var progress = current / total;
 
-	if progress < 0 {
-		progress = 0;
-	}
+	if progress < 0 { progress = 0; }
 
-	if progress > 1 {
-		progress = 1;
-	}
+	if progress > 1 { progress = 1; }
 
 	var filledWidth = int(width * progress);
 	var emptyWidth = width - filledWidth;
 
 	CursorToXY(x, y);
 
-	for i = 1 to filledWidth {
+	for i = 1 to filledWidth
+	{
 		fwrite(fillChar, STDOUT);
 	}
 
-	for i = 1 to emptyWidth {
+	for i = 1 to emptyWidth
+	{
 		fwrite(emptyChar, STDOUT);
 	}
 
@@ -269,19 +290,19 @@ func BFDrawProgressBar(x, y, width, current, total, style) {
 #@ Draws a button with label ''text'' at position ''x'' and ''y''. If ''selected''
 #@ is ''true'', draws with inverted colors.
 
-func BFDrawButton(x, y, text, selected) {
+func BFDrawButton(x, y, text, selected)
+{
 	var buttonText = "[ " + str(text) + " ]";
 
-	if selected {
+	if selected
+	{
 		SetAttribute(COLORBLACK);
 		SetAttribute(COLORBGWHITE);
 	}
 
 	BFDrawText(x, y, buttonText);
 
-	if selected {
-		SetAttribute(COLORRESET);
-	}
+	if selected { SetAttribute(COLORRESET); }
 }
 
 #@ <BFDrawCheckbox(x, y, label, checked)>
@@ -290,12 +311,11 @@ func BFDrawButton(x, y, text, selected) {
 #@ Draws a checkbox with ''label'' text at position ''x'' and ''y''. If ''checked''
 #@ is ''true'', shows checkmark; otherwise shows empty box.
 
-func BFDrawCheckbox(x, y, label, checked) {
+func BFDrawCheckbox(x, y, label, checked)
+{
 	var checkMark = " ";
 
-	if checked {
-		checkMark = "✓";
-	}
+	if checked { checkMark = "✓"; }
 
 	var checkboxText = "[" + checkMark + "] " + str(label);
 
@@ -312,42 +332,46 @@ func BFDrawCheckbox(x, y, label, checked) {
 #@ auto-clipped with ellipsis if too long and padded to full width. Always returns
 #@ ''ok''.
 
-func BFDrawList(x, y, width, height, items, selected, offset) {
+func BFDrawList(x, y, width, height, items, selected, offset)
+{
 	var maxItems = len(items);
 	var visibleItems = height;
 
-	if maxItems == 0 {
+	if maxItems == 0
+	{
 		BFClearRegion(x, y, width, height);
 		return ok;
 	}
 
-	if offset < 1 {
-		offset = 1;
-	}
+	if offset < 1 { offset = 1; }
 
-	if offset > maxItems {
-		offset = maxItems;
-	}
+	if offset > maxItems { offset = maxItems; }
 
-	for row = 1 to visibleItems {
+	for row = 1 to visibleItems
+	{
 		var itemIndex = offset + row - 1;
 
-		if itemIndex > maxItems {
+		if itemIndex > maxItems
+		{
 			BFClearRegion(x, y + row - 1, width, 1);
-		} else {
+		}
+		else
+		{
 			var item = items[itemIndex];
 			var displayText = BFClipText(item, width);
 
 			displayText = BFPadText(displayText, width, BFALIGNLEFT);
 
-			if itemIndex == selected {
+			if itemIndex == selected
+			{
 				SetAttribute(COLORBLACK);
 				SetAttribute(COLORBGWHITE);
 			}
 
 			BFDrawText(x, y + row - 1, displayText);
 
-			if itemIndex == selected {
+			if itemIndex == selected
+			{
 				SetAttribute(COLORRESET);
 			}
 		}

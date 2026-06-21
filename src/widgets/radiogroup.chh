@@ -13,72 +13,91 @@
 #@ for unselected and "(•) Option" for selected. Items stacked vertically at
 #@ consecutive y positions.
 
-func BFRadioGroup(x, y, items, defaultIndex) {
+func BFRadioGroup(x, y, items, defaultIndex)
+{
 	var selected = defaultIndex;
 	var running = true;
 	var result = err;
 
-	if len(items) == 0 {
-		return err;
-	}
+	if len(items) == 0 { return err; }
 
-	if selected < 1 {
-		selected = 1;
-	}
+	if selected < 1 { selected = 1; }
 
-	if selected > len(items) {
-		selected = len(items);
-	}
+	if selected > len(items) { selected = len(items); }
 
 	HideCursor();
 
-	for i = 1 to len(items) {
+	for i = 1 to len(items)
+	{
 		var radio = "( )";
 
-		if i == selected {
-			radio = "(•)";
-		}
+		if i == selected { radio = "(•)"; }
 
 		BFDrawText(x, y + i - 1, radio + " " + items[i]);
 	}
 
-	while running {
+	while running
+	{
 		var prevSelected = selected;
 		var key = getch();
 
-		if key == BFKEYENTER {
+		if key == BFKEYENTER
+		{
 			result = selected;
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYUP {
-			if selected > 1 {
+		}
+		elseif key == BFKEYUP
+		{
+			if selected > 1
+			{
 				selected = selected - 1;
 			}
-		} elseif key == BFKEYDOWN {
-			if selected < len(items) {
+		}
+		elseif key == BFKEYDOWN
+		{
+			if selected < len(items)
+			{
 				selected = selected + 1;
 			}
-		} elseif key == BFKEYHOME {
+		}
+		elseif key == BFKEYHOME
+		{
 			selected = 1;
-		} elseif key == BFKEYEND {
+		}
+		elseif key == BFKEYEND
+		{
 			selected = len(items);
-		} elseif key == BFKEYPAGEUP {
-			if selected > BFPAGEITEMS {
+		}
+		elseif key == BFKEYPAGEUP
+		{
+			if selected > BFPAGEITEMS
+			{
 				selected = selected - BFPAGEITEMS;
-			} else {
+			}
+			else
+			{
 				selected = 1;
 			}
-		} elseif key == BFKEYPAGEDOWN {
-			if selected + BFPAGEITEMS <= len(items) {
+		}
+		elseif key == BFKEYPAGEDOWN
+		{
+			if selected + BFPAGEITEMS <= len(items)
+			{
 				selected = selected + BFPAGEITEMS;
-			} else {
+			}
+			else
+			{
 				selected = len(items);
 			}
 		}
 
-		if running and selected != prevSelected {
+		if running and selected != prevSelected
+		{
 			BFDrawText(x, y + prevSelected - 1, "( ) " + items[prevSelected]);
 			BFDrawText(x, y + selected - 1, "(•) " + items[selected]);
 		}

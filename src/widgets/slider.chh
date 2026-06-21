@@ -14,14 +14,16 @@
 #@ or less. Visual representation uses [====----] style bracket notation. Value
 #@ automatically clamped to min-max range during adjustment.
 
-func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth) {
+func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
+{
 	BFClearRegion(x, y, clearWidth, 2);
 	BFDrawText(x, y, label + ": " + str(int(current)));
 
 	var range = max - min;
 	var position = 0;
 
-	if range != 0 {
+	if range != 0
+	{
 		position = (current - min) / range;
 	}
 
@@ -31,10 +33,14 @@ func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth) {
 
 	fwrite(BFPACKEDBRACKETLEFT, STDOUT);
 
-	for i = 1 to width {
-		if i <= filledWidth {
+	for i = 1 to width
+	{
+		if i <= filledWidth
+		{
 			fwrite(BFPACKEDEQUALS, STDOUT);
-		} else {
+		}
+		else
+		{
 			fwrite(BFPACKEDDASH, STDOUT);
 		}
 	}
@@ -42,72 +48,76 @@ func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth) {
 	fwrite(BFPACKEDBRACKETRIGHT, STDOUT);
 }
 
-func BFSlider(x, y, width, label, value, min, max, stepSize) {
-	if width < 1 {
-		return err;
-	}
+func BFSlider(x, y, width, label, value, min, max, stepSize)
+{
+	if width < 1 { return err; }
 
-	if stepSize <= 0 {
-		return err;
-	}
+	if stepSize <= 0 { return err; }
 
 	var current = value;
 	var running = true;
 
 	var result = err;
 
-	if current < min {
-		current = min;
-	}
+	if current < min { current = min; }
 
-	if current > max {
-		current = max;
-	}
+	if current > max { current = max; }
 
 	var maxLabelLen = lenv(label) + 2 + lenv(str(int(max)));
 	var minLabelLen = lenv(label) + 2 + lenv(str(int(min)));
 	var clearWidth = width + 2;
 
-	if maxLabelLen > clearWidth {
-		clearWidth = maxLabelLen;
-	}
-	if minLabelLen > clearWidth {
-		clearWidth = minLabelLen;
-	}
+	if maxLabelLen > clearWidth { clearWidth = maxLabelLen; }
+	if minLabelLen > clearWidth { clearWidth = minLabelLen; }
 
 	HideCursor();
 
 	_BFSliderDraw_(x, y, width, label, current, min, max, clearWidth);
 
-	while running {
+	while running
+	{
 		var prevCurrent = current;
 		var key = getch();
 
-		if key == BFKEYENTER {
+		if key == BFKEYENTER
+		{
 			result = current;
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYLEFT {
+		}
+		elseif key == BFKEYLEFT
+		{
 			current = current - stepSize;
 
-			if current < min {
+			if current < min
+			{
 				current = min;
 			}
-		} elseif key == BFKEYRIGHT {
+		}
+		elseif key == BFKEYRIGHT
+		{
 			current = current + stepSize;
 
-			if current > max {
+			if current > max
+			{
 				current = max;
 			}
-		} elseif key == BFKEYHOME {
+		}
+		elseif key == BFKEYHOME
+		{
 			current = min;
-		} elseif key == BFKEYEND {
+		}
+		elseif key == BFKEYEND
+		{
 			current = max;
 		}
 
-		if running and current != prevCurrent {
+		if running and current != prevCurrent
+		{
 			_BFSliderDraw_(x, y, width, label, current, min, max, clearWidth);
 		}
 	}
