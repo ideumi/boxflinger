@@ -10,17 +10,14 @@
 #@ truncated. Returns original text if fits, otherwise truncated with "..."
 #@ appended.
 
-func BFClipText(text, maxWidth) {
+func BFClipText(text, maxWidth)
+{
 	var textStr = str(text);
 	var textLen = lenv(textStr);
 
-	if textLen <= maxWidth {
-		return textStr;
-	}
+	if textLen <= maxWidth { return textStr; }
 
-	if maxWidth <= 3 {
-		return slice(textStr, 1, maxWidth);
-	}
+	if maxWidth <= 3 { return slice(textStr, 1, maxWidth); }
 
 	return slice(textStr, 1, maxWidth - 3) + "...";
 }
@@ -33,17 +30,14 @@ func BFClipText(text, maxWidth) {
 #@ "start...end" format. If maxWidth is 3 or less, truncates without ellipsis.
 #@ Left side gets floor(available/2) chars, right side gets remainder.
 
-func BFTruncateMiddle(text, maxWidth) {
+func BFTruncateMiddle(text, maxWidth)
+{
 	var textStr = str(text);
 	var textLen = lenv(textStr);
 
-	if textLen <= maxWidth {
-		return textStr;
-	}
+	if textLen <= maxWidth { return textStr; }
 
-	if maxWidth <= 3 {
-		return slice(textStr, 1, maxWidth);
-	}
+	if maxWidth <= 3 { return slice(textStr, 1, maxWidth); }
 
 	var ellipsis = "...";
 	var availableSpace = maxWidth - 3;
@@ -66,26 +60,32 @@ func BFTruncateMiddle(text, maxWidth) {
 #@ spaces, left gets floor(padding/2)). Returns padded text at specified width,
 #@ or original if already at or exceeds width.
 
-func BFPadText(text, width, align) {
+func BFPadText(text, width, align)
+{
 	var textStr = str(text);
 	var textLen = lenv(textStr);
 
-	if textLen >= width {
-		return textStr;
-	}
+	if textLen >= width { return textStr; }
 
 	var padding = width - textLen;
 
-	if align == BFALIGNLEFT {
+	if align == BFALIGNLEFT
+	{
 		return textStr + (" " * padding);
-	} elseif align == BFALIGNRIGHT {
+	}
+	elseif align == BFALIGNRIGHT
+	{
 		return (" " * padding) + textStr;
-	} elseif align == BFALIGNCENTER {
+	}
+	elseif align == BFALIGNCENTER
+	{
 		var leftPad = int(padding / 2);
 		var rightPad = padding - leftPad;
 
 		return (" " * leftPad) + textStr + (" " * rightPad);
-	} else {
+	}
+	else
+	{
 		return textStr;
 	}
 }
@@ -95,7 +95,8 @@ func BFPadText(text, width, align) {
 #@
 #@ Measures the display width of ''text'' in terminal columns.
 
-func BFMeasureText(text) {
+func BFMeasureText(text)
+{
 	return lenv(str(text));
 }
 
@@ -104,17 +105,14 @@ func BFMeasureText(text) {
 #@
 #@ Returns the index at the end of the next word in ''text'' after ''pos''.
 
-func BFNextWordPos(text, pos) {
+func BFNextWordPos(text, pos)
+{
 	var n = len(text);
 	var i = pos;
 
-	while i < n and charat(text, i + 1) == " " {
-		i = i + 1;
-	}
+	while i < n and charat(text, i + 1) == " " { i = i + 1; }
 
-	while i < n and charat(text, i + 1) != " " {
-		i = i + 1;
-	}
+	while i < n and charat(text, i + 1) != " " { i = i + 1; }
 
 	return i;
 }
@@ -124,58 +122,58 @@ func BFNextWordPos(text, pos) {
 #@
 #@ Returns the index at the start of the previous word in ''text'' before ''pos''.
 
-func BFPrevWordPos(text, pos) {
+func BFPrevWordPos(text, pos)
+{
 	var i = pos;
 
-	while i > 0 and charat(text, i) == " " {
-		i = i - 1;
-	}
+	while i > 0 and charat(text, i) == " " { i = i - 1; }
 
-	while i > 0 and charat(text, i) != " " {
-		i = i - 1;
-	}
+	while i > 0 and charat(text, i) != " " { i = i - 1; }
 
 	return i;
 }
 
 #@ <BFWrapText(text, width)>
-#@ V-1.0.3 (2026-06-14)
+#@ V-1.0.4 (2026-06-20)
 #@
 #@ Wraps ''text'' into multiple lines based on word boundaries and ''width''
-#@ limit. Returns list of text lines, each at or under width characters when
-#@ possible. Splits on spaces (word boundaries) and keeps words intact when
-#@ possible. If single word exceeds width, places it on its own line.
+#@ limit. Returns list of text lines, each at or under ''width'' characters when
+#@ possible.
 
-func BFWrapText(text, width) {
-	var textStr = str(text);
-	var words = split(textStr, " ");
+func BFWrapText(text, width)
+{
+	var paragraphs = split(str(text), "\n");
 	var lines = [];
-	var currentLine = "";
 
-	for i = 1 to len(words) {
-		var word = words[i];
-		var testLine = currentLine;
+	for p = 1 to len(paragraphs)
+	{
+		var words = split(paragraphs[p], " ");
+		var currentLine = "";
 
-		if lenv(currentLine) > 0 {
-			testLine = currentLine + " " + word;
-		} else {
-			testLine = word;
-		}
+		for i = 1 to len(words)
+		{
+			var word = words[i];
 
-		if lenv(testLine) <= width {
-			currentLine = testLine;
-		} else {
-			if lenv(currentLine) > 0 {
-				append(lines, currentLine);
+			if lenv(currentLine) == 0
+			{
 				currentLine = word;
-			} else {
-				append(lines, word);
-				currentLine = "";
+			}
+			else
+			{
+				var joined = currentLine + " " + word;
+
+				if lenv(joined) <= width
+				{
+					currentLine = joined;
+				}
+				else
+				{
+					append(lines, currentLine);
+					currentLine = word;
+				}
 			}
 		}
-	}
 
-	if lenv(currentLine) > 0 {
 		append(lines, currentLine);
 	}
 

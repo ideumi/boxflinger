@@ -6,7 +6,8 @@ load("libpaths.chh");
 load("libstat.chh");
 load("form.chh");
 
-func TestTextInput() {
+func TestTextInput()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -18,11 +19,8 @@ func TestTextInput() {
 
 	var name = BFTextInput(4, 9, 30, "Enter your name: ", "John Doe");
 
-	if iserr(name) {
-		BFDrawText(4, 12, "Input cancelled");
-	} else {
-		BFDrawText(4, 12, "You entered: " + name);
-	}
+	if iserr(name) { BFDrawText(4, 12, "Input cancelled"); }
+	else { BFDrawText(4, 12, "You entered: " + name); }
 
 	BFDrawText(4, 14, "Press any key to continue...");
 
@@ -31,7 +29,8 @@ func TestTextInput() {
 	ShowCursor();
 }
 
-func TestSelect() {
+func TestSelect()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -55,9 +54,12 @@ func TestSelect() {
 	BFDrawBox(4, 7, 40, 8, BFBOXSINGLE);
 	var selected = BFSelect(5, 8, 38, 6, items, 3);
 
-	if iserr(selected) {
+	if iserr(selected)
+	{
 		BFDrawText(4, 16, "Selection cancelled");
-	} else {
+	}
+	else
+	{
 		BFDrawText(4, 16, "You selected: " + items[selected] + " (index " + str(selected) + ")");
 	}
 
@@ -68,7 +70,8 @@ func TestSelect() {
 	ShowCursor();
 }
 
-func TestMenu() {
+func TestMenu()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -86,11 +89,8 @@ func TestMenu() {
 
 	var selected = BFMenu(20, 8, items, 1);
 
-	if iserr(selected) {
-		BFDrawText(4, 14, "Menu cancelled");
-	} else {
-		BFDrawText(4, 14, "You selected: " + items[selected]);
-	}
+	if iserr(selected) { BFDrawText(4, 14, "Menu cancelled"); }
+	else { BFDrawText(4, 14, "You selected: " + items[selected]); }
 
 	BFDrawText(4, 15, "Press any key to continue...");
 
@@ -99,7 +99,8 @@ func TestMenu() {
 	ShowCursor();
 }
 
-func TestConfirm() {
+func TestConfirm()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -110,13 +111,9 @@ func TestConfirm() {
 
 	var result = BFConfirm(20, 8, "Do you want to continue?", true);
 
-	if iserr(result) {
-		BFDrawText(4, 11, "Confirmation cancelled");
-	} elseif result {
-		BFDrawText(4, 11, "You chose: Yes");
-	} else {
-		BFDrawText(4, 11, "You chose: No");
-	}
+	if iserr(result) { BFDrawText(4, 11, "Confirmation cancelled"); }
+	elseif result { BFDrawText(4, 11, "You chose: Yes"); }
+	else { BFDrawText(4, 11, "You chose: No"); }
 
 	BFDrawText(4, 12, "Press any key to continue...");
 
@@ -125,7 +122,8 @@ func TestConfirm() {
 	ShowCursor();
 }
 
-func TestNumberInput() {
+func TestNumberInput()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -134,13 +132,10 @@ func TestNumberInput() {
 	BFDrawText(4, 4, "This tests numeric input with validation.");
 	BFDrawText(4, 5, "Only digits are accepted, value must be in range.");
 
-	var number = BFNumberInput(4, 8, "Enter age", 0, 120, 25);
+	var number = BFNumberInput(4, 8, "Enter age", -120, 120, 25);
 
-	if iserr(number) {
-		BFDrawText(4, 11, "Input cancelled");
-	} else {
-		BFDrawText(4, 11, "You entered: " + str(int(number)));
-	}
+	if iserr(number) { BFDrawText(4, 11, "Input cancelled"); }
+	else { BFDrawText(4, 11, "You entered: " + str(int(number))); }
 
 	BFDrawText(4, 13, "Press any key to continue...");
 
@@ -149,7 +144,8 @@ func TestNumberInput() {
 	ShowCursor();
 }
 
-func TestSlider() {
+func TestSlider()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -160,11 +156,8 @@ func TestSlider() {
 
 	var volume = BFSlider(10, 8, 40, "Volume", 50, 0, 100, 5);
 
-	if iserr(volume) {
-		BFDrawText(4, 11, "Input cancelled");
-	} else {
-		BFDrawText(4, 11, "Volume set to: " + str(int(volume)) + "%");
-	}
+	if iserr(volume) { BFDrawText(4, 11, "Input cancelled"); }
+	else { BFDrawText(4, 11, "Volume set to: " + str(int(volume)) + "%"); }
 
 	BFDrawText(4, 13, "Press any key to continue...");
 
@@ -173,7 +166,8 @@ func TestSlider() {
 	ShowCursor();
 }
 
-func TestCheckboxList() {
+func TestCheckboxList()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -196,12 +190,16 @@ func TestCheckboxList() {
 	BFDrawBox(4, 7, 50, 9, BFBOXSINGLE);
 	var checked = BFCheckboxList(5, 8, 48, 7, items, defaultChecked);
 
-	if iserr(checked) {
+	if iserr(checked)
+	{
 		BFDrawText(4, 22, "Selection cancelled");
-	} else {
+	}
+	else
+	{
 		BFDrawText(4, 22, "You selected " + str(len(checked)) + " items:");
 
-		for i = 1 to len(checked) {
+		for i = 1 to len(checked)
+		{
 			var idx = checked[i];
 			BFDrawText(6, 22 + i, "- " + items[idx]);
 		}
@@ -214,7 +212,8 @@ func TestCheckboxList() {
 	ShowCursor();
 }
 
-func TestRadioGroup() {
+func TestRadioGroup()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -231,11 +230,8 @@ func TestRadioGroup() {
 
 	var selected = BFRadioGroup(20, 8, items, 2);
 
-	if iserr(selected) {
-		BFDrawText(4, 14, "Selection cancelled");
-	} else {
-		BFDrawText(4, 14, "You selected: " + items[selected]);
-	}
+	if iserr(selected) { BFDrawText(4, 14, "Selection cancelled"); }
+	else { BFDrawText(4, 14, "You selected: " + items[selected]); }
 
 	BFDrawText(4, 15, "Press any key to continue...");
 
@@ -244,7 +240,8 @@ func TestRadioGroup() {
 	ShowCursor();
 }
 
-func TestTextBox() {
+func TestTextBox()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -258,9 +255,12 @@ func TestTextBox() {
 
 	var text = BFTextBox(10, 8, 50, 12, "Text Editor", defaultText, BFBOXSINGLE);
 
-	if iserr(text) {
+	if iserr(text)
+	{
 		BFDrawText(4, 22, "Editing cancelled");
-	} else {
+	}
+	else
+	{
 		var lines = split(text, "\n");
 		BFDrawText(4, 22, "You entered " + str(len(lines)) + " lines (" + str(len(text)) + " chars)");
 	}
@@ -272,7 +272,8 @@ func TestTextBox() {
 	ShowCursor();
 }
 
-func TestKeybindsBar() {
+func TestKeybindsBar()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -309,7 +310,8 @@ func TestKeybindsBar() {
 	ShowCursor();
 }
 
-func TestMessageDialog() {
+func TestMessageDialog()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -326,7 +328,8 @@ func TestMessageDialog() {
 	ShowCursor();
 }
 
-func TestConfirmDialog() {
+func TestConfirmDialog()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -338,13 +341,9 @@ func TestConfirmDialog() {
 
 	var result = BFShowConfirm(region, 46, "Confirm", "Ya like jazz?", true);
 
-	if iserr(result) {
-		BFDrawText(4, 22, "Confirmation cancelled (ESC)");
-	} elseif result {
-		BFDrawText(4, 22, "You chose: Yes");
-	} else {
-		BFDrawText(4, 22, "You chose: No");
-	}
+	if iserr(result) { BFDrawText(4, 22, "Confirmation cancelled (ESC)"); }
+	elseif result { BFDrawText(4, 22, "You chose: Yes"); }
+	else { BFDrawText(4, 22, "You chose: No"); }
 
 	BFDrawText(4, 23, "Press any key to continue...");
 
@@ -353,7 +352,8 @@ func TestConfirmDialog() {
 	ShowCursor();
 }
 
-func ShowMenu() {
+func ShowMenu()
+{
 	ClearScreen();
 	HideCursor();
 
@@ -366,7 +366,8 @@ func ShowMenu() {
 	var menuY = 2;
 	var menuH = 13;
 
-	if kitty {
+	if kitty
+	{
 		BFKittyClearImages();
 		menuY = 10;
 
@@ -398,40 +399,26 @@ func ShowMenu() {
 
 	ShowCursor();
 
-	if choice == "1" {
-		TestTextInput();
-	} elseif choice == "2" {
-		TestSelect();
-	} elseif choice == "3" {
-		TestMenu();
-	} elseif choice == "4" {
-		TestConfirm();
-	} elseif choice == "5" {
-		TestNumberInput();
-	} elseif choice == "6" {
-		TestSlider();
-	} elseif choice == "7" {
-		TestCheckboxList();
-	} elseif choice == "8" {
-		TestRadioGroup();
-	} elseif choice == "9" {
-		TestTextBox();
-	} elseif choice == "a" or choice == "A" {
-		TestForm();
-	} elseif choice == "b" or choice == "B" {
-		TestKeybindsBar();
-	} elseif choice == "c" or choice == "C" {
-		TestMessageDialog();
-	} elseif choice == "d" or choice == "D" {
-		TestConfirmDialog();
-	} elseif choice == "0" or choice == "q" or choice == "Q" {
-		return false;
-	}
+	if choice == "1" { TestTextInput(); }
+	elseif choice == "2" { TestSelect(); }
+	elseif choice == "3" { TestMenu(); }
+	elseif choice == "4" { TestConfirm(); }
+	elseif choice == "5" { TestNumberInput(); }
+	elseif choice == "6" { TestSlider(); }
+	elseif choice == "7" { TestCheckboxList(); }
+	elseif choice == "8" { TestRadioGroup(); }
+	elseif choice == "9" { TestTextBox(); }
+	elseif choice == "a" or choice == "A" { TestForm(); }
+	elseif choice == "b" or choice == "B" { TestKeybindsBar(); }
+	elseif choice == "c" or choice == "C" { TestMessageDialog(); }
+	elseif choice == "d" or choice == "D" { TestConfirmDialog(); }
+	elseif choice == "0" or choice == "q" or choice == "Q" { return false; }
 
 	return true;
 }
 
-func Main() {
+func Main()
+{
 	SetTitle("Boxflinger Demo");
 
 	while ShowMenu() {}

@@ -13,7 +13,8 @@
 #@ if ESC is pressed. Shows error message for 1 second if value outside range.
 #@ Only supports integers.
 
-func BFNumberInput(x, y, prompt, min, max, defaultValue) {
+func BFNumberInput(x, y, prompt, min, max, defaultValue)
+{
 	var text = str(int(defaultValue));
 	var cursorPos = len(text);
 	var running = true;
@@ -24,9 +25,7 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue) {
 	var fullPrompt = prompt + " (" + minStr + "-" + maxStr + "): ";
 	var maxInputLen = lenv(minStr);
 
-	if lenv(maxStr) > maxInputLen {
-		maxInputLen = lenv(maxStr);
-	}
+	if lenv(maxStr) > maxInputLen { maxInputLen = lenv(maxStr); }
 
 	var errorMsg = "Value must be between " + minStr + " and " + maxStr;
 	var inputX = x + lenv(fullPrompt);
@@ -40,21 +39,27 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue) {
 	CursorToXY(inputX + cursorPos, y);
 	ShowCursor();
 
-	while running {
+	while running
+	{
 		var key = getch();
 
 		HideCursor();
 
 		var textChanged = false;
 
-		if key == BFKEYENTER {
-			if text != "" {
+		if key == BFKEYENTER
+		{
+			if text != ""
+			{
 				var value = num(text);
 
-				if not iserr(value) and value >= min and value <= max {
+				if not iserr(value) and value >= min and value <= max
+				{
 					result = value;
 					running = false;
-				} else {
+				}
+				else
+				{
 					BFDrawText(x, y + 1, errorMsg);
 
 					sleep(1000);
@@ -62,11 +67,16 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue) {
 					BFClearRegion(x, y + 1, lenv(errorMsg), 1);
 				}
 			}
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYBACKSPACE {
-			if cursorPos > 0 {
+		}
+		elseif key == BFKEYBACKSPACE
+		{
+			if cursorPos > 0
+			{
 				var before = slice(text, 1, cursorPos - 1);
 				var after = slice(text, cursorPos + 1, len(text));
 
@@ -74,46 +84,79 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue) {
 				cursorPos = cursorPos - 1;
 				textChanged = true;
 			}
-		} elseif type(key) == "bytes" and len(key) == 1 and key[1] >= 48 and key[1] <= 57 {
-			var char = unpack(key);
-			var before = slice(text, 1, cursorPos);
-			var after = slice(text, cursorPos + 1, len(text));
+		}
+		elseif type(key) == "bytes"
+			and len(key) == 1
+			and key[1] >= 48
+			and key[1] <= 57 # 0 (48) to 9 (57)
+		{
+			if len(text) < maxInputLen
+			{
+				var char = unpack(key);
+				var before = slice(text, 1, cursorPos);
+				var after = slice(text, cursorPos + 1, len(text));
 
-			text = before + char + after;
-			cursorPos = cursorPos + 1;
-			textChanged = true;
-		} elseif type(key) == "bytes" and len(key) == 1 and key[1] == 45 and cursorPos == 0 {
-			text = "-" + text;
-			cursorPos = 1;
-			textChanged = true;
-		} elseif key == BFKEYLEFT {
-			if cursorPos > 0 {
-				cursorPos = cursorPos - 1;
-			}
-		} elseif key == BFKEYRIGHT {
-			if cursorPos < len(text) {
+				text = before + char + after;
 				cursorPos = cursorPos + 1;
+				textChanged = true;
 			}
-		} elseif key == BFKEYHOME {
+		}
+		elseif type(key) == "bytes" # Allow minus for negative values (b[45])
+			and len(key) == 1
+			and key[1] == 45
+			and cursorPos == 0
+		{
+			if len(text) < maxInputLen
+			{
+				text = "-" + text;
+				cursorPos = 1;
+				textChanged = true;
+			}
+		}
+		elseif key == BFKEYLEFT
+		{
+			if cursorPos > 0 { cursorPos = cursorPos - 1; }
+		}
+		elseif key == BFKEYRIGHT
+		{
+			if cursorPos < len(text) { cursorPos = cursorPos + 1; }
+		}
+		elseif key == BFKEYHOME
+		{
 			cursorPos = 0;
-		} elseif key == BFKEYEND {
+		}
+		elseif key == BFKEYEND
+		{
 			cursorPos = len(text);
-		} elseif key == BFKEYDELETE {
-			if cursorPos < len(text) {
+		}
+		elseif key == BFKEYDELETE
+		{
+			if cursorPos < len(text)
+			{
 				var before = slice(text, 1, cursorPos);
 				var after = slice(text, cursorPos + 2, len(text));
 
 				text = before + after;
 				textChanged = true;
 			}
-		} elseif key == BFKEYUP {} elseif key == BFKEYDOWN {} elseif key == BFKEYCTRLU {
+		}
+		elseif key == BFKEYUP
+		{
+		}
+		elseif key == BFKEYDOWN
+		{
+		}
+		elseif key == BFKEYCTRLU
+		{
 			text = "";
 			cursorPos = 0;
 			textChanged = true;
 		}
 
-		if running {
-			if textChanged {
+		if running
+		{
+			if textChanged
+			{
 				BFClearRegion(inputX, y, maxInputLen, 1);
 				BFDrawText(inputX, y, text);
 			}

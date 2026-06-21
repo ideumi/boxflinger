@@ -36,7 +36,7 @@ See the [depthfinder](https://codeberg.org/ideumi/depthfinder) file manager for 
 
 ## Requirements
 
-- [Chippy](https://codeberg.org/ideumi/chippy) >= 1.0.20
+- [Chippy](https://codeberg.org/ideumi/chippy) >= 1.0.21
 
 ## Using boxflinger
 

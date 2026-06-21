@@ -13,10 +13,9 @@
 #@ than 1. Supports Left/Right arrows, Ctrl+Left/Right, Home/End, Backspace,
 #@ Delete, and all printable characters.
 
-func BFTextInput(x, y, width, prompt, defaultValue) {
-	if width < 1 {
-		return err;
-	}
+func BFTextInput(x, y, width, prompt, defaultValue)
+{
+	if width < 1 { return err; }
 
 	var text = str(defaultValue);
 	var cursorPos = len(text);
@@ -31,13 +30,15 @@ func BFTextInput(x, y, width, prompt, defaultValue) {
 
 	var scrollOffset = 0;
 
-	if len(text) > width and cursorPos >= width {
+	if len(text) > width and cursorPos >= width
+	{
 		scrollOffset = cursorPos - width + 1;
 	}
 
 	var displayText = text;
 
-	if len(text) > width {
+	if len(text) > width
+	{
 		displayText = slice(text, scrollOffset + 1, scrollOffset + width);
 	}
 
@@ -46,21 +47,28 @@ func BFTextInput(x, y, width, prompt, defaultValue) {
 	CursorToXY(inputX + cursorPos - scrollOffset, y);
 	ShowCursor();
 
-	while running {
+	while running
+	{
 		var key = getch();
 
 		HideCursor();
 
 		var textChanged = false;
 
-		if key == BFKEYENTER {
+		if key == BFKEYENTER
+		{
 			result = text;
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYBACKSPACE {
-			if cursorPos > 0 {
+		}
+		elseif key == BFKEYBACKSPACE
+		{
+			if cursorPos > 0
+			{
 				var before = slice(text, 1, cursorPos - 1);
 				var after = slice(text, cursorPos + 1, len(text));
 
@@ -68,38 +76,69 @@ func BFTextInput(x, y, width, prompt, defaultValue) {
 				cursorPos = cursorPos - 1;
 				textChanged = true;
 			}
-		} elseif key == BFKEYLEFT {
-			if cursorPos > 0 {
-				cursorPos = cursorPos - 1;
-			}
-		} elseif key == BFKEYRIGHT {
-			if cursorPos < len(text) {
-				cursorPos = cursorPos + 1;
-			}
-		} elseif key == BFKEYCTRLLEFT {
+		}
+		elseif key == BFKEYLEFT
+		{
+			if cursorPos > 0 { cursorPos = cursorPos - 1; }
+		}
+		elseif key == BFKEYRIGHT
+		{
+			if cursorPos < len(text) { cursorPos = cursorPos + 1; }
+		}
+		elseif key == BFKEYCTRLLEFT
+		{
 			cursorPos = BFPrevWordPos(text, cursorPos);
-		} elseif key == BFKEYCTRLRIGHT {
+		}
+		elseif key == BFKEYCTRLRIGHT
+		{
 			cursorPos = BFNextWordPos(text, cursorPos);
-		} elseif key == BFKEYHOME {
+		}
+		elseif key == BFKEYHOME
+		{
 			cursorPos = 0;
-		} elseif key == BFKEYEND {
+		}
+		elseif key == BFKEYEND
+		{
 			cursorPos = len(text);
-		} elseif key == BFKEYDELETE {
-			if cursorPos < len(text) {
+		}
+		elseif key == BFKEYDELETE
+		{
+			if cursorPos < len(text)
+			{
 				var before = slice(text, 1, cursorPos);
 				var after = slice(text, cursorPos + 2, len(text));
 
 				text = before + after;
 				textChanged = true;
 			}
-		} elseif key == BFKEYTAB {} elseif key == BFKEYUP {} elseif key == BFKEYDOWN {} elseif key == BFKEYCTRLUP {} elseif key == BFKEYCTRLDOWN {} elseif key == BFKEYCTRLU {
+		}
+		elseif key == BFKEYTAB
+		{
+		}
+		elseif key == BFKEYUP
+		{
+		}
+		elseif key == BFKEYDOWN
+		{
+		}
+		elseif key == BFKEYCTRLUP
+		{
+		}
+		elseif key == BFKEYCTRLDOWN
+		{
+		}
+		elseif key == BFKEYCTRLU
+		{
 			text = "";
 			cursorPos = 0;
 			textChanged = true;
-		} elseif type(key) == "bytes" and len(key) >= 1 {
+		}
+		elseif type(key) == "bytes" and len(key) >= 1
+		{
 			var char = unpack(key);
 
-			if len(char) > 0 {
+			if len(char) > 0
+			{
 				var before = slice(text, 1, cursorPos);
 				var after = slice(text, cursorPos + 1, len(text));
 
@@ -109,19 +148,23 @@ func BFTextInput(x, y, width, prompt, defaultValue) {
 			}
 		}
 
-		if running {
+		if running
+		{
 			var newScrollOffset = 0;
 
-			if len(text) > width and cursorPos >= width {
+			if len(text) > width and cursorPos >= width
+			{
 				newScrollOffset = cursorPos - width + 1;
 			}
 
-			if textChanged or newScrollOffset != scrollOffset {
+			if textChanged or newScrollOffset != scrollOffset
+			{
 				scrollOffset = newScrollOffset;
 
 				var newDisplayText = text;
 
-				if len(text) > width {
+				if len(text) > width
+				{
 					newDisplayText = slice(text, scrollOffset + 1, scrollOffset + width);
 				}
 

@@ -5,7 +5,8 @@
 
 # https://sw.kovidgoyal.net/kitty/graphics-protocol/
 
-func _BFKittySend_(cmd) {
+func _BFKittySend_(cmd)
+{
 	fwrite(BFAPC + pack(cmd) + BFST, STDOUT);
 }
 
@@ -14,7 +15,8 @@ func _BFKittySend_(cmd) {
 #@
 #@ Removes all kitty images from the terminal screen.
 
-func BFKittyClearImages() {
+func BFKittyClearImages()
+{
 	_BFKittySend_("Ga=d,d=A");
 }
 
@@ -24,7 +26,8 @@ func BFKittyClearImages() {
 #@ Draws an image at terminal cell position ''x'', ''y'' spanning ''cols'' by
 #@ ''rows'' cells. ''imagePath'' must be an absolute file path.
 
-func BFKittyDrawImage(x, y, imagePath, cols, rows) {
+func BFKittyDrawImage(x, y, imagePath, cols, rows)
+{
 	CursorToXY(x, y);
 
 	var b64path = HttpBase64Encode(pack(imagePath));
@@ -38,12 +41,11 @@ func BFKittyDrawImage(x, y, imagePath, cols, rows) {
 #@ Returns the pixel dimensions of one terminal cell as ''[cellW, cellH]'', or
 #@ ''err'' if the terminal does not support the query ''ESC[16t''.
 
-func BFKittyGetCellPixelSize() {
+func BFKittyGetCellPixelSize()
+{
 	var saved = getterm();
 
-	if iserr(saved) {
-		return err;
-	}
+	if iserr(saved) { return err; }
 
 	setterm(MakeRaw(saved));
 
@@ -52,7 +54,8 @@ func BFKittyGetCellPixelSize() {
 	var resp = "";
 	var ch = fread(STDIN, 1);
 
-	while not iserr(ch) and ch[1] != 116 {
+	while not iserr(ch) and ch[1] != 116
+	{
 		resp = resp + unpack(ch);
 		ch = fread(STDIN, 1);
 	}
@@ -61,20 +64,14 @@ func BFKittyGetCellPixelSize() {
 
 	var parts = split(resp, ";");
 
-	if len(parts) != 3 {
-		return err;
-	}
+	if len(parts) != 3 { return err; }
 
 	var cellH = num(parts[2]);
 	var cellW = num(parts[3]);
 
-	if iserr(cellH) or iserr(cellW) {
-		return err;
-	}
+	if iserr(cellH) or iserr(cellW) { return err; }
 
-	if cellH <= 0 or cellW <= 0 {
-		return err;
-	}
+	if cellH <= 0 or cellW <= 0 { return err; }
 
 	return [int(cellW), int(cellH)];
 }
@@ -86,7 +83,8 @@ func BFKittyGetCellPixelSize() {
 #@ wide. Row count is computed automatically by the terminal to preserve the image
 #@ aspect ratio. ''imagePath'' must be an absolute file path.
 
-func BFKittyDrawImageAuto(x, y, imagePath, cols) {
+func BFKittyDrawImageAuto(x, y, imagePath, cols)
+{
 	CursorToXY(x, y);
 
 	var b64path = HttpBase64Encode(pack(imagePath));

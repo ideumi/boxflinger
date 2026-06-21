@@ -11,7 +11,8 @@
 #@ wrapped ''message'', clamped to the region. ''color'' is applied to each
 #@ message line. Dialog is dismissed by pressing any key. Always returns ''ok''.
 
-func BFShowMessage(region, dialogWidth, title, message, color) {
+func BFShowMessage(region, dialogWidth, title, message, color)
+{
 	HideCursor();
 
 	var contentWidth = dialogWidth - 4;
@@ -21,13 +22,12 @@ func BFShowMessage(region, dialogWidth, title, message, color) {
 	var dialogHeight = lineCount + 5;
 	var maxHeight = region[4];
 
-	if dialogHeight > maxHeight {
+	if dialogHeight > maxHeight
+	{
 		dialogHeight = maxHeight;
 		lineCount = dialogHeight - 5;
 
-		if lineCount < 0 {
-			lineCount = 0;
-		}
+		if lineCount < 0 { lineCount = 0; }
 	}
 
 	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
@@ -39,7 +39,8 @@ func BFShowMessage(region, dialogWidth, title, message, color) {
 
 	var contentX = x + 2;
 
-	for i = 1 to lineCount {
+	for i = 1 to lineCount
+	{
 		SetAttribute(color);
 		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
 		SetAttribute(COLORRESET);
@@ -62,7 +63,8 @@ func BFShowMessage(region, dialogWidth, title, message, color) {
 #@ wrapped ''message'', clamped to the region. ''defaultYes'' selects the initial
 #@ button. Returns ''true'' on Yes, ''false'' on No, or ''err'' if ESC is pressed.
 
-func BFShowConfirm(region, dialogWidth, title, message, defaultYes) {
+func BFShowConfirm(region, dialogWidth, title, message, defaultYes)
+{
 	HideCursor();
 
 	var contentWidth = dialogWidth - 4;
@@ -72,13 +74,12 @@ func BFShowConfirm(region, dialogWidth, title, message, defaultYes) {
 	var dialogHeight = lineCount + 5;
 	var maxHeight = region[4];
 
-	if dialogHeight > maxHeight {
+	if dialogHeight > maxHeight
+	{
 		dialogHeight = maxHeight;
 		lineCount = dialogHeight - 5;
 
-		if lineCount < 0 {
-			lineCount = 0;
-		}
+		if lineCount < 0 { lineCount = 0; }
 	}
 
 	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
@@ -90,7 +91,8 @@ func BFShowConfirm(region, dialogWidth, title, message, defaultYes) {
 
 	var contentX = x + 2;
 
-	for i = 1 to lineCount {
+	for i = 1 to lineCount
+	{
 		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
 	}
 

@@ -13,12 +13,11 @@
 #@ 'n'/'N' key), or ''err'' if ESC is pressed. Selected button shown with inverted
 #@ colors. Buttons displayed as [ Yes ] and [ No ].
 
-func BFConfirm(x, y, message, defaultYes) {
+func BFConfirm(x, y, message, defaultYes)
+{
 	var selected = 1;
 
-	if not defaultYes {
-		selected = 2;
-	}
+	if not defaultYes { selected = 2; }
 
 	var running = true;
 	var result = err;
@@ -31,34 +30,44 @@ func BFConfirm(x, y, message, defaultYes) {
 	BFDrawButton(x, buttonY, "Yes", selected == 1);
 	BFDrawButton(x + yesButtonWidth, buttonY, "No", selected == 2);
 
-	while running {
+	while running
+	{
 		var prevSelected = selected;
 		var key = getch();
 
-		if key == BFKEYENTER {
-			if selected == 1 {
-				result = true;
-			} else {
-				result = false;
-			}
+		if key == BFKEYENTER
+		{
+			if selected == 1 { result = true; }
+			else { result = false; }
 
 			running = false;
-		} elseif key == BFKEYESC {
+		}
+		elseif key == BFKEYESC
+		{
 			result = err;
 			running = false;
-		} elseif key == BFKEYLEFT {
+		}
+		elseif key == BFKEYLEFT
+		{
 			selected = 1;
-		} elseif key == BFKEYRIGHT {
+		}
+		elseif key == BFKEYRIGHT
+		{
 			selected = 2;
-		} elseif type(key) == "bytes" and len(key) == 1 and (key[1] == 121 or key[1] == 89) {
+		}
+		elseif type(key) == "bytes" and len(key) == 1 and (key[1] == 121 or key[1] == 89)
+		{
 			result = true;
 			running = false;
-		} elseif type(key) == "bytes" and len(key) == 1 and (key[1] == 110 or key[1] == 78) {
+		}
+		elseif type(key) == "bytes" and len(key) == 1 and (key[1] == 110 or key[1] == 78)
+		{
 			result = false;
 			running = false;
 		}
 
-		if running and selected != prevSelected {
+		if running and selected != prevSelected
+		{
 			BFDrawButton(x, buttonY, "Yes", selected == 1);
 			BFDrawButton(x + yesButtonWidth, buttonY, "No", selected == 2);
 		}
