@@ -153,7 +153,7 @@ func TestNumberInput()
 	BFDrawText(4, 4, "This tests numeric input with validation.");
 	BFDrawText(4, 5, "Only digits are accepted, value must be in range.");
 
-	var number = BFNumberInput(4, 8, "Enter age", 0, 120, 25);
+	var number = BFNumberInput(4, 8, "Enter age", -120, 120, 25);
 
 	if iserr(number)
 	{

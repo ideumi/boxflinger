@@ -85,21 +85,33 @@ func BFNumberInput(x, y, prompt, min, max, defaultValue)
 				textChanged = true;
 			}
 		}
-		elseif type(key) == "bytes" and len(key) == 1 and key[1] >= 48 and key[1] <= 57
+		elseif type(key) == "bytes"
+			and len(key) == 1
+			and key[1] >= 48
+			and key[1] <= 57 # 0 (48) to 9 (57)
 		{
-			var char = unpack(key);
-			var before = slice(text, 1, cursorPos);
-			var after = slice(text, cursorPos + 1, len(text));
+			if len(text) < maxInputLen
+			{
+				var char = unpack(key);
+				var before = slice(text, 1, cursorPos);
+				var after = slice(text, cursorPos + 1, len(text));
 
-			text = before + char + after;
-			cursorPos = cursorPos + 1;
-			textChanged = true;
+				text = before + char + after;
+				cursorPos = cursorPos + 1;
+				textChanged = true;
+			}
 		}
-		elseif type(key) == "bytes" and len(key) == 1 and key[1] == 45 and cursorPos == 0
+		elseif type(key) == "bytes" # Allow minus for negative values (b[45])
+			and len(key) == 1
+			and key[1] == 45
+			and cursorPos == 0
 		{
-			text = "-" + text;
-			cursorPos = 1;
-			textChanged = true;
+			if len(text) < maxInputLen
+			{
+				text = "-" + text;
+				cursorPos = 1;
+				textChanged = true;
+			}
 		}
 		elseif key == BFKEYLEFT
 		{
