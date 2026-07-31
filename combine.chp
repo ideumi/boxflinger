@@ -45,6 +45,8 @@ External = External + ["libhttp.chh"];
 
 # Options
 
+var Compile = false;
+var AddShebang = true;
+
 var StripComments = false;
 var StripWhitespace = false;
-var AddShebang = true;
