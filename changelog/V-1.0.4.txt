@@ -1,0 +1,1 @@
+	FYI Breaking: BFDrawFrame(x, y, width, height, title, style) and BFTextBox(x, y, width, height, title, defaultText, style) now require the style parameter. Before 1.0.4 this was hard-coded to BFBOXSINGLE. If you used BFDrawFrame or BFTextBox, add BFBOXSINGLE as the last argument to restore previous behavior.

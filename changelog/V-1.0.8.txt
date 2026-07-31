@@ -1,0 +1,16 @@
+What's New:
+
+	- widgets:
+		- added BFShowMessage(region, dialogWidth, title, message, color)
+		- added BFShowConfirm(region, dialogWidth, title, message, defaultYes)
+		- added BFKeybindsBar(x, y, width, rows)
+		- added PageUp/PageDown key support to BFMenu, BFSelect and BFRadioGroup
+		- added Home/End key support to BFMenu, BFSelect, BFRadioGroup and BFSlider
+
+	- primitives:
+		- added BFCenterRect(region, dialogWidth, dialogHeight)
+
+	- demo:
+		- added demos for BFKeybindsBar, BFShowMessage and BFShowConfirm
+
+5b4ed8ae3ecfb4b1919afac36623a13b3a935c8dc5b56199d0700f5a3498296d  libboxflinger.chh

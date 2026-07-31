@@ -1,0 +1,5 @@
+What's New:
+
+	- updated to Chippy V-1.0.20 conventions
+
+37780a2b8abd01e25660143846dd897a2b0d7262ec0fa5a4caacacc09a9f4ced  libboxflinger.chh
