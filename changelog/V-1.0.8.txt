@@ -12,5 +12,3 @@ What's New:
 
 	- demo:
 		- added demos for BFKeybindsBar, BFShowMessage and BFShowConfirm
-
-5b4ed8ae3ecfb4b1919afac36623a13b3a935c8dc5b56199d0700f5a3498296d  libboxflinger.chh

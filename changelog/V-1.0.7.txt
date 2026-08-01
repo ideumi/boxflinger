@@ -8,5 +8,3 @@ What's New:
 	- primitives:
 		- added BFNextWordPos(text, pos)
 		- added BFPrevWordPos(text, pos)
-
-ce45fcd6de4c852cb55bdd5acd25c92d86386eb12cb5e95ce0dff00b6c375d05  libboxflinger.chh

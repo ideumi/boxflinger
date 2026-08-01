@@ -11,5 +11,3 @@ What's New:
 
 	- misc:
 		- cleanup of comments
-
-31d1699bca54beb7f3f85b4c3d6f2c6294414bd44e10431c8cfe49f1347ceb37  libboxflinger.chh

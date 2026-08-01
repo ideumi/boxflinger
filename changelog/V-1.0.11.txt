@@ -3,5 +3,3 @@ What's New:
 	- bug: BFWrapText(text, width) didnt handle multi-line input even though dialogs.chh expected as such
 	- numberinput: limit input slots to maxInputLen aka lenv(min)
 	- fixed combine.chp files for bfdemo and bflogo
-
-df658e9b9c7f602b4a5a83813532535426c1073a6638e3ce51aa3989b64b45d4  libboxflinger.chh

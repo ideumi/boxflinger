@@ -1,5 +1,3 @@
 What's New:
 
 	- updated to ChipLang V-1.0.19 conventions
-
-763cb0b331be4c62a19b0cb19cfa45f37e4a2e404b5e17b6ec50fd97397a5027  libboxflinger.chh
