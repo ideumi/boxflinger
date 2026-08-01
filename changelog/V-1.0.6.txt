@@ -1,0 +1,13 @@
+What's New:
+
+	- widgets:
+		- optimize (re)drawing of all widgets to be more efficient
+
+	- primitives:
+		- kitty.chh added for terminal graphics
+
+	- demo:
+		- added image/logo display demo in kitty terminals
+
+	- misc:
+		- cleanup of comments

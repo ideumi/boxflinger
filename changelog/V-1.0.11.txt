@@ -1,0 +1,5 @@
+What's New:
+
+	- bug: BFWrapText(text, width) didnt handle multi-line input even though dialogs.chh expected as such
+	- numberinput: limit input slots to maxInputLen aka lenv(min)
+	- fixed combine.chp files for bfdemo and bflogo

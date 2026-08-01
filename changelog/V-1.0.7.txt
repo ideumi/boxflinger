@@ -1,0 +1,10 @@
+What's New:
+
+	- widgets:
+		- bug: textbox: escape sequence is printed to the terminal on CTRL+Arrow keys
+		- textbox: support CTRL+Arrow keys
+		- textinput: support CTRL+Left & CTRL+Right
+
+	- primitives:
+		- added BFNextWordPos(text, pos)
+		- added BFPrevWordPos(text, pos)

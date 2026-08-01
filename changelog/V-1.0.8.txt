@@ -1,0 +1,14 @@
+What's New:
+
+	- widgets:
+		- added BFShowMessage(region, dialogWidth, title, message, color)
+		- added BFShowConfirm(region, dialogWidth, title, message, defaultYes)
+		- added BFKeybindsBar(x, y, width, rows)
+		- added PageUp/PageDown key support to BFMenu, BFSelect and BFRadioGroup
+		- added Home/End key support to BFMenu, BFSelect, BFRadioGroup and BFSlider
+
+	- primitives:
+		- added BFCenterRect(region, dialogWidth, dialogHeight)
+
+	- demo:
+		- added demos for BFKeybindsBar, BFShowMessage and BFShowConfirm

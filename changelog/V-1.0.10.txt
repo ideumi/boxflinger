@@ -1,0 +1,3 @@
+What's New:
+
+	- updated to Chippy V-1.0.20 conventions
