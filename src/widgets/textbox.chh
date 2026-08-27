@@ -4,7 +4,7 @@
 #
 
 #@ <BFTextBox(x, y, width, height, title, defaultText, style)>
-#@ V-1.0.5 (2026-06-14)
+#@ V-1.0.6 (2026-08-26)
 #@
 #@ Multi-line text editor with full editing capabilities and scrolling at position
 #@ ''x'' and ''y'' with dimensions ''width'' and ''height''. The ''title'' is
@@ -89,15 +89,14 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 		var prevOffset = offset;
 
 		# redrawCurrent: redraw the current cursorLine row
+		var redrawCurrent = false;
 
 		# redrawPrev: also redraw prevCursorLine (when cursorLine changed)
-
-		# fromRedrawLine: redraw from this line index to bottom of visible area
-		# (0 = unused)
-
-		var redrawCurrent = false;
 		var redrawPrev = false;
-		var fromRedrawLine = 0;
+
+		# fromRedrawLine: redraw from this line index to the bottom of the visible
+		# area (false = unused)
+		var fromRedrawLine = false;
 
 		if key == BFKEYESC
 		{
@@ -123,15 +122,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 
 			lines[cursorLine] = before;
 
-			var newLines = [];
-
-			for i = 1 to cursorLine { append(newLines, lines[i]); }
-
-			append(newLines, after);
-
-			for i = cursorLine + 1 to len(lines) { append(newLines, lines[i]); }
-
-			lines = newLines;
+			lines = slice(lines, 1, cursorLine) + [after] + slice(lines, cursorLine + 1, len(lines));
 			fromRedrawLine = cursorLine;
 			cursorLine = cursorLine + 1;
 			cursorCol = 0;
@@ -154,18 +145,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				var prevLine = lines[cursorLine - 1];
 				var mergedLine = prevLine + currentLine;
 
-				var newLines = [];
-
-				for i = 1 to cursorLine - 2 { append(newLines, lines[i]); }
-
-				append(newLines, mergedLine);
-
-				for i = cursorLine + 1 to len(lines)
-				{
-					append(newLines, lines[i]);
-				}
-
-				lines = newLines;
+				lines = slice(lines, 1, cursorLine - 2) + [mergedLine] + slice(lines, cursorLine + 1, len(lines));
 				cursorLine = cursorLine - 1;
 				cursorCol = len(prevLine);
 				fromRedrawLine = cursorLine;
@@ -364,18 +344,7 @@ func BFTextBox(x, y, width, height, title, defaultText, style)
 				var nextLine = lines[cursorLine + 1];
 				var mergedLine = currentLine + nextLine;
 
-				var newLines = [];
-
-				for i = 1 to cursorLine - 1 { append(newLines, lines[i]); }
-
-				append(newLines, mergedLine);
-
-				for i = cursorLine + 2 to len(lines)
-				{
-					append(newLines, lines[i]);
-				}
-
-				lines = newLines;
+				lines = slice(lines, 1, cursorLine - 1) + [mergedLine] + slice(lines, cursorLine + 2, len(lines));
 				fromRedrawLine = cursorLine;
 			}
 		}
