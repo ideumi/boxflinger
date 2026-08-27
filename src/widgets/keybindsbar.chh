@@ -4,16 +4,16 @@
 #
 
 #@ <BFKeybindsBar(x, y, width, rows)>
-#@ V-1.0.0 (2026-05-29)
+#@ V-1.0.1 (2026-08-26)
 #@
 #@ Draws a keybinds bar at ''x'' and ''y'' spanning ''width'' columns and ''len(rows)''
-#@ lines. ''rows'' is a list of rows, each a list of ''[key, action]'' pairs drawn
-#@ centered on its line; an empty row leaves a blank padding line. Always returns
-#@ ''ok''.
+#@ lines. ''rows'' is a list of rows, each a list of maps with keys ''key'' and
+#@ ''action'' drawn centered on its line; an empty row leaves a blank padding line.
+#@ Always returns ''ok''.
 
 func _BFKeybindWidth_(key, action)
 {
-	return lenv(key) + 1 + lenv(action) + 3;
+	return lenv(key) + lenv(" " + action + "   ");
 }
 
 func _BFDrawKeybind_(x, y, key, action)
@@ -26,10 +26,11 @@ func _BFDrawKeybind_(x, y, key, action)
 	SetAttribute(COLORBGWHITE);
 
 	var actionX = x + lenv(key);
+	var actionText = " " + action + "   ";
 
-	BFDrawText(actionX, y, " " + action + "   ");
+	BFDrawText(actionX, y, actionText);
 
-	return actionX + lenv(action) + 4;
+	return actionX + lenv(actionText);
 }
 
 func BFKeybindsBar(x, y, width, rows)
@@ -51,7 +52,7 @@ func BFKeybindsBar(x, y, width, rows)
 		for i = 1 to len(items)
 		{
 			var item = items[i];
-			lineWidth = lineWidth + _BFKeybindWidth_(item[1], item[2]);
+			lineWidth = lineWidth + _BFKeybindWidth_(item["key"], item["action"]);
 		}
 
 		var xpos = x + int((width - lineWidth) / 2);
@@ -61,7 +62,7 @@ func BFKeybindsBar(x, y, width, rows)
 		for i = 1 to len(items)
 		{
 			var item = items[i];
-			xpos = _BFDrawKeybind_(xpos, rowY, item[1], item[2]);
+			xpos = _BFDrawKeybind_(xpos, rowY, item["key"], item["action"]);
 		}
 	}
 
