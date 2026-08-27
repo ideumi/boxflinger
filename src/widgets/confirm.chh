@@ -4,7 +4,7 @@
 #
 
 #@ <BFConfirm(x, y, message, defaultYes)>
-#@ V-1.0.2 (2026-04-04)
+#@ V-1.0.3 (2026-08-26)
 #@
 #@ Yes/No confirmation dialog with button navigation at position ''x'' and ''y''.
 #@ The ''message'' is displayed above buttons and ''defaultYes'' determines
@@ -22,7 +22,7 @@ func BFConfirm(x, y, message, defaultYes)
 	var running = true;
 	var result = err;
 	var buttonY = y + 2;
-	var yesButtonWidth = 7;
+	var yesButtonWidth = lenv("[ Yes ]");
 
 	HideCursor();
 
