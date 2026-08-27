@@ -284,22 +284,22 @@ func TestKeybindsBar()
 	BFDrawText(4, 6, "Press any key to continue...");
 
 	var row1 = [];
-	append(row1, ["↑↓←→", "Navigate"]);
-	append(row1, ["Enter", "Open"]);
-	append(row1, ["Tab", "Sidebar"]);
-	append(row1, ["Esc", "Quit"]);
+	append(row1, m["key": "↑↓←→", "action": "Navigate"]);
+	append(row1, m["key": "Enter", "action": "Open"]);
+	append(row1, m["key": "Tab", "action": "Sidebar"]);
+	append(row1, m["key": "Esc", "action": "Quit"]);
 
 	var row2 = [];
-	append(row2, ["Ctrl+C", "Copy"]);
-	append(row2, ["Ctrl+X", "Cut"]);
-	append(row2, ["Ctrl+V", "Paste"]);
-	append(row2, ["Del", "Delete"]);
+	append(row2, m["key": "Ctrl+C", "action": "Copy"]);
+	append(row2, m["key": "Ctrl+X", "action": "Cut"]);
+	append(row2, m["key": "Ctrl+V", "action": "Paste"]);
+	append(row2, m["key": "Del", "action": "Delete"]);
 
 	var row3 = [];
-	append(row3, ["F1", "Term"]);
-	append(row3, ["h", "Hidden"]);
-	append(row3, ["i", "Info"]);
-	append(row3, ["t", "Sort"]);
+	append(row3, m["key": "F1", "action": "Term"]);
+	append(row3, m["key": "h", "action": "Hidden"]);
+	append(row3, m["key": "i", "action": "Info"]);
+	append(row3, m["key": "t", "action": "Sort"]);
 
 	var rows = [row1, row2, row3];
 
@@ -319,9 +319,9 @@ func TestMessageDialog()
 
 	BFDrawBox(1, 1, sidebarWidth, 22, BFBOXSINGLE);
 
-	var region = [sidebarWidth + 1, 1, 78 - sidebarWidth, 22];
+	var region = BFMakeRegion(sidebarWidth + 1, 1, 78 - sidebarWidth, 22);
 
-	BFDrawBox(region[1], region[2], region[3], region[4], BFBOXSINGLE);
+	BFDrawBox(region["x"], region["y"], region["width"], region["height"], BFBOXSINGLE);
 
 	BFShowMessage(region, 44, "ShowMessage Test", "Message", COLORRESET);
 
@@ -337,7 +337,7 @@ func TestConfirmDialog()
 
 	BFDrawText(4, 4, "This tests the confirm dialog.");
 
-	var region = [2, 8, 70, 15];
+	var region = BFMakeRegion(2, 8, 70, 15);
 
 	var result = BFShowConfirm(region, 46, "Confirm", "Ya like jazz?", true);
 
