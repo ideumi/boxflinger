@@ -34,6 +34,8 @@ Paths = Paths + ["../../out"];
 
 # Options
 
+var Compile = true;
+var AddShebang = true;
+
 var StripComments = true;
 var StripWhitespace = true;
-var AddShebang = true;
