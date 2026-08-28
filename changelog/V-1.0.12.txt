@@ -1,0 +1,42 @@
+What's New:
+
+	- primitives:
+		- layout:
+			- added BFMakeRegion(x, y, width, height)
+			- BFCenterRect(region, dialogWidth, dialogHeight) updated to use region map
+			- BFCenterRect(region, dialogWidth, dialogHeight) now returns m["x": x, "y": y] instead of [x, y]
+
+		- kitty:
+			- BFKittyGetCellPixelSize() now returns m["width": int(cellW), "height": int(cellH)] instead of [cellW, cellH]
+
+	- widgets:
+		- dialogs:
+			- BFShowMessage(region, dialogWidth, title, message, color) updated to use region map
+			- BFShowConfirm(region, dialogWidth, title, message, defaultYes) updated to use region map
+			- added _BFDrawDialog_(region, dialogWidth, title, message, color) internal dialog rendering helper
+
+		- textbox: simplify line split and merge handling
+
+		- keybindsbar: BFKeybindsBar(x, y, width, rows) now takes lists of m["key": "KEY", "action": "ACTION"] maps to describe keybinds instead of [key, action] lists
+
+	- misc:
+		- code cleanups and readability improvements
+
+	- demo:
+		- dialog / region tests now use BFMakeRegion(x, y, width, height)
+		- keybinds and form data use the new map shapes
+		- form: merged the confirm No/ESC cleanup branches
+
+FYI Breaking:
+
+	- BFCenterRect(region, dialogWidth, dialogHeight)
+	- BFShowMessage(region, dialogWidth, title, message, color)
+	- BFShowConfirm(region, dialogWidth, title, message, defaultYes)
+		- now take a region map instead of a [x, y, width, height] list, use BFMakeRegion(x, y, width, height) to construct a region map
+		- now return err if a region key is missing
+
+	- BFCenterRect(region, dialogWidth, dialogHeight) now returns a map with keys "x" and "y" instead of [x, y]
+
+	- BFKittyGetCellPixelSize() now returns a map with keys "width" and "height" instead of [cellW, cellH]
+
+	- BFKeybindsBar(x, y, width, rows) now takes lists of m["key": "KEY", "action": "ACTION"] maps to describe keybinds instead of [key, action] lists
