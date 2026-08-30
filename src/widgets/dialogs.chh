@@ -3,24 +3,27 @@
 # boxflinger - dialogs.chh
 #
 
-#@ <BFShowMessage(region, dialogWidth, title, message, color)>
-#@ V-1.0.0 (2026-05-31)
-#@
-#@ Shows a message dialog centered within ''region'': ''[x, y, width, height]''.
-#@ The dialog is ''dialogWidth'' columns wide and auto-sizes its height from the
-#@ wrapped ''message'', clamped to the region. ''color'' is applied to each
-#@ message line. Dialog is dismissed by pressing any key. Always returns ''ok''.
+# Draws the frame and message lines for dialogs. Returns the layout as a map, or
+# err if a region key is missing.
+#
+# Map fields:
+# - ''"x"'' (Number): column where the dialog begins
+# - ''"y"'' (Number): row where the dialog begins
+# - ''"dialogHeight"'' (Number): height of the dialog in rows
+# - ''"contentX"'' (Number): left column where the message text is drawn
+# - ''"lineCount"'' (Number): number of message lines drawn
 
-func BFShowMessage(region, dialogWidth, title, message, color)
+func _BFDrawDialog_(region, dialogWidth, title, message, color)
 {
-	HideCursor();
-
 	var contentWidth = dialogWidth - 4;
 	var wrapped = BFWrapText(message, contentWidth);
 	var lineCount = len(wrapped);
 
 	var dialogHeight = lineCount + 5;
-	var maxHeight = region[4];
+
+	if not has(region, "height") { return err; }
+
+	var maxHeight = region["height"];
 
 	if dialogHeight > maxHeight
 	{
@@ -31,8 +34,11 @@ func BFShowMessage(region, dialogWidth, title, message, color)
 	}
 
 	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
-	var x = origin[1];
-	var y = origin[2];
+
+	if iserr(origin) { return err; }
+
+	var x = origin["x"];
+	var y = origin["y"];
 
 	BFClearRegion(x, y, dialogWidth, dialogHeight);
 	BFDrawFrame(x, y, dialogWidth, dialogHeight, title, BFBOXROUNDED);
@@ -46,6 +52,34 @@ func BFShowMessage(region, dialogWidth, title, message, color)
 		SetAttribute(COLORRESET);
 	}
 
+	return m["x": x, "y": y, "dialogHeight": dialogHeight, "contentX": contentX, "lineCount": lineCount];
+}
+
+#@ <BFShowMessage(region, dialogWidth, title, message, color)>
+#@ V-1.0.1 (2026-08-26)
+#@
+#@ Shows a message dialog centered within the ''region'' map. The dialog is
+#@ ''dialogWidth'' columns wide and auto-sizes its height from the wrapped
+#@ ''message'', limited by the region's height. ''color'' is applied to each message
+#@ line. Dialog is dismissed by pressing any key. Returns ''ok'' on success, or
+#@ ''err'' if a region key is missing.
+
+func BFShowMessage(region, dialogWidth, title, message, color)
+{
+	HideCursor();
+
+	var layout = _BFDrawDialog_(region, dialogWidth, title, message, color);
+
+	if iserr(layout)
+	{
+		ShowCursor();
+		return err;
+	}
+
+	var y = layout["y"];
+	var dialogHeight = layout["dialogHeight"];
+	var contentX = layout["contentX"];
+
 	BFDrawText(contentX, y + dialogHeight - 2, "Press any key...");
 
 	getch();
@@ -56,47 +90,31 @@ func BFShowMessage(region, dialogWidth, title, message, color)
 }
 
 #@ <BFShowConfirm(region, dialogWidth, title, message, defaultYes)>
-#@ V-1.0.0 (2026-05-31)
+#@ V-1.0.1 (2026-08-26)
 #@
-#@ Shows a Yes / No dialog centered within ''region'': ''[x, y, width, height]''.
-#@ The dialog is ''dialogWidth'' columns wide and auto-sizes its height from the
-#@ wrapped ''message'', clamped to the region. ''defaultYes'' selects the initial
-#@ button. Returns ''true'' on Yes, ''false'' on No, or ''err'' if ESC is pressed.
+#@ Shows a Yes / No dialog centered within the ''region'' map. The dialog is
+#@ ''dialogWidth'' columns wide and auto-sizes its height from the wrapped
+#@ ''message'', limited by the region's height. ''defaultYes'' selects the initial
+#@ button. Returns ''true'' on Yes, ''false'' on No, or ''err'' if ESC is pressed
+#@ or a region key is missing.
 
 func BFShowConfirm(region, dialogWidth, title, message, defaultYes)
 {
 	HideCursor();
 
-	var contentWidth = dialogWidth - 4;
-	var wrapped = BFWrapText(message, contentWidth);
-	var lineCount = len(wrapped);
+	var layout = _BFDrawDialog_(region, dialogWidth, title, message, COLORRESET);
 
-	var dialogHeight = lineCount + 5;
-	var maxHeight = region[4];
-
-	if dialogHeight > maxHeight
+	if iserr(layout)
 	{
-		dialogHeight = maxHeight;
-		lineCount = dialogHeight - 5;
-
-		if lineCount < 0 { lineCount = 0; }
+		ShowCursor();
+		return err;
 	}
 
-	var origin = BFCenterRect(region, dialogWidth, dialogHeight);
-	var x = origin[1];
-	var y = origin[2];
+	var y = layout["y"];
+	var contentX = layout["contentX"];
+	var lineCount = layout["lineCount"];
 
-	BFClearRegion(x, y, dialogWidth, dialogHeight);
-	BFDrawFrame(x, y, dialogWidth, dialogHeight, title, BFBOXROUNDED);
-
-	var contentX = x + 2;
-
-	for i = 1 to lineCount
-	{
-		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
-	}
-
-	# BFConfirm does Cursor hiding / showing internally, no need here
+	# BFConfirm hides and shows the cursor itself
 
 	return BFConfirm(contentX, y + lineCount + 2, "", defaultYes);
 }

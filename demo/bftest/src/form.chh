@@ -3,12 +3,13 @@
 load("libboxflinger.chh");
 
 # Form state
-var formData = [];
-append(formData, "John Doe"); # Name
-append(formData, 25); # Age
-append(formData, 1); # Gender index
-append(formData, []); # Interests
-append(formData, 50); # Satisfaction slider
+var formData = m[
+	"name": "John Doe",
+	"age": 25,
+	"gender": 1,
+	"interests": [],
+	"satisfaction": 50
+];
 
 var fieldCount = 5;
 var currentField = 1;
@@ -23,7 +24,7 @@ func RenderForm()
 
 	# Name
 	var nameLabel = "Name: ";
-	var nameValue = formData[1];
+	var nameValue = formData["name"];
 
 	if currentField == 1
 	{
@@ -41,7 +42,7 @@ func RenderForm()
 
 	# Age
 	var ageLabel = "Age: ";
-	var ageValue = str(int(formData[2]));
+	var ageValue = str(int(formData["age"]));
 
 	if currentField == 2
 	{
@@ -60,7 +61,7 @@ func RenderForm()
 	# Gender
 	var genderLabel = "Gender: ";
 	var genderOptions = ["Male", "Female", "Other"];
-	var genderIndex = formData[3];
+	var genderIndex = formData["gender"];
 	var genderValue = genderOptions[genderIndex];
 
 	if currentField == 3
@@ -80,7 +81,7 @@ func RenderForm()
 	# Interests
 	var interestsLabel = "Interests: ";
 	var interests = ["Programming", "Music", "Sports", "Reading"];
-	var checkedIndices = formData[4];
+	var checkedIndices = formData["interests"];
 	var interestsList = "";
 
 	for i = 1 to len(checkedIndices)
@@ -111,7 +112,7 @@ func RenderForm()
 
 	# Satisfaction
 	var satisfactionLabel = "Satisfaction: ";
-	var satisfactionValue = str(int(formData[5])) + "%";
+	var satisfactionValue = str(int(formData["satisfaction"])) + "%";
 
 	if currentField == 5
 	{
@@ -179,18 +180,18 @@ func TestForm()
 			if currentField == 1
 			{
 				# Name field
-				var result = BFTextInput(4, 20, 40, "Enter name: ", formData[1]);
+				var result = BFTextInput(4, 20, 40, "Enter name: ", formData["name"]);
 
-				if not iserr(result) { formData[1] = result; }
+				if not iserr(result) { formData["name"] = result; }
 
 				BFClearRegion(4, 20, 60, 1);
 			}
 			elseif currentField == 2
 			{
 				# Age field
-				var result = BFNumberInput(4, 20, "Enter age", 0, 120, formData[2]);
+				var result = BFNumberInput(4, 20, "Enter age", 0, 120, formData["age"]);
 
-				if not iserr(result) { formData[2] = result; }
+				if not iserr(result) { formData["age"] = result; }
 
 				BFClearRegion(4, 20, 60, 2);
 			}
@@ -198,9 +199,9 @@ func TestForm()
 			{
 				# Gender field
 				var genderOptions = ["Male", "Female", "Other"];
-				var result = BFRadioGroup(4, 20, genderOptions, formData[3]);
+				var result = BFRadioGroup(4, 20, genderOptions, formData["gender"]);
 
-				if not iserr(result) { formData[3] = result; }
+				if not iserr(result) { formData["gender"] = result; }
 
 				BFClearRegion(4, 20, 40, len(genderOptions));
 			}
@@ -208,18 +209,18 @@ func TestForm()
 			{
 				# Interests field
 				var interests = ["Programming", "Music", "Sports", "Reading"];
-				var result = BFCheckboxList(4, 20, 40, len(interests), interests, formData[4]);
+				var result = BFCheckboxList(4, 20, 40, len(interests), interests, formData["interests"]);
 
-				if not iserr(result) { formData[4] = result; }
+				if not iserr(result) { formData["interests"] = result; }
 
 				BFClearRegion(4, 20, 40, len(interests));
 			}
 			elseif currentField == 5
 			{
 				# Satisfaction field
-				var result = BFSlider(4, 20, 30, "Satisfaction", formData[5], 0, 100, 5);
+				var result = BFSlider(4, 20, 30, "Satisfaction", formData["satisfaction"], 0, 100, 5);
 
-				if not iserr(result) { formData[5] = result; }
+				if not iserr(result) { formData["satisfaction"] = result; }
 
 				BFClearRegion(4, 20, 60, 2);
 			}
@@ -235,14 +236,14 @@ func TestForm()
 
 					Println("=== Form Submitted ===");
 					Println("");
-					Println("Name: " + formData[1]);
-					Println("Age: " + str(int(formData[2])));
+					Println("Name: " + formData["name"]);
+					Println("Age: " + str(int(formData["age"])));
 
 					var genderOptions = ["Male", "Female", "Other"];
-					Println("Gender: " + genderOptions[formData[3]]);
+					Println("Gender: " + genderOptions[formData["gender"]]);
 
 					var interests = ["Programming", "Music", "Sports", "Reading"];
-					var checkedIndices = formData[4];
+					var checkedIndices = formData["interests"];
 					Print("Interests: ");
 
 					if len(checkedIndices) == 0
@@ -261,7 +262,7 @@ func TestForm()
 						Println("");
 					}
 
-					Println("Satisfaction: " + str(int(formData[5])) + "%");
+					Println("Satisfaction: " + str(int(formData["satisfaction"])) + "%");
 					Println("");
 					Println("Press any key to return to menu...");
 
@@ -269,14 +270,9 @@ func TestForm()
 
 					running = false;
 				}
-				elseif not iserr(confirm)
-				{
-					# User chose No, just clear the dialog
-					BFClearRegion(4, 20, 60, 3);
-				}
 				else
 				{
-					# User cancelled with ESC, just clear the dialog
+					# Chose No or cancelled: clear the dialog
 					BFClearRegion(4, 20, 60, 3);
 				}
 			}

@@ -89,20 +89,48 @@ func BFVSplit(height, ratios)
 	return result;
 }
 
-#@ <BFCenterRect(region, dialogWidth, dialogHeight)>
-#@ V-1.0.0 (2026-05-29)
+#@ <BFMakeRegion(x, y, width, height)>
+#@ V-1.0.0 (2026-08-26)
 #@
-#@ Returns the top left ''[x, y]'' position for a dialog of ''dialogWidth'' by
-#@ ''dialogHeight'' that is centered within ''region'': ''[x, y, width, height]''.
-#@ If the dialog is larger than the region in either axis, the result is clamped
-#@ to the region's origin so it remains visible.
+#@ Builds a region map.
+#@
+#@ Map fields:
+#@ - ''"x"'' (Number): column where the region begins
+#@ - ''"y"'' (Number): row where the region begins
+#@ - ''"width"'' (Number): width of the region in columns
+#@ - ''"height"'' (Number): height of the region in rows
+
+func BFMakeRegion(x, y, width, height)
+{
+	return m["x": x, "y": y, "width": width, "height": height];
+}
+
+#@ <BFCenterRect(region, dialogWidth, dialogHeight)>
+#@ V-1.0.1 (2026-08-26)
+#@
+#@ Returns the top left position of a ''dialogWidth'' by ''dialogHeight'' dialog
+#@ centered within the ''region'' map, as a map. If the dialog is larger than the
+#@ region, it is pinned to the region's top-left corner and overflows right and
+#@ down instead of centering. Returns ''err'' if a region key is missing.
+#@
+#@ Map fields:
+#@ - ''"x"'' (Number): column where the centered dialog begins
+#@ - ''"y"'' (Number): row where the centered dialog begins
 
 func BFCenterRect(region, dialogWidth, dialogHeight)
 {
-	var rx = region[1];
-	var ry = region[2];
-	var width = region[3];
-	var height = region[4];
+	if not has(region, "x")
+		or not has(region, "y")
+		or not has(region, "width")
+		or not has(region, "height")
+	{
+		return err;
+	}
+
+	var rx = region["x"];
+	var ry = region["y"];
+	var width = region["width"];
+	var height = region["height"];
 
 	var x = rx + int((width - dialogWidth) / 2);
 	var y = ry + int((height - dialogHeight) / 2);
@@ -110,5 +138,5 @@ func BFCenterRect(region, dialogWidth, dialogHeight)
 	if x < rx { x = rx; }
 	if y < ry { y = ry; }
 
-	return [x, y];
+	return m["x": x, "y": y];
 }

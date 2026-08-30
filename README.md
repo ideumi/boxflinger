@@ -36,7 +36,7 @@ See the [depthfinder](https://codeberg.org/ideumi/depthfinder) file manager for 
 
 ## Requirements
 
-- [Chippy](https://codeberg.org/ideumi/chippy) >= 1.1.0
+- [Chippy](https://codeberg.org/ideumi/chippy) >= 1.1.1
 
 ## Using boxflinger
 
@@ -103,7 +103,7 @@ chippy combine
 ./out/bftest
 ```
 
-The [Kitty](https://sw.kovidgoyal.net/kitty/graphics-protocol/) terminal is recommended for the demo.
+The [Kitty](https://sw.kovidgoyal.net/kitty) terminal is recommended for the demo.
 
 ## License
 

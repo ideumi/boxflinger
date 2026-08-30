@@ -12,7 +12,7 @@
 #@ ''stepSize'' is increment/decrement amount. Returns selected value when Enter
 #@ is pressed, or ''err'' if ESC is pressed, width less than 1, or stepSize is 0
 #@ or less. Visual representation uses [====----] style bracket notation. Value
-#@ automatically clamped to min-max range during adjustment.
+#@ automatically kept within the min-max range during adjustment.
 
 func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
 {

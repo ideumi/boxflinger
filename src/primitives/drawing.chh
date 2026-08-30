@@ -215,7 +215,7 @@ func BFClearRegion(x, y, width, height)
 #@
 #@ Draws a horizontal progress bar showing completion percentage at position
 #@ ''x'' and ''y'' with ''width'' characters. Progress is calculated as ''current
-#@ / total'' and clamped to 0-100% range. The ''style'' can be ''BFBOXSINGLE'',
+#@ / total'' and kept within the 0-100% range. The ''style'' can be ''BFBOXSINGLE'',
 #@ ''BFBOXDOUBLE'', or ''BFBOXROUNDED''. Returns ''ok'' on success, or ''err'' if
 #@ width less than 1, total is 0, or invalid style.
 

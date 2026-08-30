@@ -32,8 +32,14 @@ Paths = Paths + ["/usr/lib/chippy"];
 
 Paths = Paths + ["../../out"];
 
+# Dependencies combine shouldn't bundle and just keep as loads
+
+var External = [];
+
 # Options
+
+var Compile = true;
+var AddShebang = true;
 
 var StripComments = true;
 var StripWhitespace = true;
-var AddShebang = true;
