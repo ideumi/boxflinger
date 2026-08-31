@@ -7,9 +7,9 @@
 #@ V-1.0.1 (2026-08-26)
 #@
 #@ Draws a keybinds bar at ''x'' and ''y'' spanning ''width'' columns and ''len(rows)''
-#@ lines. ''rows'' is a list of rows, each a list of maps with keys ''key'' and
-#@ ''action'' drawn centered on its line; an empty row leaves a blank padding line.
-#@ Always returns ''ok''.
+#@ lines. ''rows'' is a list of rows, each a list of maps with keys ''"key"'' and
+#@ ''"action"'' drawn centered on its line, an empty row leaves a blank padding
+#@ line. Always returns ''ok''.
 
 func _BFKeybindWidth_(key, action)
 {
