@@ -84,12 +84,12 @@ func RenderForm()
 	var checkedIndices = formData["interests"];
 	var interestsList = "";
 
-	for i = 1 to len(checkedIndices)
+	for checkedIndex = 1 to len(checkedIndices)
 	{
-		var idx = checkedIndices[i];
+		var idx = checkedIndices[checkedIndex];
 		var interest = interests[idx];
 
-		if i > 1 { interestsList = interestsList + ", "; }
+		if checkedIndex > 1 { interestsList = interestsList + ", "; }
 
 		interestsList = interestsList + interest;
 	}
@@ -252,11 +252,11 @@ func TestForm()
 					}
 					else
 					{
-						for i = 1 to len(checkedIndices)
+						for checkedIndex = 1 to len(checkedIndices)
 						{
-							if i > 1 { Print(", "); }
+							if checkedIndex > 1 { Print(", "); }
 
-							Print(interests[checkedIndices[i]]);
+							Print(interests[checkedIndices[checkedIndex]]);
 						}
 
 						Println("");

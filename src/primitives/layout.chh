@@ -19,9 +19,9 @@ func BFHSplit(width, ratios)
 	var totalRatio = 0;
 	var result = [];
 
-	for i = 1 to len(ratios)
+	for ratioIndex = 1 to len(ratios)
 	{
-		var ratio = ratios[i];
+		var ratio = ratios[ratioIndex];
 
 		if ratio < 0 { return err; }
 
@@ -32,9 +32,9 @@ func BFHSplit(width, ratios)
 
 	var remaining = width;
 
-	for i = 1 to len(ratios) - 1
+	for ratioIndex = 1 to len(ratios) - 1
 	{
-		var proportion = ratios[i] / totalRatio;
+		var proportion = ratios[ratioIndex] / totalRatio;
 		var colWidth = int(width * proportion);
 
 		append(result, colWidth);
@@ -62,9 +62,9 @@ func BFVSplit(height, ratios)
 	var totalRatio = 0;
 	var result = [];
 
-	for i = 1 to len(ratios)
+	for ratioIndex = 1 to len(ratios)
 	{
-		var ratio = ratios[i];
+		var ratio = ratios[ratioIndex];
 
 		if ratio < 0 { return err; }
 
@@ -75,9 +75,9 @@ func BFVSplit(height, ratios)
 
 	var remaining = height;
 
-	for i = 1 to len(ratios) - 1
+	for ratioIndex = 1 to len(ratios) - 1
 	{
-		var proportion = ratios[i] / totalRatio;
+		var proportion = ratios[ratioIndex] / totalRatio;
 		var rowHeight = int(height * proportion);
 
 		append(result, rowHeight);

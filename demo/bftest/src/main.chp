@@ -198,10 +198,10 @@ func TestCheckboxList()
 	{
 		BFDrawText(4, 22, "You selected " + str(len(checked)) + " items:");
 
-		for i = 1 to len(checked)
+		for checkedIndex = 1 to len(checked)
 		{
-			var idx = checked[i];
-			BFDrawText(6, 22 + i, "- " + items[idx]);
+			var idx = checked[checkedIndex];
+			BFDrawText(6, 22 + checkedIndex, "- " + items[idx]);
 		}
 	}
 

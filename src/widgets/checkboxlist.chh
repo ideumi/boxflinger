@@ -44,13 +44,13 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 	var offset = 1;
 	var checked = [];
 
-	for i = 1 to len(items)
+	for itemIndex = 1 to len(items)
 	{
 		var isChecked = false;
 
-		for j = 1 to len(checkedItems)
+		for checkedItemIndex = 1 to len(checkedItems)
 		{
-			if i == checkedItems[j] { isChecked = true; }
+			if itemIndex == checkedItems[checkedItemIndex] { isChecked = true; }
 		}
 
 		append(checked, isChecked);
@@ -86,9 +86,9 @@ func BFCheckboxList(x, y, width, height, items, checkedItems)
 		{
 			result = [];
 
-			for i = 1 to len(checked)
+			for itemIndex = 1 to len(checked)
 			{
-				if checked[i] { append(result, i); }
+				if checked[itemIndex] { append(result, itemIndex); }
 			}
 
 			running = false;

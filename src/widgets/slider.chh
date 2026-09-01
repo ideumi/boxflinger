@@ -30,9 +30,9 @@ func _BFSliderDraw_(x, y, width, label, current, min, max, clearWidth)
 
 	fwrite(BFPACKEDBRACKETLEFT, STDOUT);
 
-	for i = 1 to width
+	for col = 1 to width
 	{
-		if i <= filledWidth { fwrite(BFPACKEDEQUALS, STDOUT); }
+		if col <= filledWidth { fwrite(BFPACKEDEQUALS, STDOUT); }
 		else { fwrite(BFPACKEDDASH, STDOUT); }
 	}
 

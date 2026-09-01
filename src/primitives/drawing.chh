@@ -81,16 +81,16 @@ func BFDrawBox(x, y, width, height, style)
 
 	fwrite(topLeft, STDOUT);
 
-	for i = 1 to width - 2 { fwrite(horizontal, STDOUT); }
+	for col = 1 to width - 2 { fwrite(horizontal, STDOUT); }
 
 	fwrite(topRight, STDOUT);
 
-	for i = 1 to height - 2
+	for row = 1 to height - 2
 	{
-		CursorToXY(x, y + i);
+		CursorToXY(x, y + row);
 		fwrite(vertical, STDOUT);
 
-		CursorToXY(x + width - 1, y + i);
+		CursorToXY(x + width - 1, y + row);
 		fwrite(vertical, STDOUT);
 	}
 
@@ -98,7 +98,7 @@ func BFDrawBox(x, y, width, height, style)
 
 	fwrite(bottomLeft, STDOUT);
 
-	for i = 1 to width - 2 { fwrite(horizontal, STDOUT); }
+	for col = 1 to width - 2 { fwrite(horizontal, STDOUT); }
 
 	fwrite(bottomRight, STDOUT);
 
@@ -139,7 +139,7 @@ func BFDrawHLine(x, y, width, char)
 
 	CursorToXY(x, y);
 
-	for i = 1 to width { fwrite(packedChar, STDOUT); }
+	for col = 1 to width { fwrite(packedChar, STDOUT); }
 }
 
 #@ <BFDrawVLine(x, y, height, char)>
@@ -154,9 +154,9 @@ func BFDrawVLine(x, y, height, char)
 	var lineChar = str(char);
 	var packedChar = pack(lineChar);
 
-	for i = 1 to height
+	for row = 1 to height
 	{
-		CursorToXY(x, y + i - 1);
+		CursorToXY(x, y + row - 1);
 
 		fwrite(packedChar, STDOUT);
 	}
@@ -259,9 +259,9 @@ func BFDrawProgressBar(x, y, width, current, total, style)
 
 	CursorToXY(x, y);
 
-	for i = 1 to filledWidth { fwrite(fillChar, STDOUT); }
+	for col = 1 to filledWidth { fwrite(fillChar, STDOUT); }
 
-	for i = 1 to emptyWidth { fwrite(emptyChar, STDOUT); }
+	for col = 1 to emptyWidth { fwrite(emptyChar, STDOUT); }
 
 	return ok;
 }
@@ -291,7 +291,7 @@ func BFDrawButton(x, y, text, selected)
 #@ V-1.0.1 (2025-11-03)
 #@
 #@ Draws a checkbox with ''label'' text at position ''x'' and ''y''. If ''checked''
-#@ is ''true'', shows checkmark; otherwise shows empty box.
+#@ is ''true'', shows checkmark, otherwise shows empty box.
 
 func BFDrawCheckbox(x, y, label, checked)
 {
