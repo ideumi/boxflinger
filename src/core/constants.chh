@@ -7,7 +7,7 @@
 #@ (2026-08-26)
 #@ Library version
 
-var BFVERSION = "1.0.12";
+var BFVERSION = "1.0.13";
 
 #@ <BFALIGNLEFT>
 #@ (2025-09-28)
