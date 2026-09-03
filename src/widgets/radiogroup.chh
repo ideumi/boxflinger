@@ -27,13 +27,13 @@ func BFRadioGroup(x, y, items, defaultIndex)
 
 	HideCursor();
 
-	for i = 1 to len(items)
+	for itemIndex = 1 to len(items)
 	{
 		var radio = "( )";
 
-		if i == selected { radio = "(•)"; }
+		if itemIndex == selected { radio = "(•)"; }
 
-		BFDrawText(x, y + i - 1, radio + " " + items[i]);
+		BFDrawText(x, y + itemIndex - 1, radio + " " + items[itemIndex]);
 	}
 
 	while running

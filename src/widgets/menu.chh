@@ -26,19 +26,19 @@ func BFMenu(x, y, items, defaultIndex)
 
 	HideCursor();
 
-	for i = 1 to len(items)
+	for itemIndex = 1 to len(items)
 	{
-		var item = items[i];
+		var item = items[itemIndex];
 
-		if i == selected
+		if itemIndex == selected
 		{
 			SetAttribute(COLORBLACK);
 			SetAttribute(COLORBGWHITE);
 		}
 
-		BFDrawText(x, y + i - 1, "  " + item + "  ");
+		BFDrawText(x, y + itemIndex - 1, "  " + item + "  ");
 
-		if i == selected { SetAttribute(COLORRESET); }
+		if itemIndex == selected { SetAttribute(COLORRESET); }
 	}
 
 	while running

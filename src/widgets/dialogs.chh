@@ -45,10 +45,10 @@ func _BFDrawDialog_(region, dialogWidth, title, message, color)
 
 	var contentX = x + 2;
 
-	for i = 1 to lineCount
+	for lineIndex = 1 to lineCount
 	{
 		SetAttribute(color);
-		BFDrawText(contentX, y + 1 + i, BFClipText(wrapped[i], contentWidth));
+		BFDrawText(contentX, y + 1 + lineIndex, BFClipText(wrapped[lineIndex], contentWidth));
 		SetAttribute(COLORRESET);
 	}
 
